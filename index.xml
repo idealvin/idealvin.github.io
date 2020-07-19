@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Alvin&#39;s blog</title>
+    <link>https://idealvin.github.io/</link>
+    <description>Recent content on Alvin&#39;s blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 09 Oct 2018 23:07:10 +0800</lastBuildDate>
+    
+	<atom:link href="https://idealvin.github.io/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>解决 namespace log 与 math 库 log() 函数的冲突</title>
+      <link>https://idealvin.github.io/coding/2018/10/namespace-log/</link>
+      <pubDate>Tue, 09 Oct 2018 23:07:10 +0800</pubDate>
+      
+      <guid>https://idealvin.github.io/coding/2018/10/namespace-log/</guid>
+      <description>C++ 中，在全局范围内定义 namespace log 时，编译器报错，排查后发现原因是与 math 库中的 log() 函数有冲突。将 log 换成其他的名字，可以解决冲突，但仅仅为了一个几乎用不到的函数，就做出如此巨大的让步，多少有点不甘心。
+经过研究，最终找到一个比较完美的解决方案：
+namespace ___ { namespace log { void init() { std::cout &amp;lt;&amp;lt; &amp;quot;log::init()&amp;quot; &amp;lt;&amp;lt; std::endl; } } // namespace log } // namespace ___ using namespace ___;  上面的代码耍了一个小技巧，将 namespace log 嵌套定义在 namespace ___ 内，然后用 using namespace ___; 将 log 引入全局范围内。
+下面是一段测试代码：
+#include &amp;lt;iostream&amp;gt; #include &amp;lt;math.h&amp;gt; namespace ___ { namespace log { void init() { std::cout &amp;lt;&amp;lt; &amp;quot;log::init()&amp;quot; &amp;lt;&amp;lt; std::endl; } } // namespace log } // namespace ___ using namespace ___; int main() { log::init(); std::cout &amp;lt;&amp;lt; ::log(3.</description>
+    </item>
+    
+    <item>
+      <title>高效获取当前线程的 id</title>
+      <link>https://idealvin.github.io/coding/2018/09/get-current-thread-id/</link>
+      <pubDate>Fri, 28 Sep 2018 17:25:11 +0800</pubDate>
+      
+      <guid>https://idealvin.github.io/coding/2018/09/get-current-thread-id/</guid>
+      <description>不同平台获取当前线程 id 的方法  Windows  可以利用微软提供的 api，轻松获取当前线程的 id：
+int id = GetCurrentThreadId();   Linux  Linux 平台一般用的是 pthread 线程库，但它并不提供获取线程内部 id 的方法。可以通过系统调用得到当前线程的 id：
+#include &amp;lt;unistd.h&amp;gt; // for syscall() #include &amp;lt;sys/syscall.h&amp;gt; // for SYS_xxx definitions int id = syscall(SYS_gettid);   Mac  Mac 平台也可以用 syscall 获取当前线程的 id，与 Linux 稍有区别：
+#include &amp;lt;unistd.h&amp;gt; // for syscall() #include &amp;lt;sys/syscall.h&amp;gt; // for SYS_xxx definitions int id = syscall(SYS_thread_selfid); // for mac os x  不过在 mac os x 10.</description>
+    </item>
+    
+    <item>
+      <title>思源宋体</title>
+      <link>https://idealvin.github.io/essay/2018/09/siyuan-songti/</link>
+      <pubDate>Sun, 16 Sep 2018 10:18:36 +0800</pubDate>
+      
+      <guid>https://idealvin.github.io/essay/2018/09/siyuan-songti/</guid>
+      <description>最近发现思源宋体的显示效果不错，小小的推荐一下，有兴趣的可以换上试试。
+这款字体是 Google 与 Adobe 联合推出的一款开源字体，可以从 github 上下载。因国内访问 github 速度较慢，我将字体文件上传到了百度网盘上，大家可以去我的网盘下载。</description>
+    </item>
+    
+    <item>
+      <title>无处不在的 vim</title>
+      <link>https://idealvin.github.io/coding/2018/09/vim/</link>
+      <pubDate>Sun, 09 Sep 2018 09:48:22 +0800</pubDate>
+      
+      <guid>https://idealvin.github.io/coding/2018/09/vim/</guid>
+      <description>Vim 是个不错的文本编辑器，它最方便之处是，不用上下左右键就可以快速游走于文本之中。
+vim 配置 vim 的配置文件一般是 home 目录下的 .vimrc，参考配置如下：
+set nocompatible set fencs=utf-8,chinese,latin-1 &amp;quot;save file without permission&amp;quot; cmap w!! w !sudo tee % &amp;gt; /dev/null &amp;lt;CR&amp;gt; iab #i #include iab #d #define iab #p #pragma inoremap jj &amp;lt;Esc&amp;gt; inoremap &amp;lt;F1&amp;gt; &amp;lt;Esc&amp;gt; nnoremap &amp;lt;F1&amp;gt; &amp;lt;Esc&amp;gt; nnoremap ; : nnoremap H ^ nnoremap L $ &amp;quot;share clips with windows&amp;quot; set clipboard+=unnamed &amp;quot;backspace and cursor keys wrap to previous/next line&amp;quot; set backspace=indent,eol,start whichwrap+=&amp;lt;,&amp;gt;,[,] set history=128 set nobackup setlocal noswapfile set bufhidden=hide set confirm set number set smartindent set tabstop=4 set shiftwidth=4 &amp;quot;set nofoldenable set incsearch set nohlsearch &amp;quot;set ignorecase set showcmd set showmatch set matchtime=1 &amp;quot;0.</description>
+    </item>
+    
+    <item>
+      <title>素数的一个判定定理</title>
+      <link>https://idealvin.github.io/coding/2018/08/prime-number/</link>
+      <pubDate>Fri, 31 Aug 2018 06:26:00 +0800</pubDate>
+      
+      <guid>https://idealvin.github.io/coding/2018/08/prime-number/</guid>
+      <description>素数有一个判定定理，被称为 Wilson 定理：
+ 当且仅当 $p$ 是素数时，$(p-1)\ ! \equiv -1 \pmod{p}$
+ 这个定理的证明不是很容易想到，记录于此，以供参考。
+在《费马小定理及其欧拉推广》一文中，我们已经知道：
+ 当 $a$ 与素数 $p$ 互素时，$a,\ 2a,\ \cdots,\ (p-1)a$ 这 $p-1$ 个数除以 $p$ 的余数恰好是 $1,\ 2,\ \cdots,\ p-1$.
+ 我们现在令 $1 \leqslant a \leqslant p-1$，显然 $a$ 与素数 $p$ 是互素的，因此上面的结论成立。这意味着：
+ 当 $p$ 是素数时，对任意 $1 \leqslant a \leqslant p-1$，存在一个数 $i$，$1 \leqslant i \leqslant p-1$，使得 $i \cdot a$ 除以 $p$ 的余数是 $1$，即 $i \cdot a \equiv 1 \pmod{p}$.</description>
+    </item>
+    
+    <item>
+      <title>从 C 到 C&#43;&#43;</title>
+      <link>https://idealvin.github.io/coding/2018/08/from-c-to-cpp/</link>
+      <pubDate>Sun, 26 Aug 2018 21:09:09 +0800</pubDate>
+      
+      <guid>https://idealvin.github.io/coding/2018/08/from-c-to-cpp/</guid>
+      <description>C 语言是一门灵活、高效、可移植性好的编程语言。C++ 继承了 C 的优点，除了极少数情况外，几乎完全兼容C。同时针对 C 的各种缺陷，C++ 也引入了一些新特性。这篇文章只是一个入门性的介绍，若有不当之处，敬请指正。
+更安全的类型检查 C 语言允许隐式类型转换，如你可以在 short 与 int 类型的变量之间相互赋值，C 编译器会自动帮你完成类型转换，而且没有任何提示。
+C++ 为了兼容 C，没有禁止隐式转换，但对于不安全的类型转换，C++ 编译器会给出警告信息。如从 short 到 int 的隐式转换，不会丢失数据，C++ 编译器不会说什么。但从 int 到 short 的转换，可能丢失数据，C++ 编译器会无条件的发出警告，除非你显示的将 int 转换为 short。
+对 C++ 编译器给出的警告信息，必须足够重视，通常能够避免一大堆不必要的错误。
+内联(inline)函数 在 C/C++ 中，函数的调用有一定的开销，这通常会在频繁调用一些短函数时造成性能损失。C 语言中可以用宏定义避免函数调用，如像下面这样：
+# define min(x, y) ((x) &amp;lt; (y) ? (x) : (y))  但用宏写的代码，存在一些安全隐患。考虑下面的代码：
+int x = min(func(), v);  按宏定义展开后，func() 函数可能被调用两次，这通常不是我们想要的行为。
+C++ 则引入内联函数，兼顾性能的同时，又避免了宏的各种危害。可以显示的将函数声明为 inline，像下面这样：
+inline int min(int x, int y) { return x &amp;lt; y ?</description>
+    </item>
+    
+    <item>
+      <title>Hugo 简记</title>
+      <link>https://idealvin.github.io/coding/2018/08/hugo/</link>
+      <pubDate>Sat, 25 Aug 2018 10:00:08 +0800</pubDate>
+      
+      <guid>https://idealvin.github.io/coding/2018/08/hugo/</guid>
+      <description>简介 Hugo 是用 go 语言实现的一款静态网站生成器，速度比 Hexo 快得多。Hugo 只有一个二进制可执行文件，不用安装 go 就可以运行，与 Hexo 相比省事多了，Hexo 需要安装 nodejs 以及一大堆的 nodejs 包。
+快速入门 1. 安装 Hugo 的安装很简单，去 github 上下载已经编译好的二进制文件，Linux/Mac 等系统可以放到 /usr/local/bin 下面，windows 可能需要修改系统环境变量中的 PATH。总之，能在终端执行 hugo 命令就可以了。
+2. 生成站点目录 hugo new site xx.com  执行上面的命令后，会生成站点目录 xx.com，目录中包含如下内容：
+archetypes/ config.toml content/ resources/ static/ themes/  其中 config.toml 是站点配置文件，其余都是目录。
+3. 添加主题 Hugo 不自带默认主题，可以去这里挑选一个主题，官方示例用的 ananke，下载后将 ananke 目录放到 themes 目录下，然后修改 config.toml 设置主题:
+theme = &amp;quot;ananke&amp;quot;  4. 新建 markdown 文件 cd xx.</description>
+    </item>
+    
+    <item>
+      <title>用 Autohotkey 保持窗口在最前</title>
+      <link>https://idealvin.github.io/coding/2018/08/autohotkey/</link>
+      <pubDate>Wed, 22 Aug 2018 00:44:47 +0800</pubDate>
+      
+      <guid>https://idealvin.github.io/coding/2018/08/autohotkey/</guid>
+      <description>AutoHotKey 在 linux 系统上，右键点击窗口的标题栏，选择 Always on top，就可以将窗口保持在最前，非常方便。windows 系统不带这个功能，可以用 AutoHotkey 实现。
+AutoHotkey 是款非常小巧的软件，安装后，在系统右键新建菜单中会出现 AutoHotkey Script 项，点击这个菜单，新建一个名为 always_on_top.ahk 的脚本文件，加上下面一行：
+^1:: Winset, Alwaysontop, , A  其中 ^1:: 表示绑定 ctrl+1 快捷键，可以换其他快捷键，官方文档中有详细说明。
+双击运行上面的脚本文件，系统右下角会出现一个绿色背景的 H 图标。现在可以按 ctrl+1 将当前窗口保持在最前了，再按一次取消，还算方便。
+开机启动 如果不想每次手动执行上面的脚本，可以将它加到开机启动项里面。在注册表中找到下面的位置：
+[HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run]  新建一项就可以了。
+如果实在是懒，可以新建一个 xx.reg 文件，内容如下：
+Windows Registry Editor Version 5.00 [HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run] &amp;quot;AlwaysOnTop&amp;quot;=&amp;quot;D:\\path\\to\\always_on_top.ahk&amp;quot;  注意脚本的路径要填正确，然后双击 xx.reg 写到注册表里就 ok 了。</description>
+    </item>
+    
+    <item>
+      <title>git 简记</title>
+      <link>https://idealvin.github.io/coding/2018/08/git/</link>
+      <pubDate>Fri, 17 Aug 2018 22:54:44 +0800</pubDate>
+      
+      <guid>https://idealvin.github.io/coding/2018/08/git/</guid>
+      <description>git 配置  基本  git config --global user.name &amp;quot;your name&amp;quot; git config --global user.email &amp;quot;your mail&amp;quot; git config --global push.default simple git config --global core.editor vim git config --global core.autocrlf false git config --global alias.ci commit git config --global alias.st status git config --global alias.co checkout git config --global alias.ls &amp;quot;log --oneline&amp;quot; git config --global alias.br branch git config --global merge.tool vimdiff   global ignore  git config --global core.</description>
+    </item>
+    
+    <item>
+      <title>docker 简记</title>
+      <link>https://idealvin.github.io/coding/2018/08/docker/</link>
+      <pubDate>Mon, 13 Aug 2018 11:29:55 +0800</pubDate>
+      
+      <guid>https://idealvin.github.io/coding/2018/08/docker/</guid>
+      <description>docker 常用命令  基本命令  docker images # 列出镜像 docker ps -a # 列出容器 docker rm container_id # 删除容器 docker rmi image_id # 删除镜像 docker tag image_id rep:tag # 修改tag docker commit container_id rep:tag # 保存容器变更 docker save -o xx.img image_id # 保存镜像 docker save image_id &amp;gt; xx.img # 保存镜像 docker load &amp;lt; xx.img # 加载镜像   创建并运行容器  # 在容器中运行bash docker run -i -t rep:tag /bin/bash # -v 将本机目录映射到docker容器中 docker run -i -t -v /host_path/:/docker_path rep:tag /bin/bash   启动已存在的容器  docker start container_id &amp;amp;&amp;amp; docker exec -it container_id /bin/bash  镜像加速 国内上 docker hub 较慢，可以用阿里云镜像加速。</description>
+    </item>
+    
+    <item>
+      <title>一种快速的随机数生成算法</title>
+      <link>https://idealvin.github.io/coding/2018/08/random/</link>
+      <pubDate>Sun, 05 Aug 2018 09:09:09 +0800</pubDate>
+      
+      <guid>https://idealvin.github.io/coding/2018/08/random/</guid>
+      <description>这篇文章将介绍一种快速、高效的随机数生成算法，它从一个给定的整数开始，无重复的生成 $1$ 到 $2^{31}-2$ 之间的整数，这些数全部遍历完后，才会进入周期性循环。google 的 leveldb 中有这个算法，有兴趣可以去看看 leveldb 的源码。
+基本思想 下面将介绍这种算法的数学原理。首先记： $$m = 2^{31} - 1 = 2147483647$$ 容易验证 $m$ 是一个素数。接下来找一个小于 $m$ 的正整数 $a$，显然 $a$ 与 $m$ 互素，至于怎么选取 $a$ 后面再详述。现在从一个给定的正整数 $s_0 &amp;lt; m$ 开始，按照下面的方式生成后续的数：
+ $$ s_1 \equiv s_0 \cdot a \pmod{m} \\\\ s_2 \equiv s_1 \cdot a \pmod{m} \\\\ \vdots \\\\ s_{m-1} \equiv s_{m-2} \cdot a \pmod{m} $$  符号 $\equiv$ 表示同余，$s_1$ 是 $s_0 \cdot a$ 除以 $m$ 的余数，其它类推。其中 $s_0$ 不能是 $0$ 或 $m$，否则后面的数全是 $0$。现在来证明</description>
+    </item>
+    
+    <item>
+      <title>RSA 加密算法的数学原理</title>
+      <link>https://idealvin.github.io/coding/2018/08/rsa/</link>
+      <pubDate>Fri, 03 Aug 2018 21:16:25 +0800</pubDate>
+      
+      <guid>https://idealvin.github.io/coding/2018/08/rsa/</guid>
+      <description>RSA 是一种非对称加密算法，这里只介绍数学原理，不涉及任何其他细节。RSA 的数学基础是费马小定理及欧拉定理，可以参考另一篇文章《费马小定理及其欧拉推广》。
+算法流程  找两个大素数 $p$ 与 $q$，计算乘积： $$n = pq$$ 计算欧拉函数： $$\varphi(n) = (p-1)(q-1)$$ 找一个与 $\varphi(n)$ 互素的正整数 $e$，然后找一个正整数 $d$，满足： $$de \equiv 1 \pmod{\varphi(n)}$$ 加密。对于明文 $x &amp;lt; n$(保证解密结果唯一)，计算 $x^e$ 除以 $n$ 的余数，作为密文 $y$，即有： $$x^e \equiv y \pmod{n}$$ 解密。计算 $y^d$ 除以 $n$ 的余数，即得到明文 $x$： $$y^d \equiv x \pmod{n}$$  数学证明 现在对上述算法流程加以解释。第一个问题是，第 3 步中的 $d$ 一定存在吗？令 $\varphi(n) = k$，由于 $e$ 与 $k$ 互素，由欧拉定理有： $$e^{\varphi(k)} \equiv 1 \pmod{k}$$ 容易看出 $d = e^{\varphi(k) - 1}$ 即满足条件，因此 $d$ 是一定存在的。</description>
+    </item>
+    
+    <item>
+      <title>费马小定理及其欧拉推广</title>
+      <link>https://idealvin.github.io/coding/2018/08/fermat-theorem/</link>
+      <pubDate>Thu, 02 Aug 2018 08:18:18 +0800</pubDate>
+      
+      <guid>https://idealvin.github.io/coding/2018/08/fermat-theorem/</guid>
+      <description>费马小定理是数论中的一个定理，最早由17世纪的法国“业余”数学家费马(Fermat)发现，从而得名。这个定理是说：
+ 给定素数 $p$ 与整数 $a$，$p$ 与 $a$ 互素(没有 $1$ 之外的公约数)，则有: $$a^{p-1} \equiv 1 \pmod{p}$$
+ 这里出现了一个同余符号$\equiv$，$a \equiv b \pmod{n}$ 表示 $a$、$b$ 除以 $n$ 的余数相同。因此，费马定理就相当于 $a^{p-1}$ 除以 $p$ 的余数是 $1$。可以找两个简单的数验证一下费马定理，如取 $p=7,\ a=2$，那么 $2^6 - 1 = 63$，确实是 $7$ 的倍数。
+同余 证明费马定理，需要用到同余的性质。同余只是简单的带余数除法，如 $23$ 与 $13$ 除以 $5$ 的余数都是 $3$，即 $23$ 与 $13$ 关于 $5$ 同余，用同余符号表示就是 $23 \equiv 13 \pmod{5}$。一个明显的结论是：
+ $a \equiv b \pmod{n}$ 等价于 $a - b = kn$，$k$ 是任意整数。</description>
+    </item>
+    
+  </channel>
+</rss>

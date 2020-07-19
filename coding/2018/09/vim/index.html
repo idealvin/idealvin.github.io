@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>无处不在的 vim - Alvin&#39;s blog</title>
+    <meta property="og:title" content="无处不在的 vim - Alvin&#39;s blog">
+    
+    <meta name="twitter:card" content="summary">
+
+    
+      
+    
+
+    
+      
+      <meta property="description" content="Vim 是个不错的文本编辑器，它最方便之处是，不用上下左右键就可以快速游走于文本之中。
+[&amp;hellip;] vim 的配置文件一般是 home 目录下的 .vimrc，参考配置如下：
+set nocompatible set fencs=utf-8,chinese,latin-1 &amp;quot;save file without permission&amp;quot; cmap w!! w !sudo &amp;hellip;">
+      <meta property="og:description" content="Vim 是个不错的文本编辑器，它最方便之处是，不用上下左右键就可以快速游走于文本之中。
+[&amp;hellip;] vim 的配置文件一般是 home 目录下的 .vimrc，参考配置如下：
+set nocompatible set fencs=utf-8,chinese,latin-1 &amp;quot;save file without permission&amp;quot; cmap w!! w !sudo &amp;hellip;">
+      
+    
+
+    
+    
+
+    
+    <meta property="keywords" content ="vim,vim插件,编程,clion,vscode,ideavim,eclipse,vrapper,visual, studio,vsvim">
+    
+
+    
+    <link rel="icon" href="/favicon.ico">
+    
+<link href='/css/code.css' rel='stylesheet' type='text/css' />
+
+
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    <link rel="stylesheet" href="/css/custom.css" />    
+    
+  </head>
+
+  
+  <body class="coding">
+    <header class="masthead">
+      <h1><a href="/" style="border: none;"><img src="/images/logo.jpg" alt="Alvin Yih"></a></h1>
+
+
+
+      <nav class="menu">
+  <input id="menu-check" type="checkbox" />
+  <label id="menu-label" for="menu-check" class="unselectable">
+    <span class="icon close-icon">✕</span>
+    <span class="icon open-icon">☰</span>
+    <span class="text">Menu</span>
+  </label>
+  <ul>
+  
+  
+  <li>
+    <a href="/">主页</a>
+  </li>
+  
+  <li>
+    <a href="/about/">关于</a>
+  </li>
+  
+  <li class="active">
+    <a href="/coding/">编程</a>
+  </li>
+  
+  <li>
+    <a href="/essay/">随笔</a>
+  </li>
+  
+  
+  </ul>
+</nav>
+
+    </header>
+
+    <article class="main">
+      <header class="title">
+      <h1>无处不在的 vim</h1>
+
+<h3>Alvin
+  /  2018-09-09</h3>
+<hr>
+      </header>
+
+
+
+
+
+<p><a href="https://www.vim.org/">Vim</a> 是个不错的文本编辑器，它最方便之处是，不用上下左右键就可以快速游走于文本之中。</p>
+
+<h2 id="vim-配置">vim 配置</h2>
+
+<p>vim 的配置文件一般是 home 目录下的 .vimrc，参考配置如下：</p>
+
+<pre><code class="language-sh">set nocompatible
+set fencs=utf-8,chinese,latin-1
+
+&quot;save file without permission&quot;
+cmap w!! w !sudo tee % &gt; /dev/null &lt;CR&gt;
+
+iab #i #include
+iab #d #define
+iab #p #pragma
+
+inoremap jj &lt;Esc&gt;
+inoremap &lt;F1&gt; &lt;Esc&gt;
+nnoremap &lt;F1&gt; &lt;Esc&gt;
+nnoremap ; :
+nnoremap H ^
+nnoremap L $
+
+&quot;share clips with windows&quot;
+set clipboard+=unnamed
+
+&quot;backspace and cursor keys wrap to previous/next line&quot;
+set backspace=indent,eol,start whichwrap+=&lt;,&gt;,[,]
+
+set history=128
+set nobackup
+setlocal noswapfile
+set bufhidden=hide
+set confirm
+
+set number
+set smartindent
+set tabstop=4
+set shiftwidth=4
+&quot;set nofoldenable
+
+set incsearch
+set nohlsearch
+&quot;set ignorecase
+
+set showcmd
+set showmatch
+set matchtime=1          &quot;0.1s
+
+set wildmenu             &quot;auto complete for cmd
+set ruler
+&quot;set cmdheight=1
+
+set scrolloff=3
+set fillchars=vert:\ ,stl:\ ,stlnc:\
+
+if has('mouse')
+  set mouse=c
+endif
+
+set selection=exclusive
+set selectmode=mouse,key
+
+set report=0
+set visualbell
+set noerrorbells
+set shortmess=atI
+set vb t_vb=
+
+filetype on              &quot;detect file type
+filetype indent on       &quot;indent for specific file types
+syntax on
+</code></pre>
+
+<p>值得一提的是 <code>inoremap jj &lt;Esc&gt;</code>，在 insert 模式下，输入 <code>jj</code> 切换回 normal 模式。另外将 <code>F1</code> 也映射成了 <code>Esc</code>，因为这两个键靠得太近，经常误按 F1 跳出一个帮助页面。</p>
+
+<h2 id="各种-ide-的-vim-插件">各种 IDE 的 vim 插件</h2>
+
+<h3 id="eclipse-vrapper">Eclipse / Vrapper</h3>
+
+<p><a href="https://www.eclipse.org/">Eclipse</a> 是用 java 开发的一个开源 IDE，有一款开源的 vim 插件 <a href="https://github.com/vrapper/vrapper/">Vrapper</a>，问题有点多，可能大部分是 Eclipse 本身的 Bug 导致的。</p>
+
+<h3 id="clion-ideavim">CLion / Ideavim</h3>
+
+<p><a href="https://www.jetbrains.com/">Jetbrains</a> 的 CLion，PyCharm，WebStorm，GoLand 等，体验都不错。此系列 IDE 有一个专用的 vim 插件 <a href="https://github.com/JetBrains/ideavim">ideavim</a>，可能是众多 vim 插件中最稳定的一个。参考配置 .ideavimrc 如下：</p>
+
+<pre><code class="language-sh">set nocompatible
+set nohlsearch
+set incsearch
+set visualbell
+set noerrorbells
+
+vnoremap &lt;Tab&gt; &gt;&lt;Esc&gt;gv
+inoremap jj &lt;Esc&gt;
+inoremap &lt;F1&gt; &lt;Esc&gt;
+nnoremap &lt;F1&gt; &lt;Esc&gt;
+nnoremap ; :
+nnoremap H ^
+nnoremap L $
+</code></pre>
+
+<p>另，CLion 依赖于 CMake，需要在代码根目录创建一个 CMakeLists.txt 文件，内容大致如下：</p>
+
+<pre><code class="language-sh">cmake_minimum_required(VERSION 3.8)
+project(xxx)
+
+set(CMAKE_CXX_STANDARD 11)
+
+file(GLOB_RECURSE SOURCE_FILES
+    *.h *.cc *.c *.cpp
+)
+
+include_directories(.)
+
+add_library(xxx ${SOURCE_FILES})
+</code></pre>
+
+<h3 id="visual-studio-code-vscodevim">Visual Studio Code / VsCodeVim</h3>
+
+<p><a href="https://code.visualstudio.com/">Visual Studio Code</a> 写 markdown，非常流畅。</p>
+
+<p>在 vscode 的 Extensions 栏搜索 <code>vim</code>，第一个出现的应该就是 VsCodeVim。经过几年的发展，目前已经比较稳定，体验比 ideavim 稍差。</p>
+
+<p>可以在 vscode 的 User Settings 中配置 vim：</p>
+
+<pre><code class="language-sh">{
+    &quot;editor.minimap.enabled&quot;: false,
+    &quot;vim.useCtrlKeys&quot;: false,
+    &quot;vim.overrideCopy&quot;: false,
+    &quot;vim.ignorecase&quot;: false,
+    &quot;vim.insertModeKeyBindings&quot;: [
+        {
+            &quot;before&quot;: [&quot;j&quot;,&quot;j&quot;],
+            &quot;after&quot;: [&quot;&lt;Esc&gt;&quot;]
+        }
+    ],
+    &quot;vim.normalModeKeyBindingsNonRecursive&quot;: [
+        {
+            &quot;before&quot;: [&quot;;&quot;],
+            &quot;after&quot;: [&quot;:&quot;]
+        },
+        {
+            &quot;before&quot;: [&quot;H&quot;],
+            &quot;after&quot;: [&quot;^&quot;]
+        },
+        {
+            &quot;before&quot;: [&quot;L&quot;],
+            &quot;after&quot;: [&quot;$&quot;]
+        }
+    ],
+    &quot;workbench.colorTheme&quot;: &quot;Monokai&quot;,
+}
+</code></pre>
+
+
+  <footer>
+  
+
+
+
+<nav class="post-nav">
+  <ul>
+     
+    <li>
+      <span class="date">&rtrif; 2018/09/28&emsp;</span>
+      <a href="/coding/2018/09/get-current-thread-id/">高效获取当前线程的 id</a>
+    </li>
+    
+    <li class="active">
+      <span class="date">&rtrif; 2018/09/09&emsp;</span>
+      <a href="/coding/2018/09/vim/">无处不在的 vim</a>     
+    </li>
+    
+    <li>
+      <span class="date">&rtrif; 2018/08/31&emsp;</span>
+      <a href="/coding/2018/08/prime-number/">素数的一个判定定理</a>
+    </li>
+    
+  </ul>
+</nav>
+
+
+  
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/9.12.0/languages/cpp.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/9.12.0/languages/bash.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+  
+  <hr>
+  <div class="copyright">&copy;2018-2020 <a href="/">Alvin Yih</a> | <a href="https://github.com/idealvin">Github</a></div>
+  
+  </footer>
+  </article>
+  
+  
+  </body>
+</html>
+

@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>解决 namespace log 与 math 库 log() 函数的冲突 - Alvin&#39;s blog</title>
+    <meta property="og:title" content="解决 namespace log 与 math 库 log() 函数的冲突 - Alvin&#39;s blog">
+    
+    <meta name="twitter:card" content="summary">
+
+    
+      
+    
+
+    
+      
+      <meta property="description" content="C&#43;&#43; 中，在全局范围内定义 namespace log 时，编译器报错，排查后发现原因是与 math 库中的 log() 函数有冲突。将 log 换成其他的名字，可以解决冲突，但仅仅为了一个几乎用不到的函数，就做出如此巨大的让步，多少有点不甘心。
+经过研究，最终找到一个比较完美的解决方案：
+namespace ___ { namespace log { void init() { &amp;hellip;">
+      <meta property="og:description" content="C&#43;&#43; 中，在全局范围内定义 namespace log 时，编译器报错，排查后发现原因是与 math 库中的 log() 函数有冲突。将 log 换成其他的名字，可以解决冲突，但仅仅为了一个几乎用不到的函数，就做出如此巨大的让步，多少有点不甘心。
+经过研究，最终找到一个比较完美的解决方案：
+namespace ___ { namespace log { void init() { &amp;hellip;">
+      
+    
+
+    
+    
+
+    
+    <meta property="keywords" content ="C&#43;&#43;,namespace,namespace, log">
+    
+
+    
+    <link rel="icon" href="/favicon.ico">
+    
+<link href='/css/code.css' rel='stylesheet' type='text/css' />
+
+
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    <link rel="stylesheet" href="/css/custom.css" />    
+    
+  </head>
+
+  
+  <body class="coding">
+    <header class="masthead">
+      <h1><a href="/" style="border: none;"><img src="/images/logo.jpg" alt="Alvin Yih"></a></h1>
+
+
+
+      <nav class="menu">
+  <input id="menu-check" type="checkbox" />
+  <label id="menu-label" for="menu-check" class="unselectable">
+    <span class="icon close-icon">✕</span>
+    <span class="icon open-icon">☰</span>
+    <span class="text">Menu</span>
+  </label>
+  <ul>
+  
+  
+  <li>
+    <a href="/">主页</a>
+  </li>
+  
+  <li>
+    <a href="/about/">关于</a>
+  </li>
+  
+  <li class="active">
+    <a href="/coding/">编程</a>
+  </li>
+  
+  <li>
+    <a href="/essay/">随笔</a>
+  </li>
+  
+  
+  </ul>
+</nav>
+
+    </header>
+
+    <article class="main">
+      <header class="title">
+      <h1>解决 namespace log 与 math 库 log() 函数的冲突</h1>
+
+<h3>Alvin
+  /  2018-10-09</h3>
+<hr>
+      </header>
+
+
+
+<p>C++ 中，在全局范围内定义 namespace log 时，编译器报错，排查后发现原因是与 math 库中的 log() 函数有冲突。将 log 换成其他的名字，可以解决冲突，但仅仅为了一个几乎用不到的函数，就做出如此巨大的让步，多少有点不甘心。</p>
+
+<p>经过研究，最终找到一个比较完美的解决方案：</p>
+
+<pre><code class="language-cpp">namespace ___ {
+namespace log {
+
+void init() {
+    std::cout &lt;&lt; &quot;log::init()&quot; &lt;&lt; std::endl;
+}
+
+} // namespace log
+} // namespace ___
+
+using namespace ___;
+</code></pre>
+
+<p>上面的代码耍了一个小技巧，将 <code>namespace log</code> 嵌套定义在 <code>namespace ___</code> 内，然后用 <code>using namespace ___;</code> 将 log 引入全局范围内。</p>
+
+<p>下面是一段测试代码：</p>
+
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;math.h&gt;
+
+namespace ___ {
+namespace log {
+
+void init() {
+    std::cout &lt;&lt; &quot;log::init()&quot; &lt;&lt; std::endl;
+}
+
+} // namespace log
+} // namespace ___
+
+using namespace ___;
+
+int main() {
+    log::init();
+    std::cout &lt;&lt; ::log(3.2) &lt;&lt; std::endl;
+    return 0;
+}
+</code></pre>
+
+<p>编译执行结果如下：</p>
+
+<pre><code class="language-cpp">log::init()
+1.16315
+</code></pre>
+
+<p>可以看到，前面不加 <code>::</code> 时，<code>log</code> 表示 <code>namespace ___::log</code>，而加 <code>::</code> 时，<code>::log</code> 则表示全局的 log() 函数。解决了冲突，还不影响标准库函数的使用，算是完美。</p>
+
+
+  <footer>
+  
+
+
+
+<nav class="post-nav">
+  <ul>
+    
+    <li class="active">
+      <span class="date">&rtrif; 2018/10/09&emsp;</span>
+      <a href="/coding/2018/10/namespace-log/">解决 namespace log 与 math 库 log() 函数的冲突</a>     
+    </li>
+    
+    <li>
+      <span class="date">&rtrif; 2018/09/28&emsp;</span>
+      <a href="/coding/2018/09/get-current-thread-id/">高效获取当前线程的 id</a>
+    </li>
+    
+  </ul>
+</nav>
+
+
+  
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/9.12.0/languages/cpp.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/9.12.0/languages/bash.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+  
+  <hr>
+  <div class="copyright">&copy;2018-2020 <a href="/">Alvin Yih</a> | <a href="https://github.com/idealvin">Github</a></div>
+  
+  </footer>
+  </article>
+  
+  
+  </body>
+</html>
+
