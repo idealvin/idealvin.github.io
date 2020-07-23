@@ -1,0 +1,3176 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>C&#43;&#43; 基础库 CO 参考文档 v1.2 - Alvin&#39;s blog</title>
+    <meta property="og:title" content="C&#43;&#43; 基础库 CO 参考文档 v1.2 - Alvin&#39;s blog">
+    
+    <meta name="twitter:card" content="summary">
+
+    
+      
+    
+
+    
+      
+      <meta property="description" content="CO 是一个优雅、高效的 C&#43;&#43; 基础库，支持 Linux, Windows 与 Mac 平台。本文档将介绍 CO 的功能组件及使用方法。
+[&amp;hellip;] CO 追求极简、高效，不依赖于 boost 等三方库，仅使用了少量的 C&#43;&#43;11 特性。
+[&amp;hellip;] include: co/def.h.
+[&amp;hellip;] int8 int16 int32 int64 uint8 &amp;hellip;">
+      <meta property="og:description" content="CO 是一个优雅、高效的 C&#43;&#43; 基础库，支持 Linux, Windows 与 Mac 平台。本文档将介绍 CO 的功能组件及使用方法。
+[&amp;hellip;] CO 追求极简、高效，不依赖于 boost 等三方库，仅使用了少量的 C&#43;&#43;11 特性。
+[&amp;hellip;] include: co/def.h.
+[&amp;hellip;] int8 int16 int32 int64 uint8 &amp;hellip;">
+      
+    
+
+    
+    
+    <meta name="twitter:image" content="https://github.com/idealvin/docs/raw/master/img/wxzfb.png">
+    
+    
+
+    
+    <meta property="keywords" content ="C&#43;&#43;,coroutine,log,logging,flag,config,json,unit-test,rpc,http,libco,co,go-style,协程,日志库,命令行,配置文件,基础库">
+    
+
+    
+    <link rel="icon" href="/favicon.ico">
+    
+<link href='/css/code.css' rel='stylesheet' type='text/css' />
+
+
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    <link rel="stylesheet" href="/css/custom.css" />    
+    
+  </head>
+
+  
+  <body class="coding">
+    <header class="masthead">
+      <h1><a href="/" style="border: none;"><img src="/images/logo.jpg" alt="Alvin Yih"></a></h1>
+
+
+
+      <nav class="menu">
+  <input id="menu-check" type="checkbox" />
+  <label id="menu-label" for="menu-check" class="unselectable">
+    <span class="icon close-icon">✕</span>
+    <span class="icon open-icon">☰</span>
+    <span class="text">Menu</span>
+  </label>
+  <ul>
+  
+  
+  <li>
+    <a href="/">主页</a>
+  </li>
+  
+  <li>
+    <a href="/about/">关于</a>
+  </li>
+  
+  <li class="active">
+    <a href="/coding/">编程</a>
+  </li>
+  
+  <li>
+    <a href="/essay/">随笔</a>
+  </li>
+  
+  
+  </ul>
+</nav>
+
+    </header>
+
+    <article class="main">
+      <header class="title">
+      <h1>C&#43;&#43; 基础库 CO 参考文档 v1.2</h1>
+
+<h3>Alvin
+  /  2020-07-23</h3>
+<hr>
+      </header>
+
+
+
+
+
+<p><a href="https://github.com/idealvin/co/">CO</a> 是一个优雅、高效的 C++ 基础库，支持 Linux, Windows 与 Mac 平台。本文档将介绍 CO 的功能组件及使用方法。</p>
+
+<ul>
+<li><a href="#1-概览">1. 概览</a></li>
+<li><a href="#2-基本定义def">2. 基本定义(def)</a>
+
+<ul>
+<li><a href="#21-定长整数类型">2.1 定长整数类型</a></li>
+<li><a href="#22-读写-1248-字节">2.2 读写 1、2、4、8 字节</a></li>
+<li><a href="#23-disallow_copy_and_assign">2.3 DISALLOW_COPY_AND_ASSIGN</a></li>
+<li><a href="#24-force_cast-强制类型转换">2.4 force_cast 强制类型转换</a></li>
+<li><a href="#25-__forceinline-与-__thread">2.5 __forceinline 与 __thread</a></li>
+<li><a href="#26-unlikely">2.6 unlikely</a></li>
+</ul></li>
+<li><a href="#3-原子操作atomic">3. 原子操作(atomic)</a></li>
+<li><a href="#4-随机数生成器random">4. 随机数生成器(random)</a></li>
+<li><a href="#5-lrumap">5. LruMap</a></li>
+<li><a href="#6-基本类型快速转字符串fast">6. 基本类型快速转字符串(fast)</a></li>
+<li><a href="#7-高效字符流fastream">7. 高效字符流(fastream)</a></li>
+<li><a href="#8-高效字符串fastring">8. 高效字符串(fastring)</a></li>
+<li><a href="#9-字符串操作str">9. 字符串操作(str)</a>
+
+<ul>
+<li><a href="#91-切分字符串split">9.1 切分字符串(split)</a></li>
+<li><a href="#92-修剪字符串strip">9.2 修剪字符串(strip)</a></li>
+<li><a href="#93-替换子串replace">9.3 替换子串(replace)</a></li>
+<li><a href="#94-字符串转内置类型">9.4 字符串转内置类型</a></li>
+<li><a href="#95-内置类型转字符串">9.5 内置类型转字符串</a></li>
+<li><a href="#96-debug-string">9.6 debug string</a></li>
+</ul></li>
+<li><a href="#10-命令行参数与配置文件解析库flag">10. 命令行参数与配置文件解析库(flag)</a>
+
+<ul>
+<li><a href="#101-基本概念">10.1 基本概念</a>
+
+<ul>
+<li><a href="#1011-flag-变量">10.1.1 flag 变量</a></li>
+<li><a href="#1012-command-line-flag">10.1.2 command line flag</a></li>
+</ul></li>
+<li><a href="#102-flag-库的初始化">10.2 flag 库的初始化</a></li>
+<li><a href="#103-代码中定义声明及使用-flag-变量">10.3 代码中定义、声明及使用 flag 变量</a>
+
+<ul>
+<li><a href="#1031-定义-flag-变量">10.3.1 定义 flag 变量</a></li>
+<li><a href="#1032-声明-flag-变量">10.3.2 声明 flag 变量</a></li>
+<li><a href="#1033-使用-flag-变量">10.3.3 使用 flag 变量</a></li>
+</ul></li>
+<li><a href="#104-命令行中使用-flag">10.4 命令行中使用 flag</a>
+
+<ul>
+<li><a href="#1041-命令行中设置-flag-变量的值">10.4.1 命令行中设置 flag 变量的值</a></li>
+<li><a href="#1042-查看帮助信息">10.4.2 查看帮助信息</a></li>
+<li><a href="#1043-查看-flag-变量列表">10.4.3 查看 flag 变量列表</a></li>
+</ul></li>
+<li><a href="#105-程序启动时指定配置文件">10.5 程序启动时指定配置文件</a></li>
+<li><a href="#106-自动生成配置文件">10.6 自动生成配置文件</a></li>
+<li><a href="#107-配置文件的格式">10.7 配置文件的格式</a></li>
+</ul></li>
+<li><a href="#11-高效流式日志库log">11. 高效流式日志库(log)</a>
+
+<ul>
+<li><a href="#111-基本介绍">11.1 基本介绍</a></li>
+<li><a href="#112-api-介绍">11.2 Api 介绍</a></li>
+<li><a href="#113-打印不同级别的日志">11.3 打印不同级别的日志</a></li>
+<li><a href="#114-条件日志log_if">11.4 条件日志(LOG_IF)</a></li>
+<li><a href="#115-每-n-条打印一次日志log_every_n">11.5 每 N 条打印一次日志(LOG_EVERY_N)</a></li>
+<li><a href="#116-打印前-n-条日志log_first_n">11.6 打印前 N 条日志(LOG_FIRST_N)</a></li>
+<li><a href="#117-check-加强版的-assert">11.7 CHECK: 加强版的 assert</a></li>
+<li><a href="#118-配置项">11.8 配置项</a></li>
+<li><a href="#119-功能及性能测试">11.9 功能及性能测试</a></li>
+</ul></li>
+<li><a href="#12-单元测试框架unitest">12. 单元测试框架(unitest)</a>
+
+<ul>
+<li><a href="#121-定义测试单元及用例">12.1 定义测试单元及用例</a></li>
+<li><a href="#122-运行测试用例">12.2 运行测试用例</a></li>
+</ul></li>
+<li><a href="#13-高效-json-库json">13. 高效 json 库(json)</a>
+
+<ul>
+<li><a href="#131-基本类型">13.1 基本类型</a></li>
+<li><a href="#132-array-类型">13.2 array 类型</a></li>
+<li><a href="#133-object-类型">13.3 object 类型</a></li>
+<li><a href="#134-json-转字符串">13.4 json 转字符串</a></li>
+<li><a href="#135-字符串转-json">13.5 字符串转 json</a></li>
+<li><a href="#136-object-类型如何高效添加与查找成员">13.6 object 类型如何高效添加与查找成员</a></li>
+<li><a href="#137-字符串类型中的特殊字符">13.7 字符串类型中的特殊字符</a></li>
+</ul></li>
+<li><a href="#14-时间库time">14. 时间库(time)</a>
+
+<ul>
+<li><a href="#141-monotonic-time">14.1 monotonic time</a></li>
+<li><a href="#142-时间字符串nowstr">14.2 时间字符串(now::str())</a></li>
+<li><a href="#143-sleep">14.3 sleep</a></li>
+<li><a href="#144-计时器timer">14.4 计时器(Timer)</a></li>
+</ul></li>
+<li><a href="#15-线程库thread">15. 线程库(thread)</a>
+
+<ul>
+<li><a href="#151-互斥锁mutex">15.1 互斥锁(Mutex)</a></li>
+<li><a href="#152-同步事件syncevent">15.2 同步事件(SyncEvent)</a></li>
+<li><a href="#153-线程thread">15.3 线程(Thread)</a></li>
+<li><a href="#154-获取当前线程的-id">15.4 获取当前线程的 id</a></li>
+<li><a href="#155-基于-tls-的-thread_ptr">15.5 基于 TLS 的 thread_ptr</a></li>
+<li><a href="#156-定时任务调度器tasksched">15.6 定时任务调度器(TaskSched)</a></li>
+</ul></li>
+<li><a href="#16-协程库co">16. 协程库(co)</a>
+
+<ul>
+<li><a href="#161-基本概念">16.1 基本概念</a></li>
+<li><a href="#162-创建协程go">16.2 创建协程(go)</a></li>
+<li><a href="#163-协程-api">16.3 协程 api</a></li>
+<li><a href="#164-网络编程">16.4 网络编程</a>
+
+<ul>
+<li><a href="#1641-常用的-socket-api">16.4.1 常用的 socket api</a></li>
+<li><a href="#1642-常用的-socket-option-设置">16.4.2 常用的 socket option 设置</a></li>
+<li><a href="#1643-其他-api">16.4.3 其他 api</a></li>
+<li><a href="#1644-hook-系统-api">16.4.4 hook 系统 api</a></li>
+<li><a href="#1645-基于协程的一般网络编程模式">16.4.5 基于协程的一般网络编程模式</a></li>
+<li><a href="#1646-基于协程的-tcp-serverclient-示例">16.4.6 基于协程的 tcp server/client 示例</a></li>
+</ul></li>
+<li><a href="#165-协程的同步机制">16.5 协程的同步机制</a>
+
+<ul>
+<li><a href="#1651-协程锁comutex">16.5.1 协程锁(co::Mutex)</a></li>
+<li><a href="#1652-协程同步事件coevent">16.5.2 协程同步事件(co::Event)</a></li>
+</ul></li>
+<li><a href="#166-协程池">16.6 协程池</a>
+
+<ul>
+<li><a href="#1661-copool">16.6.1 co::Pool</a></li>
+<li><a href="#1662-copoolguard">16.6.2 co::PoolGuard</a></li>
+</ul></li>
+<li><a href="#167-配置项">16.7 配置项</a></li>
+</ul></li>
+<li><a href="#17-网络库so">17. 网络库(so)</a>
+
+<ul>
+<li><a href="#171-tcp-编程">17.1 TCP 编程</a>
+
+<ul>
+<li><a href="#1711-tcpserver">17.1.1 tcp::Server</a></li>
+<li><a href="#1712-tcpclient">17.1.2 tcp::Client</a></li>
+</ul></li>
+<li><a href="#172-http-编程">17.2 HTTP 编程</a>
+
+<ul>
+<li><a href="#1721-实现一个简单的-http-server">17.2.1 实现一个简单的 http server</a></li>
+<li><a href="#1722-实现一个静态-web-server">17.2.2 实现一个静态 web server</a></li>
+<li><a href="#1723-http-client-的用法">17.2.3 http client 的用法</a></li>
+<li><a href="#1724-配置项">17.2.4 配置项</a></li>
+</ul></li>
+<li><a href="#173-rpc-框架">17.3 rpc 框架</a>
+
+<ul>
+<li><a href="#1731-rpc-server-接口介绍">17.3.1 rpc server 接口介绍</a></li>
+<li><a href="#1732-rpc-proto-文件介绍">17.3.2 rpc proto 文件介绍</a></li>
+<li><a href="#1733-rpc-代码生成器">17.3.3 rpc 代码生成器</a></li>
+<li><a href="#1734-实现-rpc-server">17.3.4 实现 rpc server</a></li>
+<li><a href="#1735-rpc-client">17.3.5 rpc client</a></li>
+<li><a href="#1736-配置项">17.3.6  配置项</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#18-hash-库hash">18. hash 库(hash)</a></li>
+<li><a href="#19-path-库path">19. path 库(path)</a></li>
+<li><a href="#20-文件系统操作fs">20. 文件系统操作(fs)</a>
+
+<ul>
+<li><a href="#201-元数据操作">20.1 元数据操作</a></li>
+<li><a href="#202-文件的基本读写操作">20.2 文件的基本读写操作</a></li>
+<li><a href="#203-文件流fsfstream">20.3 文件流(fs::fstream)</a></li>
+</ul></li>
+<li><a href="#21-系统操作os">21. 系统操作(os)</a></li>
+<li><a href="#22-编译">22. 编译</a></li>
+<li><a href="#23-结束语">23. 结束语</a></li>
+</ul>
+
+<h2 id="1-概览">1. 概览</h2>
+
+<p>CO 追求极简、高效，不依赖于 <a href="https://www.boost.org/">boost</a> 等三方库，仅使用了少量的 C++11 特性。</p>
+
+<ul>
+<li>CO 包含的功能组件：
+
+<ul>
+<li>基本定义(def)</li>
+<li>原子操作(atomic)</li>
+<li>随机数生成器(random)</li>
+<li>LruMap</li>
+<li>基本类型快速转字符串(fast)</li>
+<li>高效字符流(fastream)</li>
+<li>高效字符串(fastring)</li>
+<li>字符串操作(str)</li>
+<li>命令行参数与配置文件解析库(flag)</li>
+<li>高效流式日志库(log)</li>
+<li>单元测试框架(unitest)</li>
+<li>高效 json 库(json)</li>
+<li>时间库(time)</li>
+<li>线程库(thread)</li>
+<li>协程库(co)</li>
+<li>网络库(so)</li>
+<li>hash 库(hash)</li>
+<li>path 库(path)</li>
+<li>文件系统操作(fs)</li>
+<li>系统操作(os)</li>
+</ul></li>
+</ul>
+
+<h2 id="2-基本定义-def">2. 基本定义(def)</h2>
+
+<p>include: <a href="https://github.com/idealvin/co/blob/master/include/co/def.h">co/def.h</a>.</p>
+
+<h3 id="2-1-定长整数类型">2.1 定长整数类型</h3>
+
+<pre><code class="language-cpp"> int8   int16   int32   int64
+uint8  uint16  uint32  uint64
+</code></pre>
+
+<p>这些类型在不同平台的长度是一致的，不存在可移植性问题。<a href="https://google.github.io/styleguide/cppguide.html#Integer_Types">Google Code Style</a> 建议除了 int，不要使用 short, long, long long 等内置整数类型。</p>
+
+<p><code>def.h</code> 还定义了上述整数类型的最大、最小值：</p>
+
+<pre><code class="language-cpp">MAX_UINT8  MAX_UINT16  MAX_UINT32  MAX_UINT64
+MAX_INT8   MAX_INT16   MAX_INT32   MAX_INT64
+MIN_INT8   MIN_INT16   MIN_INT32   MIN_INT64
+</code></pre>
+
+<h3 id="2-2-读写-1-2-4-8-字节">2.2 读写 1、2、4、8 字节</h3>
+
+<p><code>def.h</code> 定义了如下的宏，用于读写 1、2、4、8 字节的数据(注意边界对齐)：</p>
+
+<pre><code class="language-cpp">load8  load16  load32  load64
+save8  save16  save32  save64
+</code></pre>
+
+<ul>
+<li>代码示例</li>
+</ul>
+
+<pre><code class="language-cpp">uint64 v;                  // 8 字节
+save32(&amp;v, 7);             // v 的前 4 个字节设为 7
+uint16 x = load16(&amp;v);     // 读取 v 的前 2 个字节
+</code></pre>
+
+<h3 id="2-3-disallow-copy-and-assign">2.3 DISALLOW_COPY_AND_ASSIGN</h3>
+
+<p>这个宏用于禁止 C++ 类中的拷贝构造函数与赋值操作：</p>
+
+<ul>
+<li>代码示例</li>
+</ul>
+
+<pre><code class="language-cpp">class T {
+  public:
+    T();
+    DISALLOW_COPY_AND_ASSIGN(T);
+};
+</code></pre>
+
+<h3 id="2-4-force-cast-强制类型转换">2.4 force_cast 强制类型转换</h3>
+
+<p><code>force_cast</code> 是对 C 风格强制类型转换的包装：</p>
+
+<ul>
+<li>代码示例</li>
+</ul>
+
+<pre><code class="language-cpp">char c = force_cast&lt;char&gt;(97); // char c = (char) 97;
+</code></pre>
+
+<h3 id="2-5-forceinline-与-thread">2.5 __forceinline 与 __thread</h3>
+
+<p><a href="https://docs.microsoft.com/en-us/cpp/cpp/inline-functions-cpp?view=vs-2019#inline-__inline-and-__forceinline">__forceinline</a> 是 VS 中的关键字，Linux 等平台用下面的宏模拟：</p>
+
+<pre><code class="language-cpp">#define __forceinline __attribute__((always_inline))
+</code></pre>
+
+<p><a href="https://gcc.gnu.org/onlinedocs/gcc-4.7.4/gcc/Thread-Local.html">__thread</a> 是 gcc 中的关键字，用于支持 <a href="https://wiki.osdev.org/Thread_Local_Storage">TLS</a>，Windows 上用下面的宏模拟：</p>
+
+<pre><code class="language-cpp">#define __thread __declspec(thread)
+</code></pre>
+
+<ul>
+<li>代码示例</li>
+</ul>
+
+<pre><code class="language-cpp">// 获取当前线程的 id
+__forceinline unsigned int gettid() {
+    static __thread unsigned int id = 0;
+    if (id != 0) return id;
+    return id = __gettid();
+}
+</code></pre>
+
+<h3 id="2-6-unlikely">2.6 unlikely</h3>
+
+<p><code>unlikely</code> 宏用于分支选择优化(仅支持 gcc、clang)：</p>
+
+<pre><code class="language-cpp">// 与 if (v == -1) 逻辑上等价，但提示编译器 v == -1 的可能性较小
+if (unlikey(v == -1)) {
+    cout &lt;&lt; &quot;v == -1&quot; &lt;&lt; endl;
+}
+</code></pre>
+
+<h2 id="3-原子操作-atomic">3. 原子操作(atomic)</h2>
+
+<p>include: <a href="https://github.com/idealvin/co/tree/master/include/co/atomic.h">co/atomic.h</a>.</p>
+
+<p><code>atomic</code> 库定义了如下的原子操作：</p>
+
+<pre><code class="language-cpp">atomic_inc        atomic_dec        atomic_add        atomic_sub
+atomic_fetch_inc  atomic_fetch_dec  atomic_fetch_add  atomic_fetch_sub
+
+atomic_or         atomic_and        atomic_xor
+atomic_fetch_or   atomic_fetch_and  atomic_fetch_xor
+
+atomic_swap    atomic_compare_swap
+atomic_get     atomic_set    atomic_reset
+</code></pre>
+
+<p>上述原子操作适用于 1，2，4，8 字节长度的数据类型。inc，dec，add，sub，or，and，xor 各有一个 <code>fetch</code> 版，区别在于，fetch 版本返回原子操作之前的值，非 fetch 版本返回原子操作之后的值。</p>
+
+<ul>
+<li>代码示例</li>
+</ul>
+
+<pre><code class="language-cpp">bool b = false;
+int i = 0;
+uint64 u = 0;
+void* p = 0;
+
+atomic_inc(&amp;i);                 // return ++i;
+atomic_dec(&amp;i);                 // return --i;
+atomic_add(&amp;i, 3);              // return i += 3;
+atomic_sub(&amp;i, 3);              // return i -= 3;
+atomic_fetch_inc(&amp;u);           // return u++;
+
+atomic_or(&amp;i, 8);               // return i |= 8;
+atomic_and(&amp;i, 7);              // return i &amp;= 7;
+atomic_xor(&amp;i, 7);              // return i ^= 7;
+atomic_fetch_xor(&amp;i, 7);        // v = i; i ^= 7; return v;
+
+atomic_swap(&amp;b, true);          // v = b; b = true; return v;    
+atomic_compare_swap(&amp;i, 0, 1);  // v = i; if (i == 0) i = 1; return v;
+
+atomic_get(&amp;u);                 // return u;
+atomic_set(&amp;u, 7);              // u = 7;
+atomic_reset(&amp;i);               // i = 0;
+
+// atomic operations on pointers
+atomic_set(&amp;p, 0);
+atomic_swap(&amp;p, 8);
+atomic_compare_swap(&amp;p, 0, 8);
+</code></pre>
+
+<h2 id="4-随机数生成器-random">4. 随机数生成器(random)</h2>
+
+<p>include: <a href="https://github.com/idealvin/co/blob/master/include/co/random.h">co/random.h</a>.</p>
+
+<p><code>Random</code> 是一个速度极快的伪随机数生成器，可以连续无重复的生成 1 ~ 2G-2 之间的整数。<a href="https://github.com/google/leveldb/blob/master/util/random.h">leveldb</a> 用到了这种算法，本库选用了与 leveldb 不同的常数 <code>16385</code>，计算速度更快。算法的数学原理可以参考<a href="https://idealvin.github.io/coding/2018/08/random/">一种快速的随机数生成算法</a>一文。</p>
+
+<ul>
+<li>代码示例</li>
+</ul>
+
+<pre><code class="language-cpp">Random r(7);      // 7 是种子数，不带参数时，默认为 1
+int n = r.next(); // !! 非线程安全
+</code></pre>
+
+<h2 id="5-lrumap">5. LruMap</h2>
+
+<p>include: <a href="https://github.com/idealvin/co/blob/master/include/co/lru_map.h">co/lru_map.h</a>.</p>
+
+<p>LRU 是一种常用的缓存策略，当缓存达到容量上限时，优先替换掉最近最少使用的数据。<code>LruMap</code> 基于 std::list、std::unordered_map 实现，内部元素是无序的。</p>
+
+<ul>
+<li>代码示例</li>
+</ul>
+
+<pre><code class="language-cpp">LruMap&lt;int, int&gt; m(128);         // capacity: 128
+m.insert(1, 23);                 // m.size() &gt; 128 时，删除内部 list 尾部的元素(最近最少使用)
+                                 // !! key 已经存在时，则不会插入新元素
+auto it = m.find(1);             // 找到时，将 1 放到内部 list 首部
+if (it != m.end()) m.erase(it);  // erase by iterator
+m.erase(it-&gt;first);              // erase by key
+</code></pre>
+
+<h2 id="6-基本类型快速转字符串-fast">6. 基本类型快速转字符串(fast)</h2>
+
+<p>include: <a href="https://github.com/idealvin/co/blob/master/include/co/fast.h">co/fast.h</a>.</p>
+
+<p><code>fast</code> 库提供了如下的函数：</p>
+
+<pre><code class="language-cpp">u32toh  u64toh  u32toa  u64toa  i32toa  i64toa  dtoa
+</code></pre>
+
+<p><code>xtoh</code> 系列函数将整数类型转换为十六进制字符串，内部用一个 table 缓存前 256 个数对应的 16 进制字符串(2个字节)，不同平台测试结果比 snprintf 快 10~25 倍左右。</p>
+
+<p><code>xtoa</code> 系列函数将整数类型转换为十进制 ascii 字符串，内部用一个 table 缓存前 10000 个数对应的 10 进制字符串(4个字节)，不同平台测试结果比 snprintf 快 10~25 倍左右。</p>
+
+<p><code>dtoa</code> 采用了 <a href="https://github.com/miloyip">Milo Yip</a> 的实现，详情见 <a href="https://github.com/miloyip/dtoa-benchmark">miloyip/dtoa-benchmark</a>。早期基于 <code>LruMap</code> 的实现，已弃用。</p>
+
+<ul>
+<li>代码示例</li>
+</ul>
+
+<pre><code class="language-cpp">char buf[32];
+int len = fast::u32toh(255, buf); // &quot;0xff&quot;，返回长度 4
+int len = fast::i32toa(-99, buf); // &quot;-99&quot;, 返回长度 3
+int len = fast::dtoa(0.123, buf); // &quot;0.123&quot;, 返回长度 5
+</code></pre>
+
+<p><code>fast</code> 库还提供一个 <code>fast::stream</code> 类，支持流式输出、append 等基本操作，是下述的 <code>fastream</code> 与 <code>fastring</code> 的基类。</p>
+
+<h2 id="7-高效字符流-fastream">7. 高效字符流(fastream)</h2>
+
+<p>include: <a href="https://github.com/idealvin/co/blob/master/include/co/fastream.h">co/fastream.h</a>.</p>
+
+<p>C++ 标准库中的 <code>std::ostringstream</code> 性能较差，比 snprintf 慢好几倍。<code>fastream</code> 继承自 <code>fast::stream</code> 类，支持流式输出与二进制 append 操作。其中流式输出，在不同平台比 snprintf 快 10~30 倍左右。</p>
+
+<ul>
+<li>代码示例</li>
+</ul>
+
+<pre><code class="language-cpp">fastream fs(1024);          // 预分配 1k 内存
+fs &lt;&lt; &quot;hello world&quot; &lt;&lt; 23;  // 流模式
+
+int i = 23;
+char buf[8];
+fs.append(buf, 8);      // 追加 8 字节
+fs.append(&amp;i, 4);       // 追加 4 字节
+fs.append(i);           // 追加 4 字节，与 fs.append(&amp;i, 4) 等价
+fs.append((int16) 23);  // 追加 2 字节
+fs.append('c');         // 追加单个字符
+fs.append(100, 'c');    // 追加 100 个 'c'
+fs.append('c', 100);    // 追加 100 个 'c'
+
+fs.c_str();             // 返回 C 风格字符串
+fs.str();               // 返回 C++ 字符串，内存拷贝
+fs.data();              // 返回数据指针
+fs.size();              // 返回数据长度
+fs.capacity();          // 容量
+
+fs.reserve(4096);       // 预分配至少 4k 内存
+fs.resize(32);          // size -&gt; 32，buffer 中内容不变
+fs.clear();             // size -&gt; 0
+fs.swap(fastream());    // 交换
+</code></pre>
+
+<ul>
+<li>注意事项</li>
+</ul>
+
+<p><code>fastream</code> 出于性能上的考虑，在 <code>append</code> 操作时不进行安全检查，如下面的代码是不安全的：</p>
+
+<pre><code class="language-cpp">fastream f;
+f.append(&quot;hello&quot;);
+f.append(f.c_str() + 1); // 不安全，内部不考虑内存重叠的情况
+</code></pre>
+
+<h2 id="8-高效字符串-fastring">8. 高效字符串(fastring)</h2>
+
+<p>include: <a href="https://github.com/idealvin/co/blob/master/include/co/fastring.h">co/fastring.h</a>.</p>
+
+<p><code>fastring</code> 是 co 中的字符串类型，与 <code>fastream</code> 一样，继承于 <code>fast::stream</code>，因此除了基本的字符串操作，它同样也支持流式输出操作:</p>
+
+<pre><code class="language-cpp">fastring s;
+s &lt;&lt; &quot;hello world &quot; &lt;&lt; 1234567;
+</code></pre>
+
+<p>早期的 fastring 实现中使用了引用计数，导致 fastring 的复制行为与 <code>std::string</code> 不同，容易造成混淆。为了更好的取代 std::string，重构的版本中移除了引用计数。</p>
+
+<p>fastring 几乎支持 fastream 的所有操作，但有一点与 fastream 不一样，fastring 在 <code>append</code> 时会进行安全检查:</p>
+
+<pre><code class="language-cpp">fastring s(&quot;hello&quot;);
+fastream f;
+f.append(&quot;hello&quot;);
+
+// 复制的数据与自身数据重叠
+s.append(s.c_str() + 1); // 安全，内部检测到内存重叠，进行特殊的处理
+f.append(f.c_str() + 1); // 不安全，内部不检测内存重叠的情况，不能保证得到正确的结果
+</code></pre>
+
+<ul>
+<li>代码示例</li>
+</ul>
+
+<pre><code class="language-cpp">fastring s;                // 空字符串，无内存分配
+fastring s(32);            // 空字符串，预分配内存(容量为32)
+fastring s(&quot;hello&quot;);       // 非空字符串
+fastring s(88, 'x');       // 初始化 s 为 88 个 'x'
+fastring s('x', 88);       // 初始化 s 为 88 个 'x'
+fastring t = s;            // 通过内存拷贝创建一个新的字符串
+
+s &lt;&lt; &quot;hello &quot; &lt;&lt; 23;       // 流式输出
+s += &quot;xx&quot;;                 // 追加
+s.append(&quot;xx&quot;);            // 追加  &lt;==&gt;  s += &quot;xx&quot;;
+s.swap(fastring());        // 交换
+
+s + &quot;xxx&quot;;                 // +
+s &gt; &quot;xxx&quot;;                 // &gt;
+s &lt; &quot;zzz&quot;                  // &lt;
+s &lt;= &quot;zz&quot;                  // &lt;=
+s &gt;= &quot;zz&quot;                  // &gt;=
+
+s.find('c');               // 查找字符
+s.find(&quot;xx&quot;, 3);           // 从 pos 3 开始查找子串
+s.rfind('c');              // 反向查找字符
+s.rfind(&quot;xx&quot;);             // 反向查找字符串
+s.find_first_of(&quot;xy&quot;);     // 查找第一次出现的 &quot;xy&quot; 中的字符
+s.find_first_not_of(&quot;xy&quot;); // 查找第一次出现的非 &quot;xy&quot; 中的字符
+s.find_last_of(&quot;xy&quot;);      // 查找最后一次出现的 &quot;xy&quot; 中的字符
+s.find_last_not_of(&quot;xy&quot;);  // 查找最后一次出现的非 &quot;xy&quot; 中的字符
+
+s.starts_with('x');        // s 是否以 'x' 开头
+s.starts_with(&quot;xx&quot;);       // s 是否以 &quot;xx&quot; 开头
+s.ends_with('x');          // s 是否以 'x' 结尾
+s.ends_with(&quot;xx&quot;);         // s 是否以 &quot;xx&quot; 结尾
+
+s.replace(&quot;xxx&quot;, &quot;yy&quot;);    // 将 s 中的 &quot;xxx&quot; 替换为 &quot;yy&quot;
+s.replace(&quot;xxx&quot;, &quot;yy&quot;, 3); // 将 s 中的 &quot;xxx&quot; 替换为 &quot;yy&quot;，最多替换 3 次
+
+s.strip();                 // 删除 s 两端的空白字符 &quot; \t\r\n&quot;
+s.strip(&quot;ab&quot;);             // 删除 s 两端的 'a', 'b'
+s.strip(&quot;ab&quot;, 'l');        // 删除 s 左端的 'a', 'b'
+s.strip(&quot;ab&quot;, 'r');        // 删除 s 右端的 'a', 'b'
+
+s.tolower();               // s 转换为小写
+s.toupper();               // s 转换为大写
+s.lower();                 // 返回 s 的小写形式，s 本身不变
+s.upper();                 // 返回 s 的大写形式，s 本身不变
+s.match(&quot;x*y?z&quot;);          // 字符串匹配，* 匹配任意字符串，? 匹配单个字符
+</code></pre>
+
+<ul>
+<li>注意事项</li>
+</ul>
+
+<p>fastring 中含有二进制字符时，不要使用 <code>find</code> 系列的操作:</p>
+
+<ul>
+<li>find()</li>
+<li>rfind()</li>
+<li>find_first_of()</li>
+<li>find_first_not_of()</li>
+<li>find_last_of()</li>
+<li>find_last_not_of()</li>
+</ul>
+
+<p>上述方法基于 <code>strrchr</code>, <code>strstr</code>, <code>strcspn</code>, <code>strspn</code> 等实现，字符串中包含二进制字符时，不能保证得到正确的结果。</p>
+
+<h2 id="9-字符串操作-str">9. 字符串操作(str)</h2>
+
+<p>include: <a href="https://github.com/idealvin/co/blob/master/include/co/str.h">co/str.h</a>.</p>
+
+<h3 id="9-1-切分字符串-split">9.1 切分字符串(split)</h3>
+
+<p><code>split</code> 函数将字符串切分成若干个子串，原字符串保持不变，返回切分后的结果。</p>
+
+<ul>
+<li>函数原型</li>
+</ul>
+
+<pre><code class="language-cpp">// @s: 原字符串，fastring 或 const char*
+// @c: 分隔符，单个字符或'\0'结尾的字符串
+// @n: 切分次数，0 或 -1 表示不限次数，默认为 0
+std::vector&lt;fastring&gt; split(s, c, n=0);
+</code></pre>
+
+<ul>
+<li>代码示例</li>
+</ul>
+
+<pre><code class="language-cpp">str::split(&quot;x y z&quot;, ' ');     // -&gt;  [ &quot;x&quot;, &quot;y&quot;, &quot;z&quot; ]
+str::split(&quot;|x|y|&quot;, '|');     // -&gt;  [ &quot;&quot;, &quot;x&quot;, &quot;y&quot; ]
+str::split(&quot;xooy&quot;, &quot;oo&quot;);     // -&gt;  [ &quot;x&quot;, &quot;y&quot;]
+str::split(&quot;xooy&quot;, 'o');      // -&gt;  [ &quot;x&quot;, &quot;&quot;, &quot;y&quot; ]
+str::split(&quot;xooy&quot;, 'o', 1);   // -&gt;  [ &quot;x&quot;, &quot;oy&quot; ]
+</code></pre>
+
+<h3 id="9-2-修剪字符串-strip">9.2 修剪字符串(strip)</h3>
+
+<p><code>strip</code> 函数去掉字符串左右两边指定的字符，原字符串保持不变，返回 strip 后的结果。</p>
+
+<ul>
+<li>函数原型</li>
+</ul>
+
+<pre><code class="language-cpp">// @s: 原字符串，fastring 或 const char*
+// @c: 需要去掉的字符集，单个字符或字符串
+// @d: 方向，'l' 或 'L' 修剪左边，'r' 或 'R' 修剪右边，默认为 'b'，修剪左右两边
+fastring strip(s, c=&quot; \t\r\n&quot;, d='b');
+</code></pre>
+
+<ul>
+<li>代码示例</li>
+</ul>
+
+<pre><code class="language-cpp">str::strip(&quot;abxxa&quot;, &quot;ab&quot;);       // -&gt; &quot;xx&quot;    修剪两边
+str::strip(&quot;abxxa&quot;, &quot;ab&quot;, 'l');  // -&gt; &quot;xxa&quot;   修剪左边
+str::strip(&quot;abxxa&quot;, &quot;ab&quot;, 'r');  // -&gt; &quot;abxx&quot;  修剪右边
+</code></pre>
+
+<h3 id="9-3-替换子串-replace">9.3 替换子串(replace)</h3>
+
+<p><code>replace</code> 函数用于替换字符串中的子串，原字符串保持不变，返回替换后的结果。</p>
+
+<ul>
+<li>函数原型</li>
+</ul>
+
+<pre><code class="language-cpp">// @s:    原字符串，fastring 或 const char*
+// @sub:  替换前的子串
+// @to:   替换后的子串
+// @n:    最大替换次数，0 或 -1 表示不限制次数，默认为 0
+fastring replace(s, sub, to, n=0);
+</code></pre>
+
+<ul>
+<li>代码示例</li>
+</ul>
+
+<pre><code class="language-cpp">str::replace(&quot;xooxoox&quot;, &quot;oo&quot;, &quot;ee&quot;);     // -&gt; &quot;xeexeex&quot;
+str::replace(&quot;xooxoox&quot;, &quot;oo&quot;, &quot;ee&quot;, 1);  // -&gt; &quot;xeexoox&quot;
+</code></pre>
+
+<h3 id="9-4-字符串转内置类型">9.4 字符串转内置类型</h3>
+
+<p>str 库提供如下的函数，将字符串转为内置类型：</p>
+
+<pre><code class="language-cpp">to_int32  to_int64  to_uint32  to_uint64  to_bool  to_double
+</code></pre>
+
+<ul>
+<li><p>函数说明</p>
+
+<ul>
+<li>若转换失败，抛出 const char* 类型的异常。</li>
+<li>转换为整数时，字符串末尾可带单位 <code>k, m, g, t, p</code>，不区分大小写。</li>
+</ul></li>
+
+<li><p>代码示例</p></li>
+</ul>
+
+<pre><code class="language-cpp">bool x = str::to_bool(&quot;false&quot;);    // &quot;true&quot; or &quot;1&quot; -&gt; true, &quot;false&quot; or &quot;0&quot; -&gt; false
+double x = str::to_double(&quot;3.14&quot;); // 3.14
+
+int32 x = str::to_int32(&quot;-23&quot;);    // -23 
+int64 x = str::to_int64(&quot;4k&quot;);     // 4096
+uint32 x = str::to_uint32(&quot;8M&quot;);   // 8 &lt;&lt; 20 
+uint64 x = str::to_uint64(&quot;8T&quot;);   // 8ULL &lt;&lt; 40
+</code></pre>
+
+<h3 id="9-5-内置类型转字符串">9.5 内置类型转字符串</h3>
+
+<p>str 库提供 <code>from</code> 函数，将内置类型转为字符串。</p>
+
+<ul>
+<li>代码示例</li>
+</ul>
+
+<pre><code class="language-cpp">fastring s = str::from(true);  // -&gt; &quot;true&quot;
+fastring s = str::from(23);    // -&gt; &quot;23&quot;
+fastring s = str::from(3.14);  // -&gt; &quot;3.14&quot;
+</code></pre>
+
+<h3 id="9-6-debug-string">9.6 debug string</h3>
+
+<p>str 库提供 <code>dbg</code> 函数，从指定类型生成一个 debug 字符串。</p>
+
+<ul>
+<li>函数原型</li>
+</ul>
+
+<pre><code class="language-cpp">// @v: 内置类型，字符串类型，或常用的 STL 容器类型(vector, map, set)
+fastring dbg(v);
+</code></pre>
+
+<ul>
+<li>代码示例</li>
+</ul>
+
+<pre><code class="language-cpp">std::vector&lt;int&gt; v { 1, 2, 3 };
+std::set&lt;int&gt; s { 1, 2, 3 };
+std::map&lt;int, int&gt; m { {1, 1}, {2, 2} };
+str::dbg(v);    // -&gt; &quot;[1,2,3]&quot;
+str::dbg(s);    // -&gt; &quot;{1,2,3}&quot;
+str::dbg(m);    // -&gt; &quot;{1:1,2:2}
+
+str::dbg(true); // -&gt; &quot;true&quot;
+str::dbg(23);   // -&gt; &quot;23&quot;
+str::dbg(&quot;23&quot;); // -&gt; &quot;\&quot;23\&quot;&quot;，字符串类型，两边加引号
+</code></pre>
+
+<ul>
+<li>当字符串中含有 <code>&quot;</code> 时，dbg() 生成的字符串看起来会有点瑕疵，不过此函数一般用于打日志，应该无伤大雅。</li>
+</ul>
+
+<h2 id="10-命令行参数与配置文件解析库-flag">10. 命令行参数与配置文件解析库(flag)</h2>
+
+<p>include: <a href="https://github.com/idealvin/co/blob/master/include/co/flag.h">co/flag.h</a>.</p>
+
+<h3 id="10-1-基本概念">10.1 基本概念</h3>
+
+<p><code>flag</code> 库是一个类似 <a href="https://github.com/gflags/gflags">google gflags</a> 的命令行参数及配置文件解析库，其原理很简单，代码中定义静态全局变量，然后在程序启动时解析命令行参数及配置文件，修改这些全局变量的值。</p>
+
+<h4 id="10-1-1-flag-变量">10.1.1 flag 变量</h4>
+
+<p>flag 库中的宏定义的静态全局变量，称为 <strong>flag 变量</strong>。如下面的代码定义了名为 <code>x</code> 的 flag 变量，它对应的全局变量名是 <code>FLG_x</code>。</p>
+
+<pre><code class="language-cpp">DEF_bool(x, false, &quot;xxx&quot;); // bool FLG_x = false;
+</code></pre>
+
+<p>flag 库支持 7 种类型的 flag 变量：</p>
+
+<pre><code class="language-cpp">bool, int32, int64, uint32, uint64, double, string
+</code></pre>
+
+<h4 id="10-1-2-command-line-flag">10.1.2 command line flag</h4>
+
+<p>命令行参数中，以 <code>-x=y</code> 的形式出现，其中 <code>x</code> 被称为一个 <code>command line flag</code>(以下都简称为 <code>flag</code>)。命令行中的 flag，与代码中的 flag 变量是一一对应的(下面不再区分二者)。flag 库为了简便易用，设计得非常灵活：</p>
+
+<ul>
+<li>-x=y 可以省略前面的 -，简写为 x=y.</li>
+<li>-x=y 也可以写成 -x y.</li>
+<li>x=y 前面可以带任意数量的 -.</li>
+<li>bool 类型的 flag，-b=true 可以简写为 -b，简写时不能省略 -.</li>
+</ul>
+
+<pre><code class="language-sh">./exe -b -i=32 s=hello xx  # b,i,s 是 flag，xx 不是 flag
+</code></pre>
+
+<h3 id="10-2-flag-库的初始化">10.2 flag 库的初始化</h3>
+
+<p>flag 库对外仅提供一个 api 函数 <code>flag::init()</code>，用于初始化 flag 库及解析命令行参数、配置文件等。</p>
+
+<pre><code class="language-cpp">// 主要流程:
+// 1. 扫描命令行参数，分成 flag 与非 flag 两类.
+// 2. 根据 flag 参数更新 FLG_config 的值，若非空，解析由此指定的配置文件.
+// 3. 根据 flag 参数更新 其他 flag 变量的值.
+// 4. 若 FLG_mkconf 非空，生成配置文件，退出程序.
+// 5. 若 FLG_daemon 为 true，将程序放入后台执行.
+
+// 解析过程中遇到任何错误，输出错误信息，退出程序.
+// 解析全部正常，返回非 flag 的参数列表.
+std::vector&lt;fastring&gt; init(int argc, char** argv);
+</code></pre>
+
+<p>此函数需要在进入 <code>main</code> 函数时调用一次：</p>
+
+<pre><code class="language-cpp">#include &quot;co/flag.h&quot;
+
+int main(int argc, char** argv) {
+    flag::init(argc, argv);
+}
+</code></pre>
+
+<h3 id="10-3-代码中定义-声明及使用-flag-变量">10.3 代码中定义、声明及使用 flag 变量</h3>
+
+<h4 id="10-3-1-定义-flag-变量">10.3.1 定义 flag 变量</h4>
+
+<p>flag 库提供了 7 个宏，分别用于定义 7 种不同类型的 flag 变量：</p>
+
+<pre><code class="language-cpp">DEF_bool  DEF_int32  DEF_int64  DEF_uint32  DEF_uint64  DEF_double  DEF_string
+</code></pre>
+
+<p>下面的代码，分别定义了类型为 bool 与 string 的两个 flag 变量：</p>
+
+<pre><code class="language-cpp">DEF_bool(b, false, &quot;comments&quot;);  // bool FLG_b = false;
+DEF_string(s, &quot;x&quot;, &quot;comments&quot;);  // fastring FLG_s = &quot;x&quot;;
+</code></pre>
+
+<p><code>DEF_xxx</code> 宏带有三个参数，第一个参数是 flag 变量名，第二个参数是默认值，第三个参数是注释。需要注意下面两点：</p>
+
+<ul>
+<li>flag 变量是全局变量，一般不要在头文件中定义它们。</li>
+<li>flag 变量的名字是唯一的，不能定义两个名字相同的 flag 变量。</li>
+</ul>
+
+<h4 id="10-3-2-声明-flag-变量">10.3.2 声明 flag 变量</h4>
+
+<p>与定义类似，flag 库也提供了 7 个宏，分别用于声明 7 种不同类型的 flag 变量：</p>
+
+<pre><code class="language-cpp">DEC_bool  DEC_int32  DEC_int64  DEC_uint32  DEC_uint64  DEC_double  DEC_string
+</code></pre>
+
+<p>下面的代码声明了一个 int32 类型的变量：</p>
+
+<pre><code class="language-cpp">DEC_int32(i32); // extern int32 FLG_i32;
+</code></pre>
+
+<p><code>DEC_xxx</code> 宏只有一个参数，接收 flag 变量名。一个 flag 变量只能定义一次，但可以声明多次，可以在任何需要的地方声明它们。声明一般用于引用其它地方定义的 flag 变量。</p>
+
+<h4 id="10-3-3-使用-flag-变量">10.3.3 使用 flag 变量</h4>
+
+<p>定义或声明 flag 变量后，就可以像普通变量一样使用它们：</p>
+
+<pre><code class="language-cpp">DEC_bool(b);
+if (!FLG_b) std::cout &lt;&lt; &quot;b is false&quot; &lt;&lt; std::endl;
+
+DEF_string(s, &quot;hello&quot;, &quot;xxx&quot;);
+FLG_s += &quot; world&quot;;
+std::cout &lt;&lt; FLG_s &lt;&lt; std::endl;
+</code></pre>
+
+<h3 id="10-4-命令行中使用-flag">10.4 命令行中使用 flag</h3>
+
+<h4 id="10-4-1-命令行中设置-flag-变量的值">10.4.1 命令行中设置 flag 变量的值</h4>
+
+<p>假设程序中定义了如下的 flag：</p>
+
+<pre><code class="language-cpp">DEF_bool(x, false, &quot;bool x&quot;);
+DEF_bool(y, false, &quot;bool y&quot;);
+DEF_int32(i, -32, &quot;int32&quot;);
+DEF_uint64(u, 64, &quot;uint64&quot;);
+DEF_double(d, 3.14, &quot;double&quot;);
+DEF_string(s, &quot;hello world&quot;, &quot;string&quot;);
+</code></pre>
+
+<p>程序启动时，可以通过命令行参数修改 flag 变量的值：</p>
+
+<ul>
+<li><code>-x=y</code> 也可以写成 <code>-x y</code> 或者 <code>x=y</code></li>
+</ul>
+
+<pre><code class="language-sh">  ./xx -i=8 u=88 -s=&quot;hello world&quot;
+  ./xx -i 8 -u 88 -s &quot;hello world&quot;
+</code></pre>
+
+<ul>
+<li>bool flag 设置为 true 时，可以略去其值</li>
+</ul>
+
+<pre><code class="language-sh">  ./xx -x     # -x=true
+</code></pre>
+
+<ul>
+<li>多个单字母命名的 bool flag，可以合并设置为 true</li>
+</ul>
+
+<pre><code class="language-sh">  ./xx -xy    # -x=true -y=true
+</code></pre>
+
+<ul>
+<li>整型 flag 可以带单位 <code>k, m, g, t, p</code>，不区分大小写</li>
+</ul>
+
+<pre><code class="language-sh">  ./xx i=-4k  # i=-4096
+</code></pre>
+
+<ul>
+<li>整型 flag 可以传 8, 16 进制数</li>
+</ul>
+
+<pre><code class="language-sh">  ./xx i=032  # i=26     8 进制
+  ./xx u=0xff # u=255   16 进制
+</code></pre>
+
+<h4 id="10-4-2-查看帮助信息">10.4.2 查看帮助信息</h4>
+
+<pre><code class="language-sh">$ ./xx --help
+usage:
+    ./xx --                   print flags info
+    ./xx --help               print this help info
+    ./xx --mkconf             generate config file
+    ./xx --daemon             run as a daemon (Linux)
+    ./xx xx.conf              run with config file
+    ./xx config=xx.conf       run with config file
+    ./xx -x -i=8k -s=ok       run with commandline flags
+    ./xx -x -i 8k -s ok       run with commandline flags
+    ./xx x=true i=8192 s=ok   run with commandline flags
+</code></pre>
+
+<h4 id="10-4-3-查看-flag-变量列表">10.4.3 查看 flag 变量列表</h4>
+
+<pre><code class="language-sh">$ ./xx --
+--config: .path of config file
+     type: string        default: &quot;&quot;
+     from: ../../base/flag.cc
+--mkconf: .generate config file
+     type: bool      default: false
+     from: ../../base/flag.cc
+</code></pre>
+
+<h3 id="10-5-程序启动时指定配置文件">10.5 程序启动时指定配置文件</h3>
+
+<p>命令行中可以用 flag <code>config</code> 指定程序的配置文件：</p>
+
+<pre><code class="language-sh">./xx config=xx.conf
+./xx xx.conf     # 若配置文件名以 .conf 或 config 结尾，且是程序命令行的第一个非 flag 参数，则可省略 config=
+./xx -x xx.conf  # -x 是 flag，xx.conf 是第一个非 flag 参数
+</code></pre>
+
+<p>另外也可以在代码中调用 <code>flag::init()</code> 之前，修改 <code>FLG_config</code> 的值，指定配置文件。</p>
+
+<h3 id="10-6-自动生成配置文件">10.6 自动生成配置文件</h3>
+
+<p>程序启动时，可以用 <code>--mkconf</code> 自动生成配置文件:</p>
+
+<pre><code class="language-sh">./xx --mkconf          # 在 xx 所在目录生成 xx.conf
+./xx --mkconf -x u=88  # 配置项可以用指定的值替代默认值
+</code></pre>
+
+<p>配置项(flag) 按级别、所在文件名、所在代码行数进行排序。定义 flag 时可以在注释开头加上 <code>#n</code> 指定级别，<code>n</code> 必须是 0 到 99 之间的整数，不指定时默认为 10。</p>
+
+<pre><code class="language-cpp">// 指定 -daemon 级别为 0，级别小的排在前面
+DEF_bool(daemon, false, &quot;#0 run program as a daemon&quot;);
+</code></pre>
+
+<ul>
+<li>特别说明
+
+<ul>
+<li>注释以<code>.</code>开头的 flag，带有<strong>隐藏</strong>属性，不会生成到配置文件中，但<code>./xx --</code>可以查看。</li>
+<li>注释为空的 flag，带有<strong>隐身</strong>属性，不会生成到配置文件中，<code>./xx --</code>也无法查看。</li>
+</ul></li>
+</ul>
+
+<h3 id="10-7-配置文件的格式">10.7 配置文件的格式</h3>
+
+<p>flag 库的配置文件格式，也比较灵活：</p>
+
+<ul>
+<li>忽略行前、行尾的空白字符，书写更自由，不容易出错。</li>
+<li><code>#</code> 或 <code>//</code> 表示注释，支持整行注释与行尾注释。</li>
+<li>引号中的 <code>#</code> 或 <code>//</code> 不是注释。</li>
+<li>一行一个 flag，形式强制统一为 x = y，看起来一目了然。</li>
+<li><code>=</code> 号前后可以任意添加空白字符，书写更自由。</li>
+<li>可以用 <code>\</code> 续行，以免一行太长，影响美观。</li>
+<li>字符串不支持转义，以免产生歧义。</li>
+</ul>
+
+<p>下面是一个配置文件的示例：</p>
+
+<pre><code class="language-sh">   # config file: xx.conf
+     daemon = false            # 后台运行程序 (daemon 由 flag 库内部定义)
+     boo = true                # 不能像命令行中那样简写为 -boo
+
+     s =                       # 空字符串
+     s = hello \
+         world                 # s = &quot;helloworld&quot;
+     s = &quot;http://github.com&quot;   # 引号中的 # 与 // 不是注释
+     s = &quot;I'm ok&quot;              # 字符串中含有单引号，两端可以加双引号
+     s = 'how are &quot;U&quot;'         # 字符串中含有双引号，两端可以加单引号
+
+     i32 = 4k                  # 4096, 整型可以带单位 k,m,g,t,p，不区分大小写
+     i32 = 032                 #  8 进制，i32 = 26
+     i32 = 0xff                # 16 进制，i32 = 255
+     pi = 3.14159              # double 类型
+</code></pre>
+
+<h2 id="11-高效流式日志库-log">11. 高效流式日志库(log)</h2>
+
+<p>include: <a href="https://github.com/idealvin/co/blob/master/include/co/log.h">co/log.h</a>.</p>
+
+<h3 id="11-1-基本介绍">11.1 基本介绍</h3>
+
+<p><code>log</code> 库是一个类似 <a href="https://github.com/google/glog">google glog</a> 的 C++ 流式日志库，打印日志比 printf 系列的函数更方便、更安全：</p>
+
+<pre><code class="language-cpp">LOG &lt;&lt; &quot;hello world&quot; &lt;&lt; 23;
+</code></pre>
+
+<p>log 库内部实现中采用异步方式，日志先写入缓存，达到一定量或超过一定时间后，由后台线程一并写入文件，性能在不同平台比 glog 提升了 20~150 倍左右。</p>
+
+<p>下表是在不同平台连续打印 100 万条(每条 50 字节左右) info 级别日志的测试结果：</p>
+
+<table>
+<thead>
+<tr>
+<th>log vs glog</th>
+<th>google glog</th>
+<th>co/log</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>win2012 HHD</td>
+<td>1.6MB/s</td>
+<td>180MB/s</td>
+</tr>
+
+<tr>
+<td>win10 SSD</td>
+<td>3.7MB/s</td>
+<td>560MB/s</td>
+</tr>
+
+<tr>
+<td>mac SSD</td>
+<td>17MB/s</td>
+<td>450MB/s</td>
+</tr>
+
+<tr>
+<td>linux SSD</td>
+<td>54MB/s</td>
+<td>1023MB/s</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="11-2-api-介绍">11.2 Api 介绍</h3>
+
+<p>log 库对外仅提供两个 api 函数：</p>
+
+<pre><code class="language-cpp">void init();
+void close();
+</code></pre>
+
+<p><code>log::init()</code> 需要在 <code>main</code> 函数开头调用一次。由于 log 库依赖于 flag 库，所以 main 函数一般得像下面这样写：</p>
+
+<pre><code class="language-cpp">#include &quot;co/flag.h&quot;
+#include &quot;co/log.h&quot;
+
+int main(int argc, char** argv) {
+    flag::init(argc, argv);
+    log::init();
+}
+</code></pre>
+
+<p><code>log::close()</code> 将缓存中的日志写入文件，并退出后台写日志的线程。log 库内部会捕获 <code>SIGINT, SIGTERM, SIGQUIT</code> 等信号，在程序退出前将缓存中的日志写入文件。</p>
+
+<h3 id="11-3-打印不同级别的日志">11.3 打印不同级别的日志</h3>
+
+<p>日志分为 debug, info, warning, error, fatal 5 个级别，可以分别用宏 DLOG, LOG, WLOG, ELOG, FLOG 打印 5 种不同级别的日志：</p>
+
+<pre><code class="language-cpp">DLOG &lt;&lt; &quot;this is DEBUG log &quot; &lt;&lt; 23;
+LOG &lt;&lt; &quot;this is INFO log &quot; &lt;&lt; 23;
+WLOG &lt;&lt; &quot;this is WARNING log &quot; &lt;&lt; 23;
+ELOG &lt;&lt; &quot;this is ERROR log &quot; &lt;&lt; 23;
+FLOG &lt;&lt; &quot;this is FATAL log &quot; &lt;&lt; 23;
+</code></pre>
+
+<p>打印 <code>fatal</code> 日志，表示程序出现了致命错误，log 库会打印当前线程的函数调用栈信息，并终止程序的运行。</p>
+
+<h3 id="11-4-条件日志-log-if">11.4 条件日志(LOG_IF)</h3>
+
+<p>log 库也提供 <code>IF</code> 版的宏，接受一个条件参数，当满足指定条件时才打印日志。</p>
+
+<ul>
+<li>代码示例</li>
+</ul>
+
+<pre><code class="language-cpp">DLOG_IF(cond) &lt;&lt; &quot;this is DEBUG log &quot; &lt;&lt; 23;
+LOG_IF(cond) &lt;&lt; &quot;this is INFO log &quot; &lt;&lt; 23;
+WLOG_IF(cond) &lt;&lt; &quot;this is WARNING log &quot; &lt;&lt; 23;
+ELOG_IF(cond) &lt;&lt; &quot;this is ERROR log &quot; &lt;&lt; 23;
+FLOG_IF(cond) &lt;&lt; &quot;this is FATAL log &quot; &lt;&lt; 23;
+</code></pre>
+
+<h3 id="11-5-每-n-条打印一次日志-log-every-n">11.5 每 N 条打印一次日志(LOG_EVERY_N)</h3>
+
+<p>log 库提供 <code>LOG_EVERY_N</code> 等宏，支持每 N 条打印一次日志，这些宏内部使用原子操作，保证线程安全性。</p>
+
+<ul>
+<li>代码示例</li>
+</ul>
+
+<pre><code class="language-cpp">// 打印第 1, 33, 65...... 条日志
+DLOG_EVERY_N(32) &lt;&lt; &quot;this is DEBUG log &quot; &lt;&lt; 23;
+LOG_EVERY_N(32) &lt;&lt; &quot;this is INFO log &quot; &lt;&lt; 23;
+WLOG_EVERY_N(32) &lt;&lt; &quot;this is WARNING log &quot; &lt;&lt; 23;
+ELOG_EVERY_N(32) &lt;&lt; &quot;this is ERROR log &quot; &lt;&lt; 23;
+</code></pre>
+
+<p>FLOG 没有这个功能，因为 FLOG 一打印，程序就挂了。</p>
+
+<h3 id="11-6-打印前-n-条日志-log-first-n">11.6 打印前 N 条日志(LOG_FIRST_N)</h3>
+
+<p>log 库提供 <code>LOG_FIRST_N</code> 等宏，支持打印前 N 条日志。这些宏内部同样使用原子操作，保证线程安全性。</p>
+
+<ul>
+<li>代码示例</li>
+</ul>
+
+<pre><code class="language-cpp">// 打印前 10 条日志
+DLOG_FIRST_N(10) &lt;&lt; &quot;this is DEBUG log &quot; &lt;&lt; 23;
+LOG_FIRST_N(10) &lt;&lt; &quot;this is INFO log &quot; &lt;&lt; 23;
+WLOG_FIRST_N(10) &lt;&lt; &quot;this is WARNING log &quot; &lt;&lt; 23;
+ELOG_FIRST_N(10) &lt;&lt; &quot;this is ERROR log &quot; &lt;&lt; 23;
+</code></pre>
+
+<h3 id="11-7-check-加强版的-assert">11.7 CHECK: 加强版的 assert</h3>
+
+<p>log 库提供了一系列的 CHECK 宏，可视为加强版的 assert，这些宏在 DEBUG 模式下也不会被清除。</p>
+
+<ul>
+<li>代码示例</li>
+</ul>
+
+<pre><code class="language-cpp">CHECK(1 + 1 == 2) &lt;&lt; &quot;say something here&quot;;
+CHECK_EQ(1 + 1, 2);  // ==
+CHECK_NE(1 + 1, 2);  // !=
+CHECK_GE(1 + 1, 2);  // &gt;=
+CHECK_LE(1 + 1, 2);  // &lt;=
+CHECK_GT(1 + 1, 2);  // &gt;  greater than
+CHECK_LT(1 + 1, 2);  // &lt;  less than
+</code></pre>
+
+<p>CHECK 失败时，LOG 库会先调用 log::close() 写日志，再打印当前线程的函数调用栈信息，然后退出程序。</p>
+
+<h3 id="11-8-配置项">11.8 配置项</h3>
+
+<ul>
+<li>log_dir</li>
+</ul>
+
+<p>指定日志目录，默认为当前目录下的 <code>logs</code> 目录，不存在时将会自动创建。</p>
+
+<pre><code class="language-cpp">  DEF_string(log_dir, &quot;logs&quot;, &quot;Log dir, will be created if not exists&quot;);
+</code></pre>
+
+<ul>
+<li>log_file_name</li>
+</ul>
+
+<p>指定日志文件名(不含路径)，默认为空，使用程序名作为日志文件名。</p>
+
+<pre><code class="language-cpp">  DEF_string(log_file_name, &quot;&quot;, &quot;name of log file, using exename if empty&quot;);
+</code></pre>
+
+<ul>
+<li>min_log_level</li>
+</ul>
+
+<p>指定打印日志的最小级别，用于屏蔽低级别的日志，默认为 0，打印所有级别的日志。</p>
+
+<pre><code class="language-cpp">  DEF_int32(min_log_level, 0, &quot;write logs at or above this level, 0-4 (debug|info|warning|error|fatal)&quot;);
+</code></pre>
+
+<ul>
+<li>max_log_file_size</li>
+</ul>
+
+<p>指定日志文件的最大大小，默认 256M，超过此大小，生成新的日志文件，旧的日志文件会被重命名。</p>
+
+<pre><code class="language-cpp">  DEF_int64(max_log_file_size, 256 &lt;&lt; 20, &quot;max size of log file, default: 256MB&quot;);
+</code></pre>
+
+<ul>
+<li>max_log_file_num</li>
+</ul>
+
+<p>指定日志文件的最大数量，默认是 8，超过此值，删除旧的日志文件。</p>
+
+<pre><code class="language-cpp">  DEF_uint32(max_log_file_num, 8, &quot;max number of log files&quot;);
+</code></pre>
+
+<ul>
+<li>max_log_buffer_size</li>
+</ul>
+
+<p>指定日志缓存的最大大小，默认 32M，超过此值，丢掉一半的日志。</p>
+
+<pre><code class="language-cpp">  DEF_uint32(max_log_buffer_size, 32 &lt;&lt; 20, &quot;max size of log buffer, default: 32MB&quot;);
+</code></pre>
+
+<ul>
+<li>cout</li>
+</ul>
+
+<p>终端日志开关，默认为 false。若为 true，将日志也打印到终端。</p>
+
+<pre><code class="language-cpp">  DEF_bool(cout, false, &quot;also logging to terminal&quot;);
+</code></pre>
+
+<h3 id="11-9-功能及性能测试">11.9 功能及性能测试</h3>
+
+<p>LOG 库的测试代码见 <a href="https://github.com/idealvin/co/blob/master/test/log_test.cc">test/log_test.cc</a>.</p>
+
+<pre><code class="language-sh"># 在 co 根目录执行下述命令
+xmake -b log    # build log
+
+# 打印不同类型的日志
+xmake r log
+
+# 日志也打印到终端
+xmake r log -cout
+
+# min_log_level 指定输出日志的最小级别
+xmake r log -min_log_level=1   # 0-4: debug,info,warning,error,fatal 
+
+# 性能测试，单线程连续打印 100 万条 info 级别的日志
+xmake r log -perf
+</code></pre>
+
+<h2 id="12-单元测试框架-unitest">12. 单元测试框架(unitest)</h2>
+
+<p>include: <a href="https://github.com/idealvin/co/blob/master/include/co/unitest.h">co/unitest.h</a>.</p>
+
+<p><code>unitest</code> 是一个单元测试框架，与 <a href="https://github.com/google/googletest">google gtest</a> 类似，但更简单易用。</p>
+
+<h3 id="12-1-定义测试单元及用例">12.1 定义测试单元及用例</h3>
+
+<ul>
+<li>代码示例</li>
+</ul>
+
+<pre><code class="language-cpp">#include &quot;co/unitest.h&quot;
+#include &quot;co/os.h&quot;
+
+// 定义一个名为 os 的测试单元，os 有 3 个不同的测试用例
+// 运行单元测试程序时，可用参数 -os 指定运行此单元测试中的用例
+DEF_test(os) {
+    DEF_case(homedir) {
+        EXPECT_NE(os::homedir(), &quot;&quot;);
+    }
+
+    DEF_case(pid) {
+        EXPECT_GE(os::pid(), 0);
+    }
+
+    DEF_case(cpunum) {
+        EXPECT_GT(os::cpunum(), 0);
+    }
+}
+</code></pre>
+
+<h3 id="12-2-运行测试用例">12.2 运行测试用例</h3>
+
+<p><a href="https://github.com/idealvin/co/tree/master/unitest">co/unitest</a> 下有一些单元测试代码，可按下述步骤编译、执行：</p>
+
+<pre><code class="language-sh"># 在 co 根目录执行下述命令
+xmake -b unitest    # build unitest
+
+# 运行所有测试用例
+xmake r unitest -a
+
+# 仅运行 os 单元中的测试用例
+xmake r unitest -os
+</code></pre>
+
+<h2 id="13-高效-json-库-json">13. 高效 json 库(json)</h2>
+
+<p>include: <a href="https://github.com/idealvin/co/blob/master/include/co/json.h">co/json.h</a>.</p>
+
+<p><code>json</code> 库的设计原则是精简、高效、易用，其性能堪比 <a href="https://github.com/Tencent/rapidjson">rapidjson</a>，如果使用 <a href="https://github.com/jemalloc/jemalloc">jemalloc</a>，<code>parse</code> 与 <code>stringify</code> 的性能会进一步提升。</p>
+
+<ul>
+<li>json 库的特性
+
+<ul>
+<li>支持 null、bool、int、double、string 五种基本类型.</li>
+<li>支持 array、object 两种复合类型.</li>
+<li>所有类型统一用一个 <code>Json</code> 类表示.</li>
+<li>Json 类内部仅一个指针数据成员，<code>sizeof(Json) == sizeof(void*)</code>.</li>
+<li>Json 内置引用计数，复制操作仅增加引用计数(<strong>原子操作，线程安全</strong>)，不进行内存拷贝.</li>
+<li>内置一个简单的内存分配器(Jalloc)，对大部分内存分配操作进行优化.</li>
+</ul></li>
+</ul>
+
+<h3 id="13-1-基本类型">13.1 基本类型</h3>
+
+<ul>
+<li>代码示例</li>
+</ul>
+
+<pre><code class="language-cpp">Json x;                          // null
+x.is_null();                     // 判断是否为 null
+
+Json x = false;                  // bool 类型
+x.is_bool();                     // 判断是否为 bool 类型
+bool b = x.get_bool();           // 获取 bool 类型的值
+
+Json x = 123;                    // int 类型
+int i = x.get_int();             // 获取 int 类型的值
+
+Json x = (int64) 23;             // int 类型，64位
+int64 i = x.get_int64();         // 返回 64 位整数
+
+Json x = 3.14;                   // double 类型
+double d = x.get_double();       // 获取 double 类型的值
+
+Json x = &quot;hello world&quot;;          // 字符串类型
+Json x(s, n);                    // 字符串类型 (const char* s, size_t n)
+x.is_string();                   // 判断是否为字符串类型
+x.size();                        // 返回字符串的长度
+const char* s = x.get_string();  // 返回字符串指针，字符串以 '\0' 结尾
+</code></pre>
+
+<h3 id="13-2-array-类型">13.2 array 类型</h3>
+
+<p><code>array</code> 是一种数组类型，可以存储任意类型的 Json 对象。</p>
+
+<pre><code class="language-cpp">Json x = json::array();      // 创建空数组，不同于 null
+x.is_array();                // 判断是否为 array 类型
+x.size();                    // 返回 array 中元素个数
+x.empty();                   // 判断 array 是否为空
+
+Json x;                      // null，调用 push_back 后自动变成 array 类型
+x.push_back(false);          // 添加 bool 类型的值
+x.push_back(1);              // 添加 int 类型的值
+x.push_back(3.14);           // 添加 double 类型的值
+x.push_back(&quot;hello&quot;);        // 添加 string 类型的值
+x.push_back(x);              // 添加 array 类型的对象
+x.push_back(obj);            // 添加 object 类型的对象
+
+// 访问 array 成员
+x[0].get_bool();
+x[1].get_int();
+
+// 遍历 array
+for (uint32 i = 0; i &lt; x.size(); ++i) {
+    Json&amp; v = x[i];
+}
+</code></pre>
+
+<h3 id="13-3-object-类型">13.3 object 类型</h3>
+
+<p><code>object</code> 类型内部以 key-value 形式存储，value 可以是任意类型的 Json 对象，key 则有下面几条限制：</p>
+
+<ul>
+<li>key 必须是 <code>'\0'</code> 结尾的 C 字符串.</li>
+<li>key 中不能包含双引号 <code>&quot;</code>.</li>
+</ul>
+
+<pre><code class="language-cpp">Json x = json::object();       // 创建空 object 对象，不同于 null
+x.is_object();                 // 判断是否为 object 类型
+x.size();                      // 返回 object 中元素个数
+x.empty();                     // 判断 object 是否为空
+
+Json x;                        // null, 调用 add_member() 后自动变成 object 类型
+x.add_member(&quot;name&quot;, &quot;Bob&quot;);   // 添加字符串对象
+x.add_member(&quot;age&quot;, 23);       // 添加整数类型
+x.add_member(&quot;height&quot;, 1.68);  // 添加 double 类型
+x.add_member(&quot;array&quot;, array);  // 添加 array 类型
+x.add_member(&quot;obj&quot;, obj);      // 添加 object 类型
+
+// has_member 与 [] 各需查找一次
+x.has_member(&quot;name&quot;);          // 判断是否包含成员 &quot;name&quot;
+x[&quot;name&quot;].get_string();        // 获取成员的值
+
+// key 不存在时返回 null
+Json v = x.find(&quot;age&quot;);        // Json 内置引用计数，返回对象不会影响性能.
+if (v.is_int()) v.get_int();
+
+if (!(v = x.find(&quot;obj&quot;)).is_null()) {
+    do_something();
+}
+
+// 遍历
+for (auto it = x.begin(); it != x.end(); ++it) {
+    const char* key = it-&gt;key;  // key
+    Json&amp; v = it-&gt;value;        // value
+}
+</code></pre>
+
+<h3 id="13-4-json-转字符串">13.4 json 转字符串</h3>
+
+<p>Json 类提供 <code>str()</code> 与 <code>pretty()</code> 方法，将 Json 转化成字符串:</p>
+
+<pre><code class="language-cpp">Json x;
+fastring s = x.str();     // 返回字符串
+fastring s = x.pretty();  // 返回 pretty 字符串
+
+fastream fs;
+fs &lt;&lt; x;                  // 与 fs &lt;&lt; x.str() 同，但效率更高
+LOG &lt;&lt; x;                 // 日志库基于 fastream 实现，可以直接打印 json 对象
+</code></pre>
+
+<p>另外 Json 类还提供一个 <code>dbg()</code> 方法，将 Json 转化成 debug 字符串，Json 内部较长的字符串类型可能被截断:</p>
+
+<pre><code class="language-cpp">Json x;
+fastring s = x.dbg();
+LOG &lt;&lt; x; // 实际上相当于 LOG &lt;&lt; x.dbg();
+</code></pre>
+
+<h3 id="13-5-字符串转-json">13.5 字符串转 json</h3>
+
+<p><code>json::parse()</code> 或者 Json 类中的 <code>parse_from()</code> 方法可以将字符串转化成 Json 对象:</p>
+
+<pre><code class="language-cpp">Json x;
+fastring s = x.str();
+
+// parse 失败时，y 为 null
+Json y = json::parse(s);
+Json y = json::parse(s.data(), s.size());
+y.parse_from(x.str());
+</code></pre>
+
+<h3 id="13-6-object-类型如何高效添加与查找成员">13.6 object 类型如何高效添加与查找成员</h3>
+
+<p><code>object</code> 类型，内部用数组保存 key-value 对，这样可以保持成员添加时的顺序，但同时增加了查找成员的开销。<code>operator[]</code> 会进行查找操作，实际应用中应该尽量避免使用。</p>
+
+<ul>
+<li>添加成员时用 <code>add_member()</code> 取代 operator[]</li>
+</ul>
+
+<pre><code class="language-cpp">// add_member 不查找，直接将成员添加到尾部
+x.add_member(&quot;age&quot;, 23);  // 比 x[&quot;age&quot;] = 23 效率更高
+</code></pre>
+
+<ul>
+<li>查找成员时用 <code>find</code> 取代 operator[]</li>
+</ul>
+
+<pre><code class="language-cpp">// 传统的成员访问，3 次查找操作，效率低
+if (x.has_member(&quot;age&quot;) &amp;&amp; x[&quot;age&quot;].is_int()) {
+    int i = x[&quot;age&quot;].get_int();
+}
+
+// 用 find 只需一次查找操作
+Json v = x.find(&quot;age&quot;);  
+if (v.is_int()) {
+    int i = v.get_int();
+}
+</code></pre>
+
+<h3 id="13-7-字符串类型中的特殊字符">13.7 字符串类型中的特殊字符</h3>
+
+<p>json 字符串内部以 &lsquo;\0&rsquo; 结尾，应该避免在字符串中包含二进制字符。</p>
+
+<p>json 字符串支持包含 <code>&quot;</code> 与 <code>\</code>，也支持 <code>\r, \n, \t</code> 等转义字符。但包含这些特殊字符，会降低 <code>json::parse()</code> 的性能，实际应用中应该尽量少用。</p>
+
+<pre><code class="language-cpp">Json x = &quot;hello\r\n\t&quot;;      // ok, 字符串中包含转义字符
+Json x = &quot;hello\&quot;world&quot;;     // ok, 字符串中包含 &quot;
+Json x = &quot;hello\\world&quot;;     // ok, 字符串中包含 \
+</code></pre>
+
+<h2 id="14-时间库-time">14. 时间库(time)</h2>
+
+<p>include: <a href="https://github.com/idealvin/co/blob/master/include/co/time.h">co/time.h</a>.</p>
+
+<h3 id="14-1-monotonic-time">14.1 monotonic time</h3>
+
+<p><code>monotonic time</code> 在多数平台实现为自系统启动开始的时间，一般用于计时，比系统时间稳定，不受系统时间的影响。</p>
+
+<ul>
+<li>代码示例</li>
+</ul>
+
+<pre><code class="language-cpp">int64 us = now::us(); // 微秒
+int64 ms = now::ms(); // 毫秒
+</code></pre>
+
+<h3 id="14-2-时间字符串-now-str">14.2 时间字符串(now::str())</h3>
+
+<p><code>now::str()</code> 基于 <code>strftime</code> 实现，以指定格式返回当前系统时间的字符串形式。</p>
+
+<ul>
+<li>函数原型</li>
+</ul>
+
+<pre><code class="language-cpp">// fm: 时间输出格式
+fastring str(const char* fm=&quot;%Y-%m-%d %H:%M:%S&quot;);
+</code></pre>
+
+<ul>
+<li>代码示例</li>
+</ul>
+
+<pre><code class="language-cpp">fastring s = now::str();     // &quot;2018-08-08 08:08:08&quot;
+fastring s = now::str(&quot;%Y&quot;); // &quot;2028&quot;
+</code></pre>
+
+<h3 id="14-3-sleep">14.3 sleep</h3>
+
+<p>Linux 平台支持微秒级的 sleep，但 Windows 平台难以实现。因此，time 库中仅支持毫秒、秒级的 sleep。</p>
+
+<ul>
+<li>代码示例</li>
+</ul>
+
+<pre><code class="language-cpp">sleep::ms(10); // sleep for 10 milliseconds
+sleep::sec(1); // sleep for 1 second
+</code></pre>
+
+<h3 id="14-4-计时器-timer">14.4 计时器(Timer)</h3>
+
+<p><code>Timer</code> 基于 monotonic 时间实现，对象创建时，即开始计时。</p>
+
+<pre><code class="language-cpp">Timer t;
+sleep::ms(10);
+
+int64 us = t.us(); // 微秒
+int64 ms = t.ms(); // 毫秒
+
+t.restart();       // 重新开始计时
+</code></pre>
+
+<h2 id="15-线程库-thread">15. 线程库(thread)</h2>
+
+<p>include: <a href="https://github.com/idealvin/co/blob/master/include/co/thread.h">co/thread.h</a>.</p>
+
+<h3 id="15-1-互斥锁-mutex">15.1 互斥锁(Mutex)</h3>
+
+<p><code>Mutex</code> 是多线程编程中常用的一种互斥锁，同一时刻，只能有一个线程抢到锁，其他线程必须等待锁被释放。</p>
+
+<p>还有一种读写锁，同一时刻，允许多个线程读，但最多只有一个线程写。在实际应用中，读写锁性能较差，本库因此移除了读写锁。</p>
+
+<p>与 <code>Mutex</code> 相对应的，有一个 <code>MutexGuard</code> 类，用于互斥锁的自动获取、释放。</p>
+
+<ul>
+<li>代码示例</li>
+</ul>
+
+<pre><code class="language-cpp">Mutex m;
+m.lock();         // 获取锁，若锁已被其他线程占用，则当前线程会阻塞
+m.unlock();       // 释放锁
+m.try_lock();     // 获取锁，若锁已被其他线程占用，返回 false, 当前线程不会阻塞
+
+MutexGuard g(m);  // 构造函数中调用 m.lock() 获取锁，析构函数中调用 m.unlock() 释放锁
+</code></pre>
+
+<h3 id="15-2-同步事件-syncevent">15.2 同步事件(SyncEvent)</h3>
+
+<p><code>SyncEvent</code> 是多线程编程中常用的一种同步机制，适用于生产者-消费者模型。</p>
+
+<ul>
+<li>SyncEvent 构造函数说明</li>
+</ul>
+
+<pre><code class="language-cpp">// manual_reset: 是否在 wait 结束时手动设置 event 的同步状态
+// signaled:     event 的初始状态是否为 signaled
+SyncEvent(bool manual_reset=false, bool signaled=false);
+</code></pre>
+
+<ul>
+<li>代码示例</li>
+</ul>
+
+<pre><code class="language-cpp">SyncEvent ev;
+ev.wait();                 // 线程 A，等待事件同步，wait() 函数自动将 event 状态设置为 unsignaled
+ev.signal();               // 线程 B，事件同步通知
+
+SyncEvent ev(true, false); // 启用 manual_reset，等待的线程需要手动设置 event 同步状态
+ev.wait(1000);             // 线程 A，等待 1000 毫秒，直到事件同步或超时
+ev.reset();                // 线程 A，手动设置 event 状态为 unsignaled
+ev.signal();               // 线程 B，事件同步通知
+</code></pre>
+
+<h3 id="15-3-线程-thread">15.3 线程(Thread)</h3>
+
+<p><code>Thread</code> 类是对线程的封装，创建 Thread 对象时，线程就会启动，线程函数执行完时，线程自动退出。</p>
+
+<p>Thread 类除构造、析构函数外，仅提供两个方法:</p>
+
+<ul>
+<li><code>join()</code>, 阻塞，等待线程函数执行完，然后退出线程</li>
+
+<li><p><code>detach()</code>, 不阻塞，线程函数执行完时，自动释放系统资源</p></li>
+
+<li><p>代码示例</p></li>
+</ul>
+
+<pre><code class="language-cpp">// 启动线程
+Thread x(f);                        // void f();
+Thread x(f, p);                     // void f(void*);  void* p;
+Thread x(&amp;T::f, &amp;t);                // void T::f();  T t;
+Thread x(std::bind(f, 7));          // void f(int v);
+Thread x(std::bind(&amp;T::f, &amp;t, 7));  // void T::f(int v);  T t;
+
+// 阻塞，等线程函数执行完
+x.join();                           
+
+// 启动线程，并销毁 Thread 对象，线程独立于 Thread 对象运行
+Thread(f).detach();
+</code></pre>
+
+<h3 id="15-4-获取当前线程的-id">15.4 获取当前线程的 id</h3>
+
+<p><code>current_thread_id()</code> 用于获取当前线程的 id，thread 库利用 <a href="https://wiki.osdev.org/Thread_Local_Storage">TLS</a> 保存线程 id，每个线程只需一次系统调用。</p>
+
+<p>Linux glibc 从 <code>2.30</code> 版本开始增加了 gettid 系统调用，为避免冲突，thread 库移除了早期提供的 gettid 接口，改为 <code>current_thread_id</code>。</p>
+
+<ul>
+<li>代码示例</li>
+</ul>
+
+<pre><code class="language-cpp">int id = current_thread_id();
+</code></pre>
+
+<h3 id="15-5-基于-tls-的-thread-ptr">15.5 基于 TLS 的 thread_ptr</h3>
+
+<p><code>thread_ptr</code> 用法与 <code>std::unique_ptr</code> 类似，但内部使用了 <code>TLS</code> 机制，每个线程设置并拥有自己的 ptr。</p>
+
+<ul>
+<li>代码示例</li>
+</ul>
+
+<pre><code class="language-cpp">struct T {
+    void run() {
+        cout &lt;&lt; current_thread_id() &lt;&lt; endl;
+    }
+};
+
+thread_ptr&lt;T&gt; pt;
+
+// 在 thread 1 的线程函数中执行
+if (pt == NULL) pt.reset(new T); 
+pt-&gt;run();  // 打印 thread 1 的 id
+
+// 在 thread 2 的线程函数中执行
+if (pt == NULL) pt.reset(new T);
+pt-&gt;run();  // 打印 thread 2 的 id
+</code></pre>
+
+<h3 id="15-6-定时任务调度器-tasksched">15.6 定时任务调度器(TaskSched)</h3>
+
+<p><code>TaskSched</code> 类用于定时任务的调度，内部由单线程调度所有任务，但可以从任意线程添加任务。</p>
+
+<ul>
+<li>TaskSched 提供的方法
+
+<ul>
+<li>run_in</li>
+<li>run_every</li>
+<li>run_daily</li>
+</ul></li>
+</ul>
+
+<pre><code class="language-cpp">// @f: std::function&lt;void()&gt; 类型的函数对象
+
+// n 秒后执行 f 一次
+void run_in(f, n);
+
+// 每 n 秒执行一次 f
+void run_every(f, n);
+
+// 每天的 hour:min:sec 执行一次
+// @hour: 0-23，默认为 0
+// @min:  0-59，默认为 0
+// @sec:  0-59，默认为 0
+void run_daily(f, hour=0, min=0, sec=0);
+</code></pre>
+
+<ul>
+<li>代码示例</li>
+</ul>
+
+<pre><code class="language-cpp">TaskSched s;                      // 启动任务调度线程
+s.run_in(f, 3);                   // 3 秒后执行 f 一次    void f();
+s.run_every(std::bind(f, 0), 3);  // 每 3 秒执行一次 f    void f(int);
+s.run_daily(f);                   // 每天 00:00:00 执行一次 f
+s.run_daily(f, 23);               // 每天 23:00:00 执行一次 f
+s.run_daily(f, 23, 30);           // 每天 23:30:00 执行一次 f
+s.stop();                         // 退出任务调度线程
+</code></pre>
+
+<h2 id="16-协程库-co">16. 协程库(co)</h2>
+
+<p>include: <a href="https://github.com/idealvin/co/blob/master/include/co/co.h">co/co.h</a>.</p>
+
+<h3 id="16-1-基本概念">16.1 基本概念</h3>
+
+<ul>
+<li>协程是运行于线程中的轻量级调度单位.</li>
+<li>协程之于线程，类似于线程之于进程.</li>
+<li>一个进程中可以存在多个线程，一个线程中可以存在多个协程.</li>
+<li>协程所在的线程一般被称为调度线程.</li>
+<li>一个协程发生 io 阻塞或调用 sleep 等操作时，调度线程会挂起此协程.</li>
+<li>一个协程挂起时，调度线程会切换到其他等待执行的协程运行.</li>
+<li>协程的切换是在用户态进行的，比线程间的切换更快.</li>
+</ul>
+
+<p>协程非常适合写网络程序，可以实现同步的编程方式，不需要异步回调，大大减轻了程序员的思想负担。</p>
+
+<p><code>co</code> 协程库实现的是一种 <a href="https://github.com/golang/go/">golang</a> 风格的协程，有下面几个特性:</p>
+
+<ul>
+<li>内置多个调度线程，默认为系统 CPU 核数.</li>
+<li>同一调度线程中的协程共用一个栈，协程挂起时，会将栈上数据 copy 出来，切换回来时再将数据 copy 到栈上. 这种方式大大降低了内存占用，单机可以轻松创建上百万协程.</li>
+<li>各协程之间为平级关系，可以在任何地方(包括在协程中)创建新的协程.</li>
+</ul>
+
+<p>co 协程库在 linux, mac, windows 等平台，分别基于 <a href="http://man7.org/linux/man-pages/man7/epoll.7.html">epoll</a>, <a href="https://man.openbsd.org/kqueue.2">kqueue</a>, <a href="https://docs.microsoft.com/en-us/windows/win32/fileio/i-o-completion-ports">iocp</a> 实现。</p>
+
+<p>co 协程库中 context 切换的相关代码，取自 <a href="https://github.com/waruqi">ruki</a> 的 <a href="https://github.com/tboox/tbox/">tbox</a>，而 tbox 则参考了 <a href="https://www.boost.org/doc/libs/1_70_0/libs/context/doc/html/index.html">boost</a> 的实现，在此表示感谢！</p>
+
+<h3 id="16-2-创建协程-go">16.2 创建协程(go)</h3>
+
+<p><code>golang</code> 中用关键字 <code>go</code> 创建协程，与之类似，co 库中提供 <code>go()</code> 方法创建协程。</p>
+
+<p>创建协程与创建线程类似，需要指定一个协程函数，go() 方法的第一个参数就是协程函数:</p>
+
+<pre><code class="language-cpp">void go(void (*f)());
+void go(void (*f)(void*), void* p);  // p 指定函数参数
+
+template&lt;typename T&gt;
+void go(void (T::*f)(), T* p);       // p 绑定 T 类对象
+
+void go(const std::function&lt;void()&gt;&amp; f);
+void go(std::function&lt;void()&gt;&amp;&amp; f);
+</code></pre>
+
+<p>实际测试发现，创建 <code>std::function</code> 类型的对象开销较大，因此 go() 特别对 <code>void f()</code>、<code>void f(void*)</code>、<code>void T::f()</code> 类型的函数进行了优化，实际应用中，应该优先使用这三类函数。</p>
+
+<p>严格来说，go() 方法只是将 <code>callback</code> 分配到一个调度线程中，真正创建协程是由调度线程完成的。但从用户的角度看，逻辑上可以认为 go() 创建了协程，并分配到指定的调度线程中，等待被执行。</p>
+
+<ul>
+<li>代码示例</li>
+</ul>
+
+<pre><code class="language-cpp">go(f);                       // void f();
+go(f, p);                    // void f(void*);   void* p;
+go(&amp;T::f, p);                // void T::f();     T* p;
+go(std::bind(f, 7));         // void f(int);
+go(std::bind(&amp;T::f, p, 7));  // void T::f(int);  T* p;
+</code></pre>
+
+<h3 id="16-3-协程-api">16.3 协程 api</h3>
+
+<p>除 <code>go()</code> 之外，co 协程库还提供了如下的几个 api (位于 namespace co 中):</p>
+
+<pre><code class="language-cpp">void sleep(unsigned int ms);
+void stop();
+int max_sched_num();
+int sched_id();
+int coroutine_id();
+</code></pre>
+
+<ul>
+<li><code>sleep</code> 在协程中调用时，调度线程会挂起此协程，切换到其他等待执行的协程运行。</li>
+<li><code>stop</code> 会退出所有的调度线程，一般在进程退出前调用。</li>
+<li><code>max_sched_num</code> 返回支持的最大调度线程数，目前这个值是系统 cpu 核数。</li>
+<li><code>sched_id</code> 返回当前调度线程的 id，若当前线程不是调度线程，返回 -1。id 取值范围是 0 到 <code>max_sched_num-1</code>。</li>
+
+<li><p><code>coroutine_id</code> 返回当前协程的 id，若当前线程不是协程，返回 -1。不同调度线程中的协程可能拥有相同的 id。</p></li>
+
+<li><p>代码示例</p></li>
+</ul>
+
+<pre><code class="language-cpp">// 每隔 1 秒打印出当前的 sched_id 与 coroutine_id
+void f() {
+    while (true) {
+        co::sleep(1000);
+        LOG &lt;&lt; &quot;sid: &quot; &lt;&lt; co::sched_id() &lt;&lt; &quot; cid: &quot; &lt;&lt; co::coroutine_id();
+    }
+}
+
+int main(int argc, char** argv) {
+    flag::init(argc, argv);
+    log::init();
+
+    for (int i = 0; i &lt; 32; ++i) go(f);
+
+    sleep::sec(8);  // 防止主线程立即退出
+    co::stop();     // 退出所有调度线程
+    return 0;
+}
+</code></pre>
+
+<h3 id="16-4-网络编程">16.4 网络编程</h3>
+
+<p>co 包装了常用的 socket api，以支持一般的网络编程。这些 api 都在 <code>namespace co</code> 中，除了少数几个，一般必须在协程中调用。与原生 api 不同的是，这些 api 在 io 阻塞或调用 sleep 等操作时，调度线程会挂起当前协程，切换到其他等待执行的协程运行。</p>
+
+<h4 id="16-4-1-常用的-socket-api">16.4.1 常用的 socket api</h4>
+
+<p>co 提供了一些常用的 socket api:</p>
+
+<pre><code class="language-cpp">sock_t socket(int domain, int type, int proto);
+sock_t tcp_socket(int af=AF_INET); // @af: address family, AF_INET, AF_INET6, etc.
+sock_t udp_socket(int af=AF_INET); // @af: address family, AF_INET, AF_INET6, etc.
+
+close  shutdown   bind   listen   accept   getsockopt
+recv   recvfrom   send   sendto   connect  setsockopt
+
+int recvn(sock_t fd, void* buf, int n, int ms=-1);
+</code></pre>
+
+<p>co 提供的 api 大部分形式上与原生的 socket api 一致，用法也几乎一样，只是有些细微的差别，说明如下:</p>
+
+<ul>
+<li><p>原生 api 参数中的 <code>struct sockaddr*</code> 替换成了 <code>void*</code>，免去手动转换的麻烦。</p></li>
+
+<li><p><code>socket</code>, <code>tcp_socket</code>, <code>udp_socket</code> 用于创建 socket，创建的 socket 在 linux/mac 平台是非阻塞的，在 windows 平台则是 <a href="https://support.microsoft.com/en-us/help/181611/socket-overlapped-i-o-versus-blocking-nonblocking-mode">overlapped</a> 的，无需用户另行设置。</p></li>
+
+<li><p><code>close</code> 可以多带一个参数 <code>@ms</code>(默认为 0)，将当前协程挂起若干毫秒，再关闭 socket。</p></li>
+
+<li><p><code>shutdown</code> 用单个字符 <code>@c</code> 指定关闭方向，<code>'r'</code> 关闭读，<code>'w'</code> 关闭写，默认关闭读写。</p></li>
+</ul>
+
+<pre><code class="language-cpp">int shutdown(sock_t fd, char c='b');
+</code></pre>
+
+<ul>
+<li><p><code>accept</code> 返回的 socket 是非阻塞或 overlapped 的，无需用户另行设置。</p></li>
+
+<li><p><code>connect, recv, recvn, recvfrom, send, sendto</code> 可以多带一个参数，指定超时时间 <code>@ms</code>(默认为 -1)。超时发生时，这些 api 返回 -1，并设置 errno 为 <code>ETIMEDOUT</code>。</p></li>
+
+<li><p><code>recvn</code> 接收 <code>@n</code> 字节的 tcp 数据，全部接收完返回 n，连接断开返回 0，其他错误返回 -1。</p></li>
+
+<li><p><strong>注意:</strong> accept, connect, recv, recvn, recvfrom, send 与 sendto 必须在协程中调用。</p></li>
+
+<li><p><strong>特别注意:</strong> <code>close</code> 与 <code>shutdown</code> 虽然不会阻塞，但为了正常完成内部的清理工作，必须在协程所在的调度线程中调用。一般而言，在一个协程中进行 recv, send 等操作时，那么最好也在这个协程中调用 close, shutdown 关闭 socket。</p></li>
+</ul>
+
+<p>上述 api 发生错误时返回 -1，可以用 <code>co::error()</code> 获取错误码，<code>co::strerror()</code> 查看错误描述。</p>
+
+<h4 id="16-4-2-常用的-socket-option-设置">16.4.2 常用的 socket option 设置</h4>
+
+<p>co 提供了下面的几个 api，用于设置常用的 socket 选项:</p>
+
+<pre><code class="language-cpp">void set_reuseaddr(sock_t fd);                // 设置 SO_REUSEADDR
+void set_tcp_nodelay(sock_t fd);              // 设置 TCP_NODELAY 
+void set_tcp_keepalive(sock_t fd);            // 设置 SO_KEEPALIVE
+void set_send_buffer_size(sock_t fd, int n);  // 设置发送缓冲区大小
+void set_recv_buffer_size(sock_t fd, int n);  // 设置接收缓冲区大小
+</code></pre>
+
+<h4 id="16-4-3-其他-api">16.4.3 其他 api</h4>
+
+<pre><code class="language-cpp">// 填充 ip 地址
+bool init_ip_addr(struct sockaddr_in* addr, const char* ip, int port);
+bool init_ip_addr(struct sockaddr_in6* addr, const char* ip, int port);
+
+// ip 地址转换成字符串
+fastring ip_str(struct sockaddr_in* addr);
+fastring ip_str(struct sockaddr_in6* addr);
+
+// 发送一个 RST，非正常关闭 tcp 连接，避免进入 timedwait 状态，多用于服务端
+// @ms: 默认为 0，将当前协程挂起若干毫秒后，再发送 RST
+void reset_tcp_socket(sock_t fd, int ms=0);
+
+int error();                    // 返回当前错误码
+const char* strerror();         // 返回当前错误码对应的字符串
+const char* strerror(int err);  // 返回 @err 对应的字符串
+</code></pre>
+
+<h4 id="16-4-4-hook-系统-api">16.4.4 hook 系统 api</h4>
+
+<p>在协程中调用 co 库的 socket api 不会阻塞，但一些三方库中调用的是系统的 socket api，仍然可能阻塞。为了解决这个问题，需要 hook 系统的 api，迫使三方库调用 hook 后的 api。</p>
+
+<p>co 库目前在 linux/mac 平台已支持 hook，下面是 hook 的函数列表:</p>
+
+<pre><code class="language-cpp">sleep   usleep   nanosleep
+
+accept  accept4  connect   close  shutdown
+read    readv    recv   recvfrom   recvmsg
+write   writev   send   sendto     sendmsg
+select  poll  gethostbyaddr  gethostbyname
+
+gethostbyaddr_r  gethostbyname2   // linux
+gethostbyname_r  gethostbyname2_r // linux
+
+epoll_wait  // linux 
+kevent      // mac
+</code></pre>
+
+<p>用户一般不需要关心 api hook，有兴趣可以查看 <a href="https://github.com/idealvin/co/tree/master/src/co/impl">hook</a> 的源码实现。</p>
+
+<h4 id="16-4-5-基于协程的一般网络编程模式">16.4.5 基于协程的一般网络编程模式</h4>
+
+<p>协程可以实现高性能的同步网络编程方式。以 TCP 程序为例，服务端一般采用一个连接一个协程的模式，为每个连接创建新的协程，在协程中处理连接上的数据；客户端没必要一个连接一个协程，一般使用连接池，多个协程共用连接池中的连接。</p>
+
+<ul>
+<li>服务端处理连接数据的一般模式:</li>
+</ul>
+
+<pre><code class="language-cpp">void server_fun() {
+    while (true) {
+        co::recv(...);  // 接收客户端请求数据
+        process(...);   // 业务处理
+        co::send(...);  // 发送结果到客户端
+    }
+    co::close(...);     // 关闭 socket
+}
+</code></pre>
+
+<ul>
+<li>客户端处理连接数据的一般模式:</li>
+</ul>
+
+<pre><code class="language-cpp">void client_fun() {
+    co::send(...);   // 发送请求数据到服务端
+    co::recv(...);   // 接收服务端响应数据
+    process(...);    // 业务处理
+}
+</code></pre>
+
+<h4 id="16-4-6-基于协程的-tcp-server-client-示例">16.4.6 基于协程的 tcp server/client 示例</h4>
+
+<ul>
+<li>server 代码示例</li>
+</ul>
+
+<pre><code class="language-cpp">struct Connection {
+    sock_t fd;   // conn fd
+    fastring ip; // peer ip
+    int port;    // peer port
+};
+
+void on_new_connection(void* p) {
+    std::unique_ptr&lt;Connection&gt; conn((Connection*)p);
+    sock_t fd = conn-&gt;fd;
+    co::set_tcp_keepalive(fd);
+    co::set_tcp_nodelay(fd);
+    
+    char buf[8] = { 0 };
+
+    while (true) {
+        int r = co::recv(fd, buf, 4);
+        if (r == 0) {          // 客户端关闭了连接
+            co::close(fd);     // 调用 close 正常关闭连接
+            break;
+        } else if (r == -1) {  // 异常错误，直接 reset 连接
+            co::reset_tcp_socket(fd, 1024);
+            break;
+        } else {
+            LOG &lt;&lt; &quot;recv &quot; &lt;&lt; buf;
+            LOG &lt;&lt; &quot;send pong&quot;;
+            co::send(fd, &quot;pong&quot;, 4);
+        }
+    }
+}
+
+void server_fun() {
+    sock_t fd = co::tcp_socket();
+    co::set_reuseaddr(fd);
+
+    sock_t connfd;
+    int addrlen = sizeof(sockaddr_in);
+    struct sockaddr_in addr;
+    co::init_ip_addr(&amp;addr, &quot;127.0.0.1&quot;, 7788);
+
+    co::bind(fd, &amp;addr, sizeof(addr));
+    co::listen(fd, 1024);
+
+    while (true) {
+        connfd = co::accept(fd, &amp;addr, &amp;addrlen);
+        if (connfd == -1) continue;
+
+        Connection* conn = new Connection;
+        conn-&gt;fd = connfd;
+        conn-&gt;ip = co::ip_str(&amp;addr);
+        conn-&gt;port = ntoh16(addr.sin_port);
+
+        // 为每个客户端连接创建一个新协程，在协程中处理连接上的数据
+        co::go(on_new_connection, conn);
+    }
+}
+
+go(server_fun);  // 启动 server 协程
+</code></pre>
+
+<ul>
+<li>client 代码示例</li>
+</ul>
+
+<pre><code class="language-cpp">void client_fun() {
+    sock_t fd = co::tcp_socket();
+
+    struct sockaddr_in addr;
+    co::init_ip_addr(&amp;addr, &quot;127.0.0.1&quot;, 7788);
+
+    co::connect(fd, &amp;addr, sizeof(addr), 3000);
+    co::set_tcp_nodelay(fd);
+
+    char buf[8] = { 0 };
+
+    for (int i = 0; i &lt; 7; ++i) {
+        co::sleep(1000);
+        LOG &lt;&lt; &quot;send ping&quot;;
+        co::send(fd, &quot;ping&quot;, 4);
+        co::recv(fd, buf, 4);
+        LOG &lt;&lt; &quot;recv &quot; &lt;&lt; buf;
+    }
+
+    co::close(fd);
+}
+
+go(client_fun);  // 启动 client 协程
+</code></pre>
+
+<h3 id="16-5-协程的同步机制">16.5 协程的同步机制</h3>
+
+<p>co 协程库实现了与线程类似的同步机制，熟悉多线程编程的开发人员，很容易从线程切换到协程编程。</p>
+
+<h4 id="16-5-1-协程锁-co-mutex">16.5.1 协程锁(co::Mutex)</h4>
+
+<p><code>co::Mutex</code> 与线程库中的 <code>Mutex</code> 类似，只是需要在协程环境中使用。协程锁获取失败时，调度线程会挂起当前协程，调度线程自身不会阻塞。</p>
+
+<p>另外，co 还提供一个 <code>co::MutexGuard</code> 类，用法与线程库中的 <code>MutexGuard</code> 一样。</p>
+
+<ul>
+<li>代码示例</li>
+</ul>
+
+<pre><code class="language-cpp">co::Mutex mtx;
+int v = 0;
+
+void f1() {
+    co::MutexGuard g(mtx);
+    ++v;
+}
+
+void f2() {
+    co::MutexGuard g(mtx);
+    --v;
+}
+
+go(f1);
+go(f2);
+</code></pre>
+
+<h4 id="16-5-2-协程同步事件-co-event">16.5.2 协程同步事件(co::Event)</h4>
+
+<p><code>co::Event</code> 与线程库中的 <code>SyncEvent</code> 类似，但需要在协程环境中使用。调用 <code>wait()</code> 方法时，调度线程会挂起当前协程，调度线程自身不会阻塞。</p>
+
+<ul>
+<li>代码示例</li>
+</ul>
+
+<pre><code class="language-cpp">co::Event ev;
+int v = 0;
+
+void f1() {
+    // ev.wait(100);  // 等待 100 ms
+    ev.wait();        // 永久等待
+    if (v == 2) v = 1;
+}
+
+void f2() {
+    v = 2;
+    ev.signal();
+}
+
+go(f1);
+go(f2);
+</code></pre>
+
+<h3 id="16-6-协程池">16.6 协程池</h3>
+
+<h4 id="16-6-1-co-pool">16.6.1 co::Pool</h4>
+
+<p>线程支持 <code>TLS</code> 机制，协程也可以支持类似的 <code>CLS</code> 机制，但考虑到系统中可能创建上百万协程，CLS 似乎不怎么高效，co 最终放弃了 CLS，取而代之实现了 <code>co::Pool</code> 类:</p>
+
+<pre><code class="language-cpp">class Pool {
+  public:
+    Pool();
+    Pool(std::function&lt;void*()&gt;&amp;&amp; ccb, std::function&lt;void(void*)&gt;&amp;&amp; dcb, size_t cap=(size_t)-1);
+
+    void* pop();
+    void push(void* p);
+
+  private:
+    void* _p;
+};
+</code></pre>
+
+<ul>
+<li>构造函数</li>
+</ul>
+
+<p>第二个构造函数中的参数 <code>ccb</code> 与 <code>dcb</code> 可用于创建、销毁元素，<code>cap</code> 则用于指定 pool 的最大容量。此处的最大容量是对单个线程而言，如 cap 设置为 1024，调度线程有 8 个，则总的最大容量实际上是 8192。另外注意，最大容量只有在同时指定了 dcb 时有效。</p>
+
+<ul>
+<li><code>pop</code></li>
+</ul>
+
+<p>此方法从 pool 中拉取一个元素。pool 为空时，若设置了 ccb，则调用 ccb 创建一个元素并返回；若没有设置 ccb，则返回 NULL。</p>
+
+<ul>
+<li><code>push</code></li>
+</ul>
+
+<p>此方法将元素放回 pool 中，若元素为 NULL，则直接忽略。若超过最大容量，且指定了 dcb，则直接调用 dcb 销毁元素，而不放入 pool 中。</p>
+
+<p>co::Pool 类是协程安全的，调用 pop, push 方法不需要加锁，但必须在协程中调用。</p>
+
+<ul>
+<li>代码示例</li>
+</ul>
+
+<pre><code class="language-cpp">co::Pool p;
+
+void f {
+    Redis* rds = (Redis*) p.pop();     // 从 pool 中拉取一个 redis 连接
+    if (rds == NULL) rds = new Redis;  // pool 为空时，创建新的 redis 连接
+
+    rds-&gt;get(&quot;xx&quot;);                    // 调用 redis 的 get 方法
+    p.push(rds);                       // 用完 redis，放回 pool 中
+}
+
+go(f);
+</code></pre>
+
+<h4 id="16-6-2-co-poolguard">16.6.2 co::PoolGuard</h4>
+
+<p><code>co::PoolGuard</code> 是一个模板类，它在构造时从 co::Pool 拉取元素，析构时将元素放回 co::Pool 中。另外, 它还重载了 <code>operator-&gt;</code>，可以像智能指针一样使用它。</p>
+
+<ul>
+<li>代码示例</li>
+</ul>
+
+<pre><code class="language-cpp">// 指定 ccb, dcb，用于 Redis 的自动创建与销毁
+co::Pool p(
+    []() { return (void*) new Redis; },  // 指定 ccb
+    [](void* p) { delete (Redis*)p; }    // 指定 dcb
+);
+
+void f() {
+    co::PoolGuard&lt;Redis&gt; rds(p);  // rds 可视为一个 Redis* 指针
+    rds-&gt;get(&quot;xx&quot;);               // 调用 redis 的 get 方法
+}
+
+go(f);
+</code></pre>
+
+<p>使用 CLS 机制，100w 协程需要建立 100w 连接，但使用 pool 机制，100w 协程可能只需要共用少量的连接。Pool 看起来比 CLS 更高效、更合理，这也是本协程库不支持 CLS 的原因。</p>
+
+<h3 id="16-7-配置项">16.7 配置项</h3>
+
+<p>co 库支持的配置项如下:</p>
+
+<ul>
+<li>co_sched_num</li>
+</ul>
+
+<p>调度线程数，默认为系统 CPU 核数，目前的实现中，这个值必须 &lt;= CPU 核数。</p>
+
+<ul>
+<li>co_stack_size</li>
+</ul>
+
+<p>协程栈大小，默认为 1M。每个调度线程都会分配一个栈，调度线程内的协程共用这个栈。</p>
+
+<ul>
+<li>co_max_recv_size</li>
+</ul>
+
+<p><code>co::recv</code> 一次能接收的最大数据长度，默认为 1M，超过此大小，分批接收。</p>
+
+<ul>
+<li>co_max_send_size</li>
+</ul>
+
+<p><code>co::send</code> 一次能发送的最大数据长度，默认为 1M，超过此大小，分批发送。</p>
+
+<h2 id="17-网络库-so">17. 网络库(so)</h2>
+
+<p>include: <a href="https://github.com/idealvin/co/blob/master/include/co/so.h">co/so.h</a>.</p>
+
+<p><code>so</code> 是基于协程的网络库，包含 <code>tcp</code>, <code>http</code>, <code>rpc</code> 三个模块。</p>
+
+<h3 id="17-1-tcp-编程">17.1 TCP 编程</h3>
+
+<p><a href="https://github.com/idealvin/co/blob/master/include/co/so/tcp.h">so/tcp</a> 模块实现了 <code>tcp::Server</code> 与 <code>tcp::Client</code> 类，它们同时支持 <code>ipv4</code> 与 <code>ipv6</code>，可用于一般性的 TCP 编程。</p>
+
+<h4 id="17-1-1-tcp-server-https-github-com-idealvin-co-blob-master-include-co-so-tcp-h">17.1.1 <a href="https://github.com/idealvin/co/blob/master/include/co/so/tcp.h">tcp::Server</a></h4>
+
+<pre><code class="language-cpp">namespace tcp {
+struct Connection {
+    sock_t fd;   // conn fd
+    fastring ip; // peer ip
+    int port;    // peer port
+    void* p;     // pointer to Server where this connection was accepted
+};
+
+class Server {
+  public:
+    Server(const char* ip, int port)
+        : _ip((ip &amp;&amp; *ip) ? ip : &quot;0.0.0.0&quot;), _port(port) {
+    }
+
+    virtual ~Server() = default;
+
+    virtual void start() {
+        go(&amp;Server::loop, this);
+    }
+
+    virtual void on_connection(Connection* conn) = 0;
+
+  protected:
+    fastring _ip;
+    uint32 _port;
+
+  private:
+    void loop();
+};
+} // tcp
+</code></pre>
+
+<p>tcp::Server 采用一个连接一个协程的模型，调用 <code>start()</code> 方法即进入事件循环，接收到新连接时，就创建一个协程，在协程中调用 <code>on_connection()</code> 方法，处理连接上的数据。</p>
+
+<p>此类只能做为基类使用，用户需要继承此类，并实现 on_connection() 方法，注意参数 <code>conn</code> 是动态分配的，用户使用完后需要 delete 掉。</p>
+
+<p><code>co/test</code> 中有一个 demo，基于 tcp::Server 实现了一个简单的 pingpong server，源码见 <a href="https://github.com/idealvin/co/blob/master/test/so/pingpong.cc">pingpong.cc</a>。</p>
+
+<h4 id="17-1-2-tcp-client-https-github-com-idealvin-co-blob-master-include-co-so-tcp-h">17.1.2 <a href="https://github.com/idealvin/co/blob/master/include/co/so/tcp.h">tcp::Client</a></h4>
+
+<p>tcp::Client 必须在协程环境中使用，用户需要手动调用 <code>connect()</code> 方法建立连接。建议在调用 <code>recv</code>, <code>send</code> 之前，判断连接是否建立，没有的话，就调用 connect() 建立连接，这种方式容易实现自动重连。</p>
+
+<p>一个 tcp::Client 对应一个连接，不要同时在多个协程中使用同一个 tcp::Client 对象。co 协程库理论上支持两个协程同时使用一个连接，一个协程 recv，一个协程 send，但不推荐这种用法。标准的做法是，recv 与 send 都在同一个协程中完成，以实现同步的编码方式。</p>
+
+<p>一般建议将 tcp::Client 放到 <code>co::Pool</code> 中，多个协程共用 pool 中的连接。对每个协程而言，需要时即从 pool 中取出一个空闲连接，用完后再放回 pool 中，这种方式可以减少所需的连接数。</p>
+
+<p>tcp::Client 的具体用法，可以参考 <a href="https://github.com/idealvin/co/blob/master/test/so/pingpong.cc">pingpong.cc</a> 中的 <code>client_fun()</code>，另外还可以参考 <a href="https://github.com/idealvin/co/blob/master/include/co/so/http.h">http::Client</a> 与 <a href="https://github.com/idealvin/co/blob/master/src/so/rpc.cc">rpc::Client</a> 的实现。</p>
+
+<h3 id="17-2-http-编程">17.2 HTTP 编程</h3>
+
+<p><a href="https://github.com/idealvin/co/blob/master/include/co/so/http.h">so/http</a> 模块基于 <code>so/tcp</code> 模块实现了 <code>http::Server</code> 类与 <code>http::Client</code> 类，同时还提供一个 <code>so::easy()</code> 方法，用于快速的创建静态 web server。</p>
+
+<h4 id="17-2-1-实现一个简单的-http-server">17.2.1 实现一个简单的 http server</h4>
+
+<pre><code class="language-cpp">http::Server serv(&quot;0.0.0.0&quot;, 80);
+
+serv.on_req(
+    [](const http::Req&amp; req, http::Res&amp; res) {
+        if (req.is_method_get()) {
+            if (req.url() == &quot;/hello&quot;) {
+                res.set_status(200);
+                res.set_body(&quot;hello world&quot;);
+            } else {
+                res.set_status(404);
+            }
+        } else {
+            res.set_status(501);
+        }
+    }
+);
+
+serv.start();
+</code></pre>
+
+<p>用户只需指定 ip 和端口，调用 <code>on_req()</code> 方法注册一个用于处理 HTTP 请求的 callback，然后就可以调用 <code>start()</code> 方法启动 server。</p>
+
+<p><code>co/test</code> 提供了一个简单的 <a href="https://github.com/idealvin/co/blob/master/test/so/http_serv.cc">demo</a>，读者可以按下述方式编译运行:</p>
+
+<pre><code class="language-sh">xmake -b http_serv
+xmake r http_serv
+</code></pre>
+
+<p>启动 http server 后，可以在浏览器的地址栏中输入 <code>127.0.0.1/hello</code> 看结果。</p>
+
+<h4 id="17-2-2-实现一个静态-web-server">17.2.2 实现一个静态 web server</h4>
+
+<pre><code class="language-cpp">#include &quot;co/flag.h&quot;
+#include &quot;co/log.h&quot;
+#include &quot;co/so.h&quot;
+
+DEF_string(d, &quot;.&quot;, &quot;root dir&quot;); // 指定 web server 根目录
+
+int main(int argc, char** argv) {
+    flag::init(argc, argv);
+    log::init();
+
+    so::easy(FLG_d.c_str()); // mum never have to worry again
+
+    return 0;
+}
+</code></pre>
+
+<p><code>co/test</code> 中的 <a href="https://github.com/idealvin/co/blob/master/test/so/easy.cc">easy.cc</a> 即利用 <code>so::easy()</code> 实现了一个 web server，可以编译运行如下：</p>
+
+<pre><code class="language-sh">xmake -b easy
+xmake r easy -d xxx  # xxx 作为 web server 的根目录
+</code></pre>
+
+<h4 id="17-2-3-http-client-的用法">17.2.3 http client 的用法</h4>
+
+<pre><code class="language-cpp">http::Client cli(&quot;www.xxx.com&quot;, 80);
+http::Req req;
+http::Res res;
+
+req.set_method_get();
+req.set_url(&quot;/&quot;);
+cli.call(req, res); // 获取 www.xxx.com 首页
+
+fastring s = res.body();
+</code></pre>
+
+<p>上述代码中，利用 <code>http::Req</code> 与 <code>http::Res</code> 类，用户可以精准的控制各种细节。如果想偷懒的话，也可以写成下面这样：</p>
+
+<pre><code class="language-cpp">http::Client cli(&quot;www.xxx.com&quot;, 80);
+fastring s = cli.get(&quot;/&quot;);
+fastring x = cli.post(&quot;/url&quot;, &quot;body&quot;);
+</code></pre>
+
+<p>http::Client 继承于 tcp::Client，必须在协程中使用。 http::Client 会在 <code>call()</code> 方法中自动建立连接，无需用户手动调用 connect()。</p>
+
+<p><code>co/test</code> 提供了一个简单的 <a href="https://github.com/idealvin/co/blob/master/test/so/http_cli.cc">demo</a>，可以按下述方式编译运行:</p>
+
+<pre><code class="language-sh">xmake -b http_cli
+xmake r http_cli -ip=github.com -port=80
+</code></pre>
+
+<h4 id="17-2-4-配置项">17.2.4 配置项</h4>
+
+<ul>
+<li>http_max_header_size</li>
+</ul>
+
+<p>指定 http header 部分的最大长度，默认为 <code>4k</code>。</p>
+
+<ul>
+<li>http_max_body_size</li>
+</ul>
+
+<p>指定 http body 部分的最大长度，默认为 <code>8M</code>。</p>
+
+<ul>
+<li>http_recv_timeout</li>
+</ul>
+
+<p>指定 http recv 操作的超时时间，单位毫秒，默认为 <code>1024 ms</code>。</p>
+
+<ul>
+<li>http_send_timeout</li>
+</ul>
+
+<p>指定 http send 操作的超时时间，单位毫秒，默认为 <code>1024 ms</code>。</p>
+
+<ul>
+<li>http_conn_timeout</li>
+</ul>
+
+<p>指定 http connect 操作的超时时间，单位毫秒，默认为 <code>3000 ms</code>。</p>
+
+<ul>
+<li>http_conn_idle_sec</li>
+</ul>
+
+<p>指定 http server 空闲连接的超时时间，单位为秒，默认为 <code>180</code> 秒。</p>
+
+<ul>
+<li>http_max_idle_conn</li>
+</ul>
+
+<p>指定 http server 最大空闲连接数，默认为 <code>128</code>。</p>
+
+<ul>
+<li>http_log</li>
+</ul>
+
+<p>http 日志开关，默认为 <code>true</code>。(注意日志只打印 http 的头部)</p>
+
+<h3 id="17-3-rpc-框架">17.3 rpc 框架</h3>
+
+<p><a href="https://github.com/idealvin/co/blob/master/include/co/so/rpc.h">so/rpc</a> 模块基于 <code>so/tcp</code> 实现了一个 rpc 框架，内部使用 <code>tcp/json</code> 作为传输协议，简单的测试显示单线程 qps 可以达到 <code>12w+</code>。json 与基于结构体的二进制协议相比，至少有下面几个好处：</p>
+
+<ul>
+<li>抓包可以直接看到传输的 json 对象，方便调试。</li>
+<li>rpc 调用直接传输 json 对象，不需要定义各种结构体，大大减少代码量。</li>
+<li>rpc 调用参数形式一致，固定为 <code>(const Json&amp; req, Json&amp; res)</code>，很容易自动生成代码。</li>
+<li>可以实现通用的 rpc client，不需要为不同的 rpc server 生成不同的 client 代码。</li>
+</ul>
+
+<h4 id="17-3-1-rpc-server-接口介绍">17.3.1 rpc server 接口介绍</h4>
+
+<p>rpc server 的接口非常简单：</p>
+
+<pre><code class="language-cpp">namespace rpc {
+class Service {
+  public:
+    virtual ~Service() = default;
+    virtual void process(const Json&amp; req, Json&amp; res) = 0;  // 业务处理
+};
+
+class Server {
+  public:
+    virtual ~Server() = default;
+    virtual void start() = 0;                // 启动 rpc server 协程
+    virtual void add_service(Service*) = 0;  // server 启动前必须先添加 Service 的实现
+};
+
+// 创建一个 rpc server，passwd 非空时，客户端连接后需要进行密码认证
+Server* new_server(const char* ip, int port, const char* passwd=&quot;&quot;);
+} // rpc
+</code></pre>
+
+<p><code>rpc::Server</code> 接收客户端连接，为每个连接创建一个新协程，新协程接收客户端请求，然后同步调用 <code>rpc::Service</code> 提供的 <code>process()</code> 方法处理请求，最后将结果发送回客户端。</p>
+
+<p>具体的业务处理，需要继承 rpc::Service 并实现 process() 方法。实际上，process() 的代码是自动生成的，用户只需要实现具体的 rpc 调用方法。</p>
+
+<h4 id="17-3-2-rpc-proto-文件介绍">17.3.2 rpc proto 文件介绍</h4>
+
+<p>下面是一个简单的 proto 文件 <code>hello_world.proto</code>:</p>
+
+<pre><code class="language-cpp">// # 或 // 表示 注释
+package xx  // namespace xx
+
+service HelloWorld {  
+    hello,
+    world,
+}
+
+hello.req {
+    &quot;method&quot;: &quot;hello&quot;
+}
+
+hello.res {
+    &quot;method&quot;: &quot;hello&quot;,
+    &quot;err&quot;: 200,
+    &quot;errmsg&quot;: &quot;200 ok&quot;
+}
+
+world.req {
+    &quot;method&quot;: &quot;world&quot;
+}
+
+world.res {
+    &quot;method&quot;: &quot;world&quot;,
+    &quot;err&quot;: 200,
+    &quot;errmsg&quot;: &quot;200 ok&quot;
+}
+</code></pre>
+
+<p><code>package xx</code> 表示将代码生成到命名空间 <code>xx</code> 中，还可以用 package xx.yy.zz 生成嵌套命名空间。</p>
+
+<p><code>service HelloWorld</code> 定义一个继承 rpc::Service 的 service 类，hello, world 是它提供的两个 rpc 方法。</p>
+
+<p><code>hello.req, hello.res, world.req, world.res</code> 是请求参数及响应结果的示例，生成代码时不需要这些。</p>
+
+<p>需要注意，一个 proto 文件只能定义一个 service。</p>
+
+<h4 id="17-3-3-rpc-代码生成器">17.3.3 rpc 代码生成器</h4>
+
+<p>代码生成器源码见 <a href="https://github.com/idealvin/co/tree/master/gen">co/gen</a> 目录，可按下述方法构建 <code>gen</code>，并根据 proto 文件自动生成代码。</p>
+
+<pre><code class="language-sh">xmake -b gen           # 构建 gen
+gen hello_world.proto  # 生成代码
+</code></pre>
+
+<p>下面是生成的 C++ 头文件 <code>hello_world.h</code>:</p>
+
+<pre><code class="language-cpp">#pragma once
+
+#include &quot;co/so/rpc.h&quot;
+#include &quot;co/hash.h&quot;
+#include &lt;unordered_map&gt;
+
+namespace xx {
+
+class HelloWorld : public rpc::Service {
+public:
+    typedef void (HelloWorld::*Fun)(const Json&amp;, Json&amp;);
+
+    HelloWorld() {
+        _methods[hash64(&quot;ping&quot;)] = &amp;HelloWorld::ping;
+        _methods[hash64(&quot;hello&quot;)] = &amp;HelloWorld::hello;
+        _methods[hash64(&quot;world&quot;)] = &amp;HelloWorld::world;
+    }
+
+    virtual ~HelloWorld() {}
+
+    virtual void process(const Json&amp; req, Json&amp; res) {
+        Json&amp; method = req[&quot;method&quot;];
+        if (!method.is_string()) {
+            res.add_member(&quot;err&quot;, 400);
+            res.add_member(&quot;errmsg&quot;, &quot;400 req has no method&quot;);
+            return;
+        }
+
+        auto it = _methods.find(hash64(method.get_string(), method.size()));
+        if (it == _methods.end()) {
+            res.add_member(&quot;err&quot;, 404);
+            res.add_member(&quot;errmsg&quot;, &quot;404 method not found&quot;);
+            return;
+        }
+
+        (this-&gt;*it-&gt;second)(req, res);
+    }
+
+    virtual void ping(const Json&amp; req, Json&amp; res) {
+        res.add_member(&quot;method&quot;, &quot;ping&quot;);
+        res.add_member(&quot;err&quot;, 200);
+        res.add_member(&quot;errmsg&quot;, &quot;pong&quot;);
+    }
+    
+    virtual void hello(const Json&amp; req, Json&amp; res) = 0;
+
+    virtual void world(const Json&amp; req, Json&amp; res) = 0;
+
+private:
+    std::unordered_map&lt;uint64, Fun&gt; _methods;
+};
+
+} // xx
+</code></pre>
+
+<p>可以看到 HelloWrold 的构造函数已经将 hello, world 方法注册到内部的 map 中，process() 方法根据 req 中的 <code>method</code> 字段，调用对应的 rpc 方法。用户只需继承 <code>HelloWorld</code> 类，实现具体进行业务处理的 hello, world 方法即可。</p>
+
+<p>业务处理方法可能在不同的线程中调用，实现时需要注意线程安全性。业务处理方法内部需要连接到其他网络服务时，可以用协程安全的 <code>co::Pool</code> 管理这些网络连接。</p>
+
+<p>生成的头文件可以直接放到 server 代码所在目录，客户端不需要用到。客户端只需参考 proto 文件中的 req/res 定义，就知道怎么构造 req 发起 rpc 调用了。</p>
+
+<h4 id="17-3-4-实现-rpc-server">17.3.4 实现 rpc server</h4>
+
+<p>下面的示例代码 <code>hello_world.cc</code> 给出了一个简单的实现:</p>
+
+<pre><code class="language-cpp">#include &quot;hello_world.h&quot;
+
+namespace xx {
+
+class HelloWorldImpl : public HelloWorld {
+  public:
+    HelloWorldImpl() = default;
+    virtual ~HelloWorldImpl() = default;
+
+    virtual void hello(const Json&amp; req, Json&amp; res) {
+        res.add_member(&quot;method&quot;, &quot;hello&quot;);
+        res.add_member(&quot;err&quot;, 200);
+        res.add_member(&quot;errmsg&quot;, &quot;200 ok&quot;);
+    }
+
+    virtual void world(const Json&amp; req, Json&amp; res) {
+        res.add_member(&quot;method&quot;, &quot;world&quot;);
+        res.add_member(&quot;err&quot;, 200);
+        res.add_member(&quot;errmsg&quot;, &quot;200 ok&quot;);
+    }
+};
+
+} // xx
+</code></pre>
+
+<p>完成上述的业务实现后，就可以启动 rpc server，一般只需要如下的三行代码:</p>
+
+<pre><code class="language-cpp">rpc::Server* server = rpc::new_server(&quot;127.0.0.1&quot;, 7788, &quot;passwd&quot;);
+server-&gt;add_service(new xx::HelloWorldImpl);
+server-&gt;start();
+</code></pre>
+
+<p>注意调用 <code>start()</code> 方法会创建一个协程，server 在协程中运行，防止主线程退出是用户需要关心的事。</p>
+
+<h4 id="17-3-5-rpc-client">17.3.5 rpc client</h4>
+
+<p>rpc client 的接口如下:</p>
+
+<pre><code class="language-cpp">class Client {
+  public:
+    virtual ~Client() = default;
+    virtual void ping() = 0; // send a heartbeat
+    virtual void call(const Json&amp; req, Json&amp; res) = 0;
+};
+
+Client* new_client(const char* ip, int port, const char* passwd=&quot;&quot;);
+} // rpc
+</code></pre>
+
+<p><code>rpc::new_client()</code> 创建一个 rpc client，服务端若设置了密码，客户端需要带上密码进行认证。</p>
+
+<p><code>call()</code> 方法发起 rpc 调用，不同的 rpc 请求可以用 req 中的 method 字段标志。</p>
+
+<p><code>ping()</code> 方法用于给 server 端发送心跳。</p>
+
+<ul>
+<li>特别提醒
+
+<ul>
+<li>rpc::Client 创建时，并没有立即建立连接，第一次发起 rpc 请求才会建立连接。</li>
+<li><code>delete rpc::Client</code>会关闭连接，这个操作需要在协程内进行。</li>
+</ul></li>
+</ul>
+
+<p>下面是一个简单的 rpc client 示例：</p>
+
+<pre><code class="language-cpp">void client_fun() {
+    rpc::Client* c = rpc::new_client(&quot;127.0.0.1&quot;, 7788, &quot;passwd&quot;);
+
+    for (int i = 0; i &lt; 10000; ++i) {
+        Json req, res;
+        req.add_member(&quot;method&quot;, &quot;hello&quot;);
+        c-&gt;call(req, res);  // 调用 hello 方法
+    }
+
+    delete c; // 在协程内 delete，是安全关闭连接所需要的
+}
+
+int main(int argc, char** argv) {
+    go(client_fun); // 创建协程
+    while (1) sleep::sec(7);
+    return 0;
+}
+</code></pre>
+
+<p>需要注意，一个 <code>rpc::Client</code> 对应一个连接，不要在多个线程中使用同一个 rpc::Client。多线程环境中，可以使用 <code>co::Pool</code> 管理客户端连接，下面是一个例子:</p>
+
+<pre><code class="language-cpp">co::Pool p(
+    std::bind(&amp;rpc::new_client, &quot;127.0.0.1&quot;, 7788, &quot;passwd&quot;),
+    [](void* p) { delete (rpc::Client*) p; }
+);
+
+void client_fun() {
+    co::PoolGuard&lt;rpc::Client&gt; c(p);
+
+    for (int i = 0; i &lt; 10; ++i) {
+        Json req, res;
+        req.add_member(&quot;method&quot;, &quot;hello&quot;);
+        c-&gt;call(req, res);  // 调用 hello 方法
+    }
+}
+
+// 创建 8 个协程
+for (int i = 0; i &lt; 8; ++i) {
+    go(client_fun);
+}
+</code></pre>
+
+<h4 id="17-3-6-配置项">17.3.6  配置项</h4>
+
+<ul>
+<li>rpc_max_msg_size</li>
+</ul>
+
+<p>rpc 消息最大长度，默认为 <code>8M</code>。</p>
+
+<ul>
+<li>rpc_recv_timeout</li>
+</ul>
+
+<p>rpc 接收数据超时时间，单位为毫秒，默认 <code>1024</code> 毫秒。</p>
+
+<ul>
+<li>rpc_send_timeout</li>
+</ul>
+
+<p>rpc 发送数据超时时间，单位为毫秒，默认 <code>1024</code> 毫秒。</p>
+
+<ul>
+<li>rpc_conn_timeout</li>
+</ul>
+
+<p>rpc 连接超时时间，单位为毫秒，默认 <code>3000</code> 毫秒。</p>
+
+<ul>
+<li>rpc_conn_idle_sec</li>
+</ul>
+
+<p>rpc 空闲连接超时时间，单位为秒，默认 <code>180</code> 秒。一个连接超过此时间没有收到任何数据，server 可能会关掉此连接。</p>
+
+<ul>
+<li>rpc_max_idle_conn</li>
+</ul>
+
+<p>最大空闲连接数，默认为 <code>128</code>。连接数超过此值，server 会关掉一些空闲连接(rpc_conn_idle_sec 时间内没有接收到数据的连接)。</p>
+
+<ul>
+<li>rpc_log</li>
+</ul>
+
+<p>是否打印 rpc 日志，默认为 <code>true</code>。</p>
+
+<h2 id="18-hash-库-hash">18. hash 库(hash)</h2>
+
+<p>include: <a href="https://github.com/idealvin/co/blob/master/include/co/hash.h">co/hash.h</a>.</p>
+
+<p><code>hash</code> 库提供了如下的几个函数：</p>
+
+<ul>
+<li>murmur_hash</li>
+</ul>
+
+<p>返回结果为 <code>size_t</code> 类型，<code>std::hash&lt;fastring&gt;</code> 的实现即使用了此 hash 函数。</p>
+
+<ul>
+<li>hash64</li>
+</ul>
+
+<p>计算 64 位的 hash 值，内部使用 <code>murmur 2 hash</code> 算法。</p>
+
+<ul>
+<li>hash32</li>
+</ul>
+
+<p>计算 32 位的 hash 值，32 位系统使用 murmur 2 的 32 位版本，64 位系统直接取 <code>hash64</code> 的低 32 位。</p>
+
+<ul>
+<li>md5sum</li>
+</ul>
+
+<p>计算字符串或指定长度数据的 md5 值，返回 <code>32</code> 字节的字符串。</p>
+
+<ul>
+<li>crc16</li>
+</ul>
+
+<p>计算字符串或指定长度数据的 crc16 值，实现取自 <a href="https://github.com/antirez/redis/">redis</a>。</p>
+
+<ul>
+<li>base64_encode</li>
+</ul>
+
+<p>base64 编码，不添加 <code>\r, \n</code>，实际应用中，没有必要添加。</p>
+
+<ul>
+<li>base64_decode</li>
+</ul>
+
+<p>base64 解码，解码失败时抛出 const char* 类型的异常。</p>
+
+<ul>
+<li>代码示例</li>
+</ul>
+
+<pre><code class="language-cpp">uint64 h = hash64(s);               // 计算字符串 s 的 hash 值 
+uint64 h = hash64(s, n);            // 计算指定长度数据的 hash 值 
+uint32 h = hash32(s);               // 计算 32 位 hash 值
+fastring s = md5sum(&quot;hello world&quot;); // 计算字符串的 md5，返回结果为 32 字节
+uint16 x = crc16(&quot;hello world&quot;);    // 计算字符串的 crc16
+fastring e = base64_encode(s);      // base64 编码，不会抛出异常
+fastring d = base64_decode(e);      // base64 解码，d 应该与 s 相同
+</code></pre>
+
+<h2 id="19-path-库-path">19. path 库(path)</h2>
+
+<p>include: <a href="https://github.com/idealvin/co/blob/master/include/co/path.h">co/path.h</a>.</p>
+
+<p><code>path</code> 库移植于 <a href="https://github.com/golang/go/blob/master/src/path/path.go">golang</a>，path 分隔符必须为 &lsquo;/&lsquo;。</p>
+
+<ul>
+<li><code>path::clean()</code></li>
+</ul>
+
+<p>返回路径的最短等价形式，路径中连续的分隔符会被清除掉。</p>
+
+<pre><code class="language-cpp">path::clean(&quot;./x//y/&quot;);     // return &quot;x/y&quot;
+path::clean(&quot;./x/..&quot;);      // return &quot;.&quot;
+path::clean(&quot;./x/../..&quot;);   // return &quot;..&quot;
+</code></pre>
+
+<ul>
+<li><code>path::join()</code></li>
+</ul>
+
+<p>将任意数量的字符串拼接成一个完整的路径，返回 path::clean() 处理后的结果。</p>
+
+<pre><code class="language-cpp">path::join(&quot;x&quot;, &quot;y&quot;, &quot;z&quot;);  // return &quot;x/y/z&quot;
+path::join(&quot;/x/&quot;, &quot;y&quot;);     // return &quot;/x/y&quot;
+</code></pre>
+
+<ul>
+<li><code>path::split()</code></li>
+</ul>
+
+<p>将路径切分为 dir, file 两部分，若路径中不含分隔符，则 dir 部分为空。返回结果满足性质 <code>path = dir + file</code>。</p>
+
+<pre><code class="language-cpp">path::split(&quot;/&quot;);     // -&gt; { &quot;/&quot;, &quot;&quot; }
+path::split(&quot;/a&quot;);    // -&gt; { &quot;/&quot;, &quot;a&quot; }
+path::split(&quot;/a/b&quot;);  // -&gt; { &quot;/a/&quot;, &quot;b&quot; }
+</code></pre>
+
+<ul>
+<li><code>path::dir()</code></li>
+</ul>
+
+<p>返回路径的目录部分，返回 path::clean() 处理后的结果。</p>
+
+<pre><code class="language-cpp">path::dir(&quot;a&quot;);      // return &quot;.&quot;
+path::dir(&quot;a/&quot;);     // return &quot;a&quot;
+path::dir(&quot;/&quot;);      // return &quot;/&quot;
+path::dir(&quot;/a&quot;);     // return &quot;/&quot;;
+</code></pre>
+
+<ul>
+<li><code>path::base()</code></li>
+</ul>
+
+<p>返回路径最后的一个元素。</p>
+
+<pre><code class="language-cpp">path::base(&quot;&quot;);      // return &quot;.&quot;
+path::base(&quot;/&quot;);     // return &quot;/&quot;
+path::base(&quot;/a/&quot;);   // return &quot;a&quot;  忽略末尾的分隔符
+path::base(&quot;/a&quot;);    // return &quot;a&quot;
+path::base(&quot;/a/b&quot;);  // return &quot;b&quot;
+</code></pre>
+
+<ul>
+<li><code>path::ext()</code></li>
+</ul>
+
+<p>函数返回路径中文件名的扩展名。</p>
+
+<pre><code class="language-cpp">path::ext(&quot;/a.cc&quot;);  // return &quot;.cc&quot;
+path::ext(&quot;/a.cc/&quot;); // return &quot;&quot;
+</code></pre>
+
+<h2 id="20-文件系统操作-fs">20. 文件系统操作(fs)</h2>
+
+<p>include: <a href="https://github.com/idealvin/co/blob/master/include/co/fs.h">co/fs.h</a>.</p>
+
+<p><code>fs</code> 库最小限度的实现了常用的文件系统操作，不同平台 path 分隔符建议统一使用 <code>'/'</code>。</p>
+
+<h3 id="20-1-元数据操作">20.1 元数据操作</h3>
+
+<ul>
+<li>代码示例</li>
+</ul>
+
+<pre><code class="language-cpp">bool x = fs::exists(path);  // 判断文件是否存在
+bool x = fs::isdir(path);   // 判断文件是否为目录
+int64 x = fs::mtime(path);  // 获取文件的修改时间
+int64 x = fs::fsize(path);  // 获取文件的大小
+
+fs::mkdir(&quot;a/b&quot;);           // mkdir a/b
+fs::mkdir(&quot;a/b&quot;, true);     // mkdir -p a/b
+
+fs::remove(&quot;x/x.txt&quot;);      // rm x/x.txt
+fs::remove(&quot;a/b&quot;);          // rmdir a/b   删除空目录
+fs::remove(&quot;a/b&quot;, true);    // rm -rf a/b     
+
+fs::rename(&quot;a/b&quot;, &quot;a/c&quot;);   // 重命名
+fs::symlink(&quot;/usr&quot;, &quot;x&quot;);   // 软链接 x -&gt; /usr，windows 需要 admin 权限
+</code></pre>
+
+<h3 id="20-2-文件的基本读写操作">20.2 文件的基本读写操作</h3>
+
+<p>fs 库实现了 <code>fs::file</code> 类，支持文件的基本读写操作。</p>
+
+<ul>
+<li><p>fs::file 类的特性</p>
+
+<ul>
+<li>支持<code>r, w, a, m</code>四种读写模式，前三种与 fopen 保持一致，<code>m</code>与<code>w</code>类似，但不会清空已存在文件的数据。</li>
+<li>不支持缓存，直接读写文件。</li>
+<li>支持<code>move</code>语义，可以将 file 对象直接放入 STL 容器中。</li>
+</ul></li>
+
+<li><p>代码示例</p></li>
+</ul>
+
+<pre><code class="language-cpp">fs::file f;               // 后续可调用 f.open() 打开文件
+fs::file f(&quot;xx&quot;, 'r');    // 读模式打开文件
+
+// 自动关闭之前打开的文件
+f.open(&quot;xx&quot;, 'a');        // 追加写，文件不存在时创建
+f.open(&quot;xx&quot;, 'w');        // 一般写，文件不存在时创建，文件存在时清空数据
+f.open(&quot;xx&quot;, 'm');        // 修改写，文件不存在时创建，文件存在时不清数据
+
+if (f) f.read(buf, 512);  // 读取最多 512 字节
+f.write(buf, 32);         // 写入 32 字节
+f.write(&quot;hello&quot;);         // 写入字符串
+f.write('c');             // 写入单个字符
+f.close();                // 关闭文件，file 析构时会调用 close()
+</code></pre>
+
+<h3 id="20-3-文件流-fs-fstream">20.3 文件流(fs::fstream)</h3>
+
+<p><code>fs::file</code> 不支持缓存，写小文件性能较差，为此，fs 库另外提供了 <code>fs::fstream</code> 类。</p>
+
+<ul>
+<li><p>fs::fstream 类的特性</p>
+
+<ul>
+<li>只写不读，仅支持<code>w, a</code>两种模式。</li>
+<li>可以自定义缓存大小，默认为<code>8k</code>。</li>
+<li>支持<code>move</code>语义，可将 fstream 对象放入 STL 容器中。</li>
+</ul></li>
+
+<li><p>代码示例</p></li>
+</ul>
+
+<pre><code class="language-cpp">fs::fstream s;                    // 默认缓存为 8k
+fs::fstream s(4096);              // 指定缓存为 4k
+fs::fstream s(&quot;path&quot;, 'a');       // 追加模式，缓存默认为 8k
+fs::fstream s(&quot;path&quot;, 'w', 4096); // 写模式，指定缓存为 4k
+
+s.open(&quot;path&quot;, 'a');              // 打开文件，自动关闭之前已经打开的文件
+if (s) s &lt;&lt; &quot;hello world&quot; &lt;&lt; 23;  // 流式写
+s.append(data, size);             // 追加指定长度的数据
+s.flush();                        // 将缓存中数据写入文件
+s.close();                        // 关闭文件，析构时会自动关闭
+</code></pre>
+
+<h2 id="21-系统操作-os">21. 系统操作(os)</h2>
+
+<p>include: <a href="https://github.com/idealvin/co/blob/master/include/co/os.h">co/os.h</a>.</p>
+
+<pre><code class="language-cpp">os::homedir();   // 返回 home 目录路径
+os::cwd();       // 返回当前工作目录路径
+os::exepath();   // 返回当前进程路径
+os::exename();   // 返回当前进程名
+os::pid();       // 返回当前进程 id
+os::cpunum();    // 返回 cpu 核数
+os::daemon();    // 后台运行，仅支持 Linux 平台
+</code></pre>
+
+<h2 id="22-编译">22. 编译</h2>
+
+<h3 id="xmake">xmake</h3>
+
+<p><code>CO</code> 推荐使用 <a href="https://github.com/xmake-io/xmake">xmake</a> 进行编译。</p>
+
+<ul>
+<li><p>编译器</p>
+
+<ul>
+<li>Linux: <a href="https://gcc.gnu.org/projects/cxx-status.html#cxx11">gcc 4.8+</a></li>
+<li>Mac: <a href="https://clang.llvm.org/cxx_status.html">clang 3.3+</a></li>
+<li>Windows: <a href="https://visualstudio.microsoft.com/">vs2015+</a></li>
+</ul></li>
+
+<li><p>安装 xmake</p></li>
+</ul>
+
+<p>windows, mac 与 debian/ubuntu 可以直接去 xmake 的 <a href="https://github.com/xmake-io/xmake/releases">release</a> 页面下载安装包，其他系统请参考 xmake 的 <a href="https://xmake.io/#/guide/installation">Installation</a> 说明。</p>
+
+<p>xmake 在 linux 上默认禁止 root 用户编译，<a href="https://github.com/waruqi">ruki</a> 说不安全，可以在 <code>~/.bashrc</code> 中加上下面的一行，启用 root 编译:</p>
+
+<pre><code class="language-sh">  export XMAKE_ROOT=y
+</code></pre>
+
+<ul>
+<li>快速上手</li>
+</ul>
+
+<pre><code class="language-sh">  # 所有命令都在 co 根目录执行，后面不再说明
+  xmake       # 默认编译 libco 与 gen
+  xmake -a    # 编译所有项目 (libco, gen, co/test, co/unitest)
+</code></pre>
+
+<ul>
+<li>编译 libco</li>
+</ul>
+
+<pre><code class="language-sh">  xmake build libco       # 编译 libco
+  xmake -b libco          # 与上同
+</code></pre>
+
+<ul>
+<li>编译及运行 unitest 代码</li>
+</ul>
+
+<p><a href="https://github.com/idealvin/co/tree/master/unitest">co/unitest</a> 是单元测试代码，用于检验 libco 库功能的正确性。</p>
+
+<pre><code class="language-sh">  xmake build unitest     # build 可以简写为 -b
+  xmake run unitest -a    # 执行所有单元测试
+  xmake r unitest -a      # 同上
+  xmake r unitest -os     # 执行单元测试 os
+  xmake r unitest -json   # 执行单元测试 json
+</code></pre>
+
+<ul>
+<li>编译及运行 test 代码</li>
+</ul>
+
+<p><a href="https://github.com/idealvin/co/tree/master/test">co/test</a> 包含了一些测试代码。co/test 目录下增加 <code>xxx.cc</code> 源文件，然后在 co 根目录下执行 <code>xmake build xxx</code> 即可构建。</p>
+
+<pre><code class="language-sh">  xmake build flag             # 编译 flag.cc
+  xmake build log              # 编译 log.cc
+  xmake build json             # 编译 json.cc
+  xmake build rapidjson        # 编译 rapidjson.cc
+  xmake build rpc              # 编译 rpc.cc
+  xmake build easy             # 编译 so/easy.cc
+  xmake build pingpong         # 编译 so/pingpong.cc
+  
+  xmake r flag -xz             # 测试 flag 库
+  xmake r log                  # 测试 log 库
+  xmake r log -cout            # 终端也打印日志
+  xmake r log -perf            # log 库性能测试
+  xmake r json                 # 测试 json
+  xmake r rapidjson            # 测试 rapidjson
+  xmake r rpc                  # 启动 rpc server
+  xmake r rpc -c               # 启动 rpc client
+  xmake r easy -d xxx          # 启动 web server
+  xmake r pingpong             # pingpong server:   127.0.0.1:9988
+  xmake r pingpong ip=::       # pingpong server:   :::9988  (ipv6)
+  xmake r pingpong -c ip=::1   # pingpong client -&gt; ::1:9988
+</code></pre>
+
+<ul>
+<li>编译 gen</li>
+</ul>
+
+<pre><code class="language-sh">  # 建议将 gen 放到系统目录下(如 /usr/local/bin/).
+  xmake build gen
+  gen hello_world.proto
+</code></pre>
+
+<p><code>proto</code> 文件格式可以参考 <a href="https://github.com/idealvin/co/blob/master/test/__/rpc/hello_world.proto">hello_world.proto</a>。</p>
+
+<ul>
+<li>安装</li>
+</ul>
+
+<pre><code class="language-sh">  # 默认安装头文件、libco、gen
+  xmake install -o pkg          # 打包安装到 pkg 目录
+  xmake i -o pkg                # 同上
+  xmake install -o /usr/local   # 安装到 /usr/local 目录
+</code></pre>
+
+<h3 id="cmake">cmake</h3>
+
+<p><a href="https://github.com/izhengfan">izhengfan</a> 帮忙提供了 cmake 支持:<br />
+- 默认只编译 <code>libco</code> 与 <code>gen</code>.
+- 编译生成的库文件在 build/lib 目录下，可执行文件在 build/bin 目录下.
+- 可以用 <code>BUILD_ALL</code> 指定编译所有项目.
+- 可以用 <code>CMAKE_INSTALL_PREFIX</code> 指定安装目录.</p>
+
+<pre><code class="language-sh">mkdir build &amp;&amp; cd build
+cmake ..
+cmake .. -DBUILD_ALL=ON -DCMAKE_INSTALL_PREFIX=pkg
+make -j8
+make install
+</code></pre>
+
+<!--
+<div STYLE="page-break-after: always;"></div>
+-->
+
+<h2 id="23-结束语">23. 结束语</h2>
+
+<p>这份文档其实还可以写得更详细一点，终因语言乏力、精力有限作罢，只能说声抱歉了。文档中难免有些疏漏、错误之处，敬请海涵与指正！</p>
+
+<ul>
+<li><p>有问题请提交到 <a href="https://github.com/idealvin/co/">github</a>.</p></li>
+
+<li><p>赞助、商务合作请联系 <code>idealvin@qq.com</code>.</p></li>
+
+<li><p>支持作者请扫码:</p></li>
+</ul>
+
+<p><font face="Arial" size=3>
+<img src="https://github.com/idealvin/docs/raw/master/img/wxzfb.png" alt="" align="center" width="668">
+</font></p>
+
+
+  <footer>
+  
+
+
+
+<nav class="post-nav">
+  <ul>
+    
+    <li class="active">
+      <span class="date">&rtrif; 2020/07/23&emsp;</span>
+      <a href="/coding/2020/07/co/">C&#43;&#43; 基础库 CO 参考文档 v1.2</a>     
+    </li>
+    
+    <li>
+      <span class="date">&rtrif; 2018/10/09&emsp;</span>
+      <a href="/coding/2018/10/namespace-log/">解决 namespace log 与 math 库 log() 函数的冲突</a>
+    </li>
+    
+  </ul>
+</nav>
+
+<link rel="stylesheet" href="//cdn.bootcss.com/gitalk/1.6.2/gitalk.min.css">
+<script src="//cdn.bootcss.com/gitalk/1.6.2/gitalk.min.js"></script>
+<div id="gitalk-container"></div>     
+<script type="text/javascript">
+  var gitalk = new Gitalk({
+    clientID: '78371628e00f43aff18e',
+    clientSecret: '6905d0b807b7008ea04b420bb9fd9a7f390ec400',
+    repo: 'gitalk',
+    owner: 'idealvin',
+    admin: ['idealvin'],
+    id: location.pathname,
+    language: 'zh-CN',
+    distractionFreeMode: false
+  })
+  
+  gitalk.render('gitalk-container');
+</script>
+
+
+  
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/9.12.0/languages/cpp.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/9.12.0/languages/bash.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+  
+  <hr>
+  <div class="copyright">&copy;2018-2020 <a href="/">Alvin Yih</a> | <a href="https://github.com/idealvin">Github</a></div>
+  
+  </footer>
+  </article>
+  
+  
+  </body>
+</html>
+

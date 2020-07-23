@@ -6,10 +6,20 @@
     <description>Recent content on Alvin&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 09 Oct 2018 23:07:10 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 23 Jul 2020 12:53:12 +0800</lastBuildDate>
     
 	<atom:link href="https://idealvin.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>C&#43;&#43; 基础库 CO 参考文档 v1.2</title>
+      <link>https://idealvin.github.io/coding/2020/07/co/</link>
+      <pubDate>Thu, 23 Jul 2020 12:53:12 +0800</pubDate>
+      
+      <guid>https://idealvin.github.io/coding/2020/07/co/</guid>
+      <description>CO 是一个优雅、高效的 C++ 基础库，支持 Linux, Windows 与 Mac 平台。本文档将介绍 CO 的功能组件及使用方法。
+ 1. 概览 2. 基本定义(def)  2.1 定长整数类型 2.2 读写 1、2、4、8 字节 2.3 DISALLOW_COPY_AND_ASSIGN 2.4 force_cast 强制类型转换 2.5 __forceinline 与 __thread 2.6 unlikely  3. 原子操作(atomic) 4. 随机数生成器(random) 5. LruMap 6. 基本类型快速转字符串(fast) 7. 高效字符流(fastream) 8. 高效字符串(fastring) 9. 字符串操作(str)  9.1 切分字符串(split) 9.2 修剪字符串(strip) 9.3 替换子串(replace) 9.4 字符串转内置类型 9.5 内置类型转字符串 9.6 debug string  10. 命令行参数与配置文件解析库(flag)  10.1 基本概念  10.</description>
+    </item>
     
     <item>
       <title>解决 namespace log 与 math 库 log() 函数的冲突</title>
