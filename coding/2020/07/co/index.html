@@ -1089,8 +1089,8 @@ y.parse_from(x.str());
 <p>json 字符串支持包含 <code>&quot;</code> 与 <code>\</code>，也支持 <code>\r, \n, \t</code> 等转义字符。但包含这些特殊字符，会降低 <code>json::parse()</code> 的性能，实际应用中应该尽量少用。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">Json x <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;hello</span><span style="color:#ae81ff">\r\n\t</span><span style="color:#e6db74">&#34;</span>;      <span style="color:#75715e">// ok, 字符串中包含转义字符
 </span><span style="color:#75715e"></span>Json x <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;hello</span><span style="color:#ae81ff">\&#34;</span><span style="color:#e6db74">world&#34;</span>;     <span style="color:#75715e">// ok, 字符串中包含 &#34;
-</span><span style="color:#75715e"></span>Json x <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;hello</span><span style="color:#ae81ff">\\</span><span style="color:#e6db74">world&#34;</span>;     <span style="color:#f92672">//</span> ok, <span style="color:#960050;background-color:#1e0010">字符串中包含</span> \
-</code></pre></div><h2 id="14-时间库time">14. 时间库(time)</h2>
+</span><span style="color:#75715e"></span>Json x <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;hello</span><span style="color:#ae81ff">\\</span><span style="color:#e6db74">world&#34;</span>;     <span style="color:#75715e">// ok, 字符串中包含 \ 
+</span></code></pre></div><h2 id="14-时间库time">14. 时间库(time)</h2>
 <p>include: <a href="https://github.com/idealvin/co/blob/master/include/co/time.h">co/time.h</a>.</p>
 <h3 id="141-monotonic-time">14.1 monotonic time</h3>
 <p><code>monotonic time</code> 在多数平台实现为自系统启动开始的时间，一般用于计时，比系统时间稳定，不受系统时间的影响。</p>
