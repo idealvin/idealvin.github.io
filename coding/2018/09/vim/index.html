@@ -17,10 +17,10 @@
       
       <meta property="description" content="Vim 是个不错的文本编辑器，它最方便之处是，不用上下左右键就可以快速游走于文本之中。
 [&amp;hellip;] vim 的配置文件一般是 home 目录下的 .vimrc，参考配置如下：
-set nocompatible set fencs=utf-8,chinese,latin-1 &amp;quot;save file without permission&amp;quot; cmap w!! w !sudo &amp;hellip;">
+[&amp;hellip;] set nocompatible set fencs=utf-8,chinese,latin-1 &amp;#34;save file without permission&amp;#34; cmap w!! &amp;hellip;">
       <meta property="og:description" content="Vim 是个不错的文本编辑器，它最方便之处是，不用上下左右键就可以快速游走于文本之中。
 [&amp;hellip;] vim 的配置文件一般是 home 目录下的 .vimrc，参考配置如下：
-set nocompatible set fencs=utf-8,chinese,latin-1 &amp;quot;save file without permission&amp;quot; cmap w!! w !sudo &amp;hellip;">
+[&amp;hellip;] set nocompatible set fencs=utf-8,chinese,latin-1 &amp;#34;save file without permission&amp;#34; cmap w!! &amp;hellip;">
       
     
 
@@ -60,25 +60,15 @@ set nocompatible set fencs=utf-8,chinese,latin-1 &amp;quot;save file without per
   <ul>
   
   
-  <li>
-    <a href="/">主页</a>
-  </li>
+  <li><a href="/">主页</a></li>
   
-  <li>
-    <a href="/about/">关于</a>
-  </li>
+  <li><a href="/about/">关于</a></li>
   
-  <li class="active">
-    <a href="/coding/">编程</a>
-  </li>
+  <li><a href="/coding/">编程</a></li>
   
-  <li>
-    <a href="/essay/">随笔</a>
-  </li>
+  <li><a href="/essay/">随笔</a></li>
   
-  <li>
-    <a href="/donate/">捐赠</a>
-  </li>
+  <li><a href="/donate/">捐赠</a></li>
   
   
   </ul>
@@ -97,23 +87,18 @@ set nocompatible set fencs=utf-8,chinese,latin-1 &amp;quot;save file without per
 
 
 
-
-
 <p><a href="https://www.vim.org/">Vim</a> 是个不错的文本编辑器，它最方便之处是，不用上下左右键就可以快速游走于文本之中。</p>
-
 <h2 id="vim-配置">vim 配置</h2>
-
 <p>vim 的配置文件一般是 home 目录下的 .vimrc，参考配置如下：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">set nocompatible
+set fencs<span style="color:#f92672">=</span>utf-8,chinese,latin-1
 
-<pre><code class="language-sh">set nocompatible
-set fencs=utf-8,chinese,latin-1
-
-&quot;save file without permission&quot;
+<span style="color:#e6db74">&#34;save file without permission&#34;</span>
 cmap w!! w !sudo tee % &gt; /dev/null &lt;CR&gt;
 
-iab #i #include
-iab #d #define
-iab #p #pragma
+iab <span style="color:#75715e">#i #include</span>
+iab <span style="color:#75715e">#d #define</span>
+iab <span style="color:#75715e">#p #pragma</span>
 
 inoremap jj &lt;Esc&gt;
 inoremap &lt;F1&gt; &lt;Esc&gt;
@@ -122,70 +107,62 @@ nnoremap ; :
 nnoremap H ^
 nnoremap L $
 
-&quot;share clips with windows&quot;
-set clipboard+=unnamed
+<span style="color:#e6db74">&#34;share clips with windows&#34;</span>
+set clipboard<span style="color:#f92672">+=</span>unnamed
 
-&quot;backspace and cursor keys wrap to previous/next line&quot;
-set backspace=indent,eol,start whichwrap+=&lt;,&gt;,[,]
+<span style="color:#e6db74">&#34;backspace and cursor keys wrap to previous/next line&#34;</span>
+set backspace<span style="color:#f92672">=</span>indent,eol,start whichwrap<span style="color:#f92672">+=</span>&lt;,&gt;,<span style="color:#f92672">[</span>,<span style="color:#f92672">]</span>
 
-set history=128
+set history<span style="color:#f92672">=</span><span style="color:#ae81ff">128</span>
 set nobackup
 setlocal noswapfile
-set bufhidden=hide
+set bufhidden<span style="color:#f92672">=</span>hide
 set confirm
 
 set number
 set smartindent
-set tabstop=4
-set shiftwidth=4
-&quot;set nofoldenable
-
-set incsearch
-set nohlsearch
-&quot;set ignorecase
+set tabstop<span style="color:#f92672">=</span><span style="color:#ae81ff">4</span>
+set shiftwidth<span style="color:#f92672">=</span><span style="color:#ae81ff">4</span>
+<span style="color:#e6db74">&#34;set nofoldenable
+</span><span style="color:#e6db74">
+</span><span style="color:#e6db74">set incsearch
+</span><span style="color:#e6db74">set nohlsearch
+</span><span style="color:#e6db74">&#34;</span>set ignorecase
 
 set showcmd
 set showmatch
-set matchtime=1          &quot;0.1s
-
-set wildmenu             &quot;auto complete for cmd
+set matchtime<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>          <span style="color:#e6db74">&#34;0.1s
+</span><span style="color:#e6db74">
+</span><span style="color:#e6db74">set wildmenu             &#34;</span>auto complete <span style="color:#66d9ef">for</span> cmd
 set ruler
-&quot;set cmdheight=1
-
-set scrolloff=3
-set fillchars=vert:\ ,stl:\ ,stlnc:\
-
-if has('mouse')
-  set mouse=c
-endif
-
-set selection=exclusive
-set selectmode=mouse,key
-
-set report=0
-set visualbell
-set noerrorbells
-set shortmess=atI
-set vb t_vb=
-
-filetype on              &quot;detect file type
-filetype indent on       &quot;indent for specific file types
-syntax on
-</code></pre>
-
-<p>值得一提的是 <code>inoremap jj &lt;Esc&gt;</code>，在 insert 模式下，输入 <code>jj</code> 切换回 normal 模式。另外将 <code>F1</code> 也映射成了 <code>Esc</code>，因为这两个键靠得太近，经常误按 F1 跳出一个帮助页面。</p>
-
+<span style="color:#e6db74">&#34;set cmdheight=1
+</span><span style="color:#e6db74">
+</span><span style="color:#e6db74">set scrolloff=3
+</span><span style="color:#e6db74">set fillchars=vert:\ ,stl:\ ,stlnc:\
+</span><span style="color:#e6db74">
+</span><span style="color:#e6db74">if has(&#39;mouse&#39;)
+</span><span style="color:#e6db74">  set mouse=c
+</span><span style="color:#e6db74">endif
+</span><span style="color:#e6db74">
+</span><span style="color:#e6db74">set selection=exclusive
+</span><span style="color:#e6db74">set selectmode=mouse,key
+</span><span style="color:#e6db74">
+</span><span style="color:#e6db74">set report=0
+</span><span style="color:#e6db74">set visualbell
+</span><span style="color:#e6db74">set noerrorbells
+</span><span style="color:#e6db74">set shortmess=atI
+</span><span style="color:#e6db74">set vb t_vb=
+</span><span style="color:#e6db74">
+</span><span style="color:#e6db74">filetype on              &#34;</span>detect file type
+filetype indent on       <span style="color:#e6db74">&#34;indent for specific file types
+</span><span style="color:#e6db74">syntax on
+</span></code></pre></div><p>值得一提的是 <code>inoremap jj &lt;Esc&gt;</code>，在 insert 模式下，输入 <code>jj</code> 切换回 normal 模式。另外将 <code>F1</code> 也映射成了 <code>Esc</code>，因为这两个键靠得太近，经常误按 F1 跳出一个帮助页面。</p>
 <h2 id="各种-ide-的-vim-插件">各种 IDE 的 vim 插件</h2>
-
-<h3 id="eclipse-vrapper">Eclipse / Vrapper</h3>
-
+<h3 id="eclipse--vrapper">Eclipse / Vrapper</h3>
 <p><a href="https://www.eclipse.org/">Eclipse</a> 是用 java 开发的一个开源 IDE，有一款开源的 vim 插件 <a href="https://github.com/vrapper/vrapper/">Vrapper</a>，问题有点多，可能大部分是 Eclipse 本身的 Bug 导致的。</p>
-
-<h3 id="clion-ideavim">CLion / Ideavim</h3>
-
+<h3 id="clion--ideavim">CLion / Ideavim</h3>
 <p><a href="https://www.jetbrains.com/">Jetbrains</a> 的 CLion，PyCharm，WebStorm，GoLand 等，体验都不错。此系列 IDE 有一个专用的 vim 插件 <a href="https://github.com/JetBrains/ideavim">ideavim</a>，可能是众多 vim 插件中最稳定的一个。参考配置 .ideavimrc 如下：</p>
-
-<pre><code class="language-sh">set nocompatible
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">set nocompatible
 set nohlsearch
 set incsearch
 set visualbell
@@ -198,61 +175,51 @@ nnoremap &lt;F1&gt; &lt;Esc&gt;
 nnoremap ; :
 nnoremap H ^
 nnoremap L $
-</code></pre>
+</code></pre></div><p>另，CLion 依赖于 CMake，需要在代码根目录创建一个 CMakeLists.txt 文件，内容大致如下：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">cmake_minimum_required<span style="color:#f92672">(</span>VERSION 3.8<span style="color:#f92672">)</span>
+project<span style="color:#f92672">(</span>xxx<span style="color:#f92672">)</span>
 
-<p>另，CLion 依赖于 CMake，需要在代码根目录创建一个 CMakeLists.txt 文件，内容大致如下：</p>
+set<span style="color:#f92672">(</span>CMAKE_CXX_STANDARD 11<span style="color:#f92672">)</span>
 
-<pre><code class="language-sh">cmake_minimum_required(VERSION 3.8)
-project(xxx)
-
-set(CMAKE_CXX_STANDARD 11)
-
-file(GLOB_RECURSE SOURCE_FILES
+file<span style="color:#f92672">(</span>GLOB_RECURSE SOURCE_FILES
     *.h *.cc *.c *.cpp
-)
+<span style="color:#f92672">)</span>
 
-include_directories(.)
+include_directories<span style="color:#f92672">(</span>.<span style="color:#f92672">)</span>
 
-add_library(xxx ${SOURCE_FILES})
-</code></pre>
-
-<h3 id="visual-studio-code-vscodevim">Visual Studio Code / VsCodeVim</h3>
-
+add_library<span style="color:#f92672">(</span>xxx <span style="color:#e6db74">${</span>SOURCE_FILES<span style="color:#e6db74">}</span><span style="color:#f92672">)</span>
+</code></pre></div><h3 id="visual-studio-code--vscodevim">Visual Studio Code / VsCodeVim</h3>
 <p><a href="https://code.visualstudio.com/">Visual Studio Code</a> 写 markdown，非常流畅。</p>
-
 <p>在 vscode 的 Extensions 栏搜索 <code>vim</code>，第一个出现的应该就是 VsCodeVim。经过几年的发展，目前已经比较稳定，体验比 ideavim 稍差。</p>
-
 <p>可以在 vscode 的 User Settings 中配置 vim：</p>
-
-<pre><code class="language-sh">{
-    &quot;editor.minimap.enabled&quot;: false,
-    &quot;vim.useCtrlKeys&quot;: false,
-    &quot;vim.overrideCopy&quot;: false,
-    &quot;vim.ignorecase&quot;: false,
-    &quot;vim.insertModeKeyBindings&quot;: [
-        {
-            &quot;before&quot;: [&quot;j&quot;,&quot;j&quot;],
-            &quot;after&quot;: [&quot;&lt;Esc&gt;&quot;]
-        }
-    ],
-    &quot;vim.normalModeKeyBindingsNonRecursive&quot;: [
-        {
-            &quot;before&quot;: [&quot;;&quot;],
-            &quot;after&quot;: [&quot;:&quot;]
-        },
-        {
-            &quot;before&quot;: [&quot;H&quot;],
-            &quot;after&quot;: [&quot;^&quot;]
-        },
-        {
-            &quot;before&quot;: [&quot;L&quot;],
-            &quot;after&quot;: [&quot;$&quot;]
-        }
-    ],
-    &quot;workbench.colorTheme&quot;: &quot;Monokai&quot;,
-}
-</code></pre>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#f92672">{</span>
+    <span style="color:#e6db74">&#34;editor.minimap.enabled&#34;</span>: false,
+    <span style="color:#e6db74">&#34;vim.useCtrlKeys&#34;</span>: false,
+    <span style="color:#e6db74">&#34;vim.overrideCopy&#34;</span>: false,
+    <span style="color:#e6db74">&#34;vim.ignorecase&#34;</span>: false,
+    <span style="color:#e6db74">&#34;vim.insertModeKeyBindings&#34;</span>: <span style="color:#f92672">[</span>
+        <span style="color:#f92672">{</span>
+            <span style="color:#e6db74">&#34;before&#34;</span>: <span style="color:#f92672">[</span><span style="color:#e6db74">&#34;j&#34;</span>,<span style="color:#e6db74">&#34;j&#34;</span><span style="color:#f92672">]</span>,
+            <span style="color:#e6db74">&#34;after&#34;</span>: <span style="color:#f92672">[</span><span style="color:#e6db74">&#34;&lt;Esc&gt;&#34;</span><span style="color:#f92672">]</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">]</span>,
+    <span style="color:#e6db74">&#34;vim.normalModeKeyBindingsNonRecursive&#34;</span>: <span style="color:#f92672">[</span>
+        <span style="color:#f92672">{</span>
+            <span style="color:#e6db74">&#34;before&#34;</span>: <span style="color:#f92672">[</span><span style="color:#e6db74">&#34;;&#34;</span><span style="color:#f92672">]</span>,
+            <span style="color:#e6db74">&#34;after&#34;</span>: <span style="color:#f92672">[</span><span style="color:#e6db74">&#34;:&#34;</span><span style="color:#f92672">]</span>
+        <span style="color:#f92672">}</span>,
+        <span style="color:#f92672">{</span>
+            <span style="color:#e6db74">&#34;before&#34;</span>: <span style="color:#f92672">[</span><span style="color:#e6db74">&#34;H&#34;</span><span style="color:#f92672">]</span>,
+            <span style="color:#e6db74">&#34;after&#34;</span>: <span style="color:#f92672">[</span><span style="color:#e6db74">&#34;^&#34;</span><span style="color:#f92672">]</span>
+        <span style="color:#f92672">}</span>,
+        <span style="color:#f92672">{</span>
+            <span style="color:#e6db74">&#34;before&#34;</span>: <span style="color:#f92672">[</span><span style="color:#e6db74">&#34;L&#34;</span><span style="color:#f92672">]</span>,
+            <span style="color:#e6db74">&#34;after&#34;</span>: <span style="color:#f92672">[</span><span style="color:#e6db74">&#34;</span>$<span style="color:#e6db74">&#34;</span><span style="color:#f92672">]</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">]</span>,
+    <span style="color:#e6db74">&#34;workbench.colorTheme&#34;</span>: <span style="color:#e6db74">&#34;Monokai&#34;</span>,
+<span style="color:#f92672">}</span>
+</code></pre></div>
 
   <footer>
   
@@ -315,7 +282,7 @@ add_library(xxx ${SOURCE_FILES})
 
   
   <hr>
-  <div class="copyright">&copy;2018-2020 <a href="/">Alvin Yih</a> | <a href="https://github.com/idealvin">Github</a></div>
+  <div class="copyright">©2018-2020 <a href="/">Alvin Yih</a> | <a href="https://github.com/idealvin">Github</a></div>
   
   </footer>
   </article>

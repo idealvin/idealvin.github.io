@@ -16,11 +16,11 @@
     
       
       <meta property="description" content="可以利用微软提供的 api，轻松获取当前线程的 id：
-int id = GetCurrentThreadId();   Linux  Linux 平台一般用的是 pthread 线程库，但它并不提供获取线程内部 id 的方法。可以通过系统调用得到当前线程的 id：
-#include &amp;lt;unistd.h&amp;gt; // for syscall() #include &amp;hellip;">
+[&amp;hellip;] int id = GetCurrentThreadId();  Linux  Linux 平台一般用的是 pthread 线程库，但它并不提供获取线程内部 id 的方法。可以通过系统调用得到当前线程的 id：
+[&amp;hellip;] #include &amp;lt;unistd.h&amp;gt; // for &amp;hellip;">
       <meta property="og:description" content="可以利用微软提供的 api，轻松获取当前线程的 id：
-int id = GetCurrentThreadId();   Linux  Linux 平台一般用的是 pthread 线程库，但它并不提供获取线程内部 id 的方法。可以通过系统调用得到当前线程的 id：
-#include &amp;lt;unistd.h&amp;gt; // for syscall() #include &amp;hellip;">
+[&amp;hellip;] int id = GetCurrentThreadId();  Linux  Linux 平台一般用的是 pthread 线程库，但它并不提供获取线程内部 id 的方法。可以通过系统调用得到当前线程的 id：
+[&amp;hellip;] #include &amp;lt;unistd.h&amp;gt; // for &amp;hellip;">
       
     
 
@@ -60,25 +60,15 @@ int id = GetCurrentThreadId();   Linux  Linux 平台一般用的是 pthread 线�
   <ul>
   
   
-  <li>
-    <a href="/">主页</a>
-  </li>
+  <li><a href="/">主页</a></li>
   
-  <li>
-    <a href="/about/">关于</a>
-  </li>
+  <li><a href="/about/">关于</a></li>
   
-  <li class="active">
-    <a href="/coding/">编程</a>
-  </li>
+  <li><a href="/coding/">编程</a></li>
   
-  <li>
-    <a href="/essay/">随笔</a>
-  </li>
+  <li><a href="/essay/">随笔</a></li>
   
-  <li>
-    <a href="/donate/">捐赠</a>
-  </li>
+  <li><a href="/donate/">捐赠</a></li>
   
   
   </ul>
@@ -97,101 +87,72 @@ int id = GetCurrentThreadId();   Linux  Linux 平台一般用的是 pthread 线�
 
 
 
-
-
 <h2 id="不同平台获取当前线程-id-的方法">不同平台获取当前线程 id 的方法</h2>
-
 <ul>
 <li><strong>Windows</strong></li>
 </ul>
-
 <p>可以利用微软提供的 api，轻松获取当前线程的 id：</p>
-
-<pre><code class="language-cpp">int id = GetCurrentThreadId();
-</code></pre>
-
-<ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#66d9ef">int</span> id <span style="color:#f92672">=</span> GetCurrentThreadId();
+</code></pre></div><ul>
 <li><strong>Linux</strong></li>
 </ul>
-
 <p>Linux 平台一般用的是 <a href="https://en.wikipedia.org/wiki/POSIX_Threads">pthread</a> 线程库，但它并不提供获取线程内部 id 的方法。可以通过<a href="https://en.wikipedia.org/wiki/System_call">系统调用</a>得到当前线程的 id：</p>
-
-<pre><code class="language-cpp">#include &lt;unistd.h&gt;       // for syscall()
-#include &lt;sys/syscall.h&gt;  // for SYS_xxx definitions
-
-int id = syscall(SYS_gettid);
-</code></pre>
-
-<ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;unistd.h&gt;       // for syscall()</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;sys/syscall.h&gt;  // for SYS_xxx definitions</span><span style="color:#75715e">
+</span><span style="color:#75715e"></span>
+<span style="color:#66d9ef">int</span> id <span style="color:#f92672">=</span> syscall(SYS_gettid);
+</code></pre></div><ul>
 <li><strong>Mac</strong></li>
 </ul>
-
 <p>Mac 平台也可以用 <code>syscall</code> 获取当前线程的 id，与 Linux 稍有区别：</p>
-
-<pre><code class="language-cpp">#include &lt;unistd.h&gt;       // for syscall()
-#include &lt;sys/syscall.h&gt;  // for SYS_xxx definitions
-
-int id = syscall(SYS_thread_selfid); // for mac os x
-</code></pre>
-
-<p>不过在 mac os x 10.12 之后，syscall 被标记为 <strong>deprecated</strong>，所以最好还是用下面的方法取代 syscall：</p>
-
-<pre><code class="language-cpp">#include &lt;pthread.h&gt;
-
-uint64_t id;
-pthread_threadid_np(0, &amp;id); // non-posix, supported by BSD
-</code></pre>
-
-<h2 id="基于-tls-的优化">基于 TLS 的优化</h2>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;unistd.h&gt;       // for syscall()</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;sys/syscall.h&gt;  // for SYS_xxx definitions</span><span style="color:#75715e">
+</span><span style="color:#75715e"></span>
+<span style="color:#66d9ef">int</span> id <span style="color:#f92672">=</span> syscall(SYS_thread_selfid); <span style="color:#75715e">// for mac os x
+</span></code></pre></div><p>不过在 mac os x 10.12 之后，syscall 被标记为 <strong>deprecated</strong>，所以最好还是用下面的方法取代 syscall：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;pthread.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e"></span>
+<span style="color:#66d9ef">uint64_t</span> id;
+pthread_threadid_np(<span style="color:#ae81ff">0</span>, <span style="color:#f92672">&amp;</span>id); <span style="color:#75715e">// non-posix, supported by BSD
+</span></code></pre></div><h2 id="基于-tls-的优化">基于 TLS 的优化</h2>
 <p>系统调用会在用户态与内核态之间来回切换，相对比较耗时。为了避免频繁的系统调用，可以用 <a href="https://en.wikipedia.org/wiki/Thread-local_storage">TLS</a> 优化，每个线程只需一次系统调用：</p>
-
-<pre><code class="language-cpp">inline int tls_get_tid() {
-    static __thread int id = 0;
-    if (id != 0) return id;
-    id = syscall(SYS_gettid);
-    return id;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#66d9ef">inline</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">tls_get_tid</span>() {
+    <span style="color:#66d9ef">static</span> __thread <span style="color:#66d9ef">int</span> id <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+    <span style="color:#66d9ef">if</span> (id <span style="color:#f92672">!=</span> <span style="color:#ae81ff">0</span>) <span style="color:#66d9ef">return</span> id;
+    id <span style="color:#f92672">=</span> syscall(SYS_gettid);
+    <span style="color:#66d9ef">return</span> id;
 }
-</code></pre>
-
-<p>下面是一段简单的测试代码：</p>
-
-<pre><code class="language-cpp">inline int sys_get_tid() {
-    return syscall(SYS_gettid);
+</code></pre></div><p>下面是一段简单的测试代码：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#66d9ef">inline</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">sys_get_tid</span>() {
+    <span style="color:#66d9ef">return</span> syscall(SYS_gettid);
 }
 
-void fsys() {
-    int v = 0;
+<span style="color:#66d9ef">void</span> <span style="color:#a6e22e">fsys</span>() {
+    <span style="color:#66d9ef">int</span> v <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
     Timer t;
-    for (int i = 0; i &lt; 1000000; i++) {
-        v = sys_get_tid();
+    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">1000000</span>; i<span style="color:#f92672">++</span>) {
+        v <span style="color:#f92672">=</span> sys_get_tid();
     }
 
-    int64 us = t.us();
-    cout &lt;&lt; &quot;fsys use &quot; &lt;&lt; us &lt;&lt; &quot;us&quot; &lt;&lt; &quot;  id: &quot; &lt;&lt; v &lt;&lt; endl;
+    int64 us <span style="color:#f92672">=</span> t.us();
+    cout <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;fsys use &#34;</span> <span style="color:#f92672">&lt;&lt;</span> us <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;us&#34;</span> <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;  id: &#34;</span> <span style="color:#f92672">&lt;&lt;</span> v <span style="color:#f92672">&lt;&lt;</span> endl;
 }
 
-void ftls() {
-    int v = 0;
+<span style="color:#66d9ef">void</span> <span style="color:#a6e22e">ftls</span>() {
+    <span style="color:#66d9ef">int</span> v <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
     Timer t;
-    for (int i = 0; i &lt; 1000000; i++) {
-        v = tls_get_tid();
+    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">1000000</span>; i<span style="color:#f92672">++</span>) {
+        v <span style="color:#f92672">=</span> tls_get_tid();
     }
 
-    int64 us = t.us();
-    cout &lt;&lt; &quot;ftls use &quot; &lt;&lt; us &lt;&lt; &quot;us&quot; &lt;&lt; &quot;  id: &quot; &lt;&lt; v &lt;&lt; endl;
+    int64 us <span style="color:#f92672">=</span> t.us();
+    cout <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;ftls use &#34;</span> <span style="color:#f92672">&lt;&lt;</span> us <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;us&#34;</span> <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;  id: &#34;</span> <span style="color:#f92672">&lt;&lt;</span> v <span style="color:#f92672">&lt;&lt;</span> endl;
 }
-</code></pre>
-
-<p>在 Linux 系统编译执行结果如下：</p>
-
-<pre><code class="language-sh"># ./xx
-fsys use 299251us  id: 71
-ftls use 2675us  id: 71
-</code></pre>
-
-<p>可以看到 <code>TLS</code> 版本性能提升了将近 100 倍，效果非常明显。</p>
-
+</code></pre></div><p>在 Linux 系统编译执行结果如下：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#75715e"># ./xx</span>
+fsys use 299251us  id: <span style="color:#ae81ff">71</span>
+ftls use 2675us  id: <span style="color:#ae81ff">71</span>
+</code></pre></div><p>可以看到 <code>TLS</code> 版本性能提升了将近 100 倍，效果非常明显。</p>
 <p>我在 windows 上也进行了类似的测试，结果表明 TLS 对性能没什么影响，可能 windows 的 api 内部就是用 TLS 机制实现的。</p>
 
 
@@ -256,7 +217,7 @@ ftls use 2675us  id: 71
 
   
   <hr>
-  <div class="copyright">&copy;2018-2020 <a href="/">Alvin Yih</a> | <a href="https://github.com/idealvin">Github</a></div>
+  <div class="copyright">©2018-2020 <a href="/">Alvin Yih</a> | <a href="https://github.com/idealvin">Github</a></div>
   
   </footer>
   </article>

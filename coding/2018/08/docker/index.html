@@ -56,25 +56,15 @@
   <ul>
   
   
-  <li>
-    <a href="/">主页</a>
-  </li>
+  <li><a href="/">主页</a></li>
   
-  <li>
-    <a href="/about/">关于</a>
-  </li>
+  <li><a href="/about/">关于</a></li>
   
-  <li class="active">
-    <a href="/coding/">编程</a>
-  </li>
+  <li><a href="/coding/">编程</a></li>
   
-  <li>
-    <a href="/essay/">随笔</a>
-  </li>
+  <li><a href="/essay/">随笔</a></li>
   
-  <li>
-    <a href="/donate/">捐赠</a>
-  </li>
+  <li><a href="/donate/">捐赠</a></li>
   
   
   </ul>
@@ -93,105 +83,72 @@
 
 
 
-
-
 <h2 id="docker-常用命令">docker 常用命令</h2>
-
 <ul>
 <li>基本命令</li>
 </ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">docker images                       <span style="color:#75715e"># 列出镜像</span>
+docker ps -a                        <span style="color:#75715e"># 列出容器</span>
+docker rm  container_id             <span style="color:#75715e"># 删除容器</span>
+docker rmi image_id                 <span style="color:#75715e"># 删除镜像</span>
+docker tag image_id rep:tag         <span style="color:#75715e"># 修改tag</span>
+docker commit container_id rep:tag  <span style="color:#75715e"># 保存容器变更</span>
 
-<pre><code class="language-sh">docker images                       # 列出镜像
-docker ps -a                        # 列出容器
-docker rm  container_id             # 删除容器
-docker rmi image_id                 # 删除镜像
-docker tag image_id rep:tag         # 修改tag
-docker commit container_id rep:tag  # 保存容器变更
-
-docker save -o xx.img image_id      # 保存镜像
-docker save image_id &gt; xx.img       # 保存镜像
-docker load &lt; xx.img                # 加载镜像
-</code></pre>
-
-<ul>
+docker save -o xx.img image_id      <span style="color:#75715e"># 保存镜像</span>
+docker save image_id &gt; xx.img       <span style="color:#75715e"># 保存镜像</span>
+docker load &lt; xx.img                <span style="color:#75715e"># 加载镜像</span>
+</code></pre></div><ul>
 <li>创建并运行容器</li>
 </ul>
-
-<pre><code class="language-sh"># 在容器中运行bash
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="color:#75715e"># 在容器中运行bash</span>
 docker run -i -t rep:tag /bin/bash 
 
-# -v 将本机目录映射到docker容器中
+<span style="color:#75715e"># -v 将本机目录映射到docker容器中</span>
 docker run -i -t -v /host_path/:/docker_path rep:tag /bin/bash
-</code></pre>
-
-<ul>
+</code></pre></div><ul>
 <li>启动已存在的容器</li>
 </ul>
-
-<pre><code class="language-sh">docker start container_id &amp;&amp; docker exec -it container_id /bin/bash
-</code></pre>
-
-<h2 id="镜像加速">镜像加速</h2>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">docker start container_id <span style="color:#f92672">&amp;&amp;</span> docker exec -it container_id /bin/bash
+</code></pre></div><h2 id="镜像加速">镜像加速</h2>
 <p>国内上 docker hub 较慢，可以用<a href="https://account.aliyun.com/login/login.htm?oauth_callback=https%3A%2F%2Fcr.console.aliyun.com%2F#/accelerator">阿里云镜像加速</a>。</p>
-
 <ul>
 <li>debian 8</li>
 </ul>
-
 <p>修改 /etc/systemd/system/multi-user.target.wants/docker.service:</p>
-
-<pre><code class="language-sh">ExecStart: --registry-mirror=https://xxx.mirror.aliyuncs.commit
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">ExecStart: --registry-mirror<span style="color:#f92672">=</span>https://xxx.mirror.aliyuncs.commit
 systemctl daemon-reload
 systemctl restart docker
-</code></pre>
-
-<ul>
+</code></pre></div><ul>
 <li>mac</li>
 </ul>
-
 <p>任务栏点击 docker 图标，-&gt; Preferences -&gt; Daemon -&gt; Registry mirrors，列表中填上加速器地址即可。</p>
-
 <ul>
 <li>win10</li>
 </ul>
-
 <p>docker 图标右键菜单选择 settings，左侧 daemon 导航栏，开启 Advanced 配置:</p>
-
-<pre><code class="language-json">&quot;registry-mirrors&quot;: [
-    &quot;https://xxx.mirror.aliyuncs.com&quot;
-],
-</code></pre>
-
-<h2 id="centos-搭建-c-c-编译环境">centos 搭建 C/C++ 编译环境</h2>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json"><span style="color:#e6db74">&#34;registry-mirrors&#34;</span><span style="color:#960050;background-color:#1e0010">:</span> [
+    <span style="color:#e6db74">&#34;https://xxx.mirror.aliyuncs.com&#34;</span>
+]<span style="color:#960050;background-color:#1e0010">,</span>
+</code></pre></div><h2 id="centos-搭建-cc-编译环境">centos 搭建 C/C++ 编译环境</h2>
 <ul>
 <li>获取 centos 镜像</li>
 </ul>
-
-<pre><code class="language-sh">docker pull centos
-</code></pre>
-
-<ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">docker pull centos
+</code></pre></div><ul>
 <li>启动 centos 容器</li>
 </ul>
-
-<pre><code class="language-sh">docker run -it centos:latest /bin/bash
-</code></pre>
-
-<ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">docker run -it centos:latest /bin/bash
+</code></pre></div><ul>
 <li>C++ 编译环境</li>
 </ul>
-
-<pre><code class="language-sh">yum install gcc gcc-c++ make -y
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">yum install gcc gcc-c++ make -y
 yum install flex bison -y
 yum install cmake autoconf automake binutils gettext libtool patch pkgconfig -y
 yum install vim -y
 yum install git -y
 yum install expect -y
 yum clean all
-</code></pre>
-
+</code></pre></div>
 
   <footer>
   
@@ -254,7 +211,7 @@ yum clean all
 
   
   <hr>
-  <div class="copyright">&copy;2018-2020 <a href="/">Alvin Yih</a> | <a href="https://github.com/idealvin">Github</a></div>
+  <div class="copyright">©2018-2020 <a href="/">Alvin Yih</a> | <a href="https://github.com/idealvin">Github</a></div>
   
   </footer>
   </article>

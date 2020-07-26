@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Coding on Alvin&#39;s blog</title>
@@ -6,10 +6,22 @@
     <description>Recent content in Coding on Alvin&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 23 Jul 2020 12:53:12 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 27 Jul 2020 03:11:44 +0800</lastBuildDate>
     
 	<atom:link href="https://idealvin.github.io/coding/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Documents for co v1.2</title>
+      <link>https://idealvin.github.io/coding/2020/07/co_en/</link>
+      <pubDate>Mon, 27 Jul 2020 03:11:44 +0800</pubDate>
+      
+      <guid>https://idealvin.github.io/coding/2020/07/co_en/</guid>
+      <description>Section 1-10 was translated by Leedehai, 11-15 was translated by daidai21. Thanks here.
+CO is an elegant and efficient C ++ basic library that supports Linux, Windows and Mac platforms. This document will introduce the components of CO and their usages.
+1. Overview CO pursues minimalism and efficiency. It does not rely on third-party libraries such as boost, and uses only a few C++11 features.
+ CO contains the following functional components:  Basic definitions (def) Atomic operations (atomic) Fast random number generator (random) LruMap Fast string casting for basic types (fast) Efficient byte stream (fastream) Efficient strings (fastring) String operations (str) Command line arguments and configuration file parsing library (flag) Efficient streaming log library (log) Unit testing framework (unitest) Efficient json library (json) Time library (time) Thread library (thread) Coroutine library (co) Network library (so) Hash library Path library File system operations (fs) System operations (os)    2.</description>
+    </item>
     
     <item>
       <title>C&#43;&#43; 基础库 CO 参考文档 v1.2</title>
@@ -18,7 +30,9 @@
       
       <guid>https://idealvin.github.io/coding/2020/07/co/</guid>
       <description>CO 是一个优雅、高效的 C++ 基础库，支持 Linux, Windows 与 Mac 平台。本文档将介绍 CO 的功能组件及使用方法。
- 1. 概览 2. 基本定义(def)  2.1 定长整数类型 2.2 读写 1、2、4、8 字节 2.3 DISALLOW_COPY_AND_ASSIGN 2.4 force_cast 强制类型转换 2.5 __forceinline 与 __thread 2.6 unlikely  3. 原子操作(atomic) 4. 随机数生成器(random) 5. LruMap 6. 基本类型快速转字符串(fast) 7. 高效字符流(fastream) 8. 高效字符串(fastring) 9. 字符串操作(str)  9.1 切分字符串(split) 9.2 修剪字符串(strip) 9.3 替换子串(replace) 9.4 字符串转内置类型 9.5 内置类型转字符串 9.6 debug string  10. 命令行参数与配置文件解析库(flag)  10.1 基本概念  10.</description>
+1. 概览 CO 追求极简、高效，不依赖于 boost 等三方库，仅使用了少量的 C++11 特性。
+ CO 包含的功能组件：  基本定义(def) 原子操作(atomic) 随机数生成器(random) LruMap 基本类型快速转字符串(fast) 高效字符流(fastream) 高效字符串(fastring) 字符串操作(str) 命令行参数与配置文件解析库(flag) 高效流式日志库(log) 单元测试框架(unitest) 高效 json 库(json) 时间库(time) 线程库(thread) 协程库(co) 网络库(so) hash 库(hash) path 库(path) 文件系统操作(fs) 系统操作(os)    2. 基本定义(def) include: co/def.h.
+2.1 定长整数类型 int8 int16 int32 int64 uint8 uint16 uint32 uint64 这些类型在不同平台的长度是一致的，不存在可移植性问题。Google Code Style 建议除了 int，不要使用 short, long, long long 等内置整数类型。</description>
     </item>
     
     <item>
@@ -29,9 +43,9 @@
       <guid>https://idealvin.github.io/coding/2018/10/namespace-log/</guid>
       <description>C++ 中，在全局范围内定义 namespace log 时，编译器报错，排查后发现原因是与 math 库中的 log() 函数有冲突。将 log 换成其他的名字，可以解决冲突，但仅仅为了一个几乎用不到的函数，就做出如此巨大的让步，多少有点不甘心。
 经过研究，最终找到一个比较完美的解决方案：
-namespace ___ { namespace log { void init() { std::cout &amp;lt;&amp;lt; &amp;quot;log::init()&amp;quot; &amp;lt;&amp;lt; std::endl; } } // namespace log } // namespace ___ using namespace ___;  上面的代码耍了一个小技巧，将 namespace log 嵌套定义在 namespace ___ 内，然后用 using namespace ___; 将 log 引入全局范围内。
+namespace ___ { namespace log { void init() { std::cout &amp;lt;&amp;lt; &amp;#34;log::init()&amp;#34; &amp;lt;&amp;lt; std::endl; } } // namespace log } // namespace ___  using namespace ___; 上面的代码耍了一个小技巧，将 namespace log 嵌套定义在 namespace ___ 内，然后用 using namespace ___; 将 log 引入全局范围内。
 下面是一段测试代码：
-#include &amp;lt;iostream&amp;gt; #include &amp;lt;math.h&amp;gt; namespace ___ { namespace log { void init() { std::cout &amp;lt;&amp;lt; &amp;quot;log::init()&amp;quot; &amp;lt;&amp;lt; std::endl; } } // namespace log } // namespace ___ using namespace ___; int main() { log::init(); std::cout &amp;lt;&amp;lt; ::log(3.</description>
+#include &amp;lt;iostream&amp;gt;#include &amp;lt;math.h&amp;gt; namespace ___ { namespace log { void init() { std::cout &amp;lt;&amp;lt; &amp;#34;log::init()&amp;#34; &amp;lt;&amp;lt; std::endl; } } // namespace log } // namespace ___  using namespace ___; int main() { log::init(); std::cout &amp;lt;&amp;lt; ::log(3.</description>
     </item>
     
     <item>
@@ -41,9 +55,9 @@ namespace ___ { namespace log { void init() { std::cout &amp;lt;&amp;lt; &amp;qu
       
       <guid>https://idealvin.github.io/coding/2018/09/get-current-thread-id/</guid>
       <description>不同平台获取当前线程 id 的方法  Windows  可以利用微软提供的 api，轻松获取当前线程的 id：
-int id = GetCurrentThreadId();   Linux  Linux 平台一般用的是 pthread 线程库，但它并不提供获取线程内部 id 的方法。可以通过系统调用得到当前线程的 id：
-#include &amp;lt;unistd.h&amp;gt; // for syscall() #include &amp;lt;sys/syscall.h&amp;gt; // for SYS_xxx definitions int id = syscall(SYS_gettid);   Mac  Mac 平台也可以用 syscall 获取当前线程的 id，与 Linux 稍有区别：
-#include &amp;lt;unistd.h&amp;gt; // for syscall() #include &amp;lt;sys/syscall.h&amp;gt; // for SYS_xxx definitions int id = syscall(SYS_thread_selfid); // for mac os x  不过在 mac os x 10.</description>
+int id = GetCurrentThreadId();  Linux  Linux 平台一般用的是 pthread 线程库，但它并不提供获取线程内部 id 的方法。可以通过系统调用得到当前线程的 id：
+#include &amp;lt;unistd.h&amp;gt; // for syscall()#include &amp;lt;sys/syscall.h&amp;gt; // for SYS_xxx definitions int id = syscall(SYS_gettid);  Mac  Mac 平台也可以用 syscall 获取当前线程的 id，与 Linux 稍有区别：
+#include &amp;lt;unistd.h&amp;gt; // for syscall()#include &amp;lt;sys/syscall.h&amp;gt; // for SYS_xxx definitions int id = syscall(SYS_thread_selfid); // for mac os x 不过在 mac os x 10.</description>
     </item>
     
     <item>
@@ -54,7 +68,7 @@ int id = GetCurrentThreadId();   Linux  Linux 平台一般用的是 pthread 线�
       <guid>https://idealvin.github.io/coding/2018/09/vim/</guid>
       <description>Vim 是个不错的文本编辑器，它最方便之处是，不用上下左右键就可以快速游走于文本之中。
 vim 配置 vim 的配置文件一般是 home 目录下的 .vimrc，参考配置如下：
-set nocompatible set fencs=utf-8,chinese,latin-1 &amp;quot;save file without permission&amp;quot; cmap w!! w !sudo tee % &amp;gt; /dev/null &amp;lt;CR&amp;gt; iab #i #include iab #d #define iab #p #pragma inoremap jj &amp;lt;Esc&amp;gt; inoremap &amp;lt;F1&amp;gt; &amp;lt;Esc&amp;gt; nnoremap &amp;lt;F1&amp;gt; &amp;lt;Esc&amp;gt; nnoremap ; : nnoremap H ^ nnoremap L $ &amp;quot;share clips with windows&amp;quot; set clipboard+=unnamed &amp;quot;backspace and cursor keys wrap to previous/next line&amp;quot; set backspace=indent,eol,start whichwrap+=&amp;lt;,&amp;gt;,[,] set history=128 set nobackup setlocal noswapfile set bufhidden=hide set confirm set number set smartindent set tabstop=4 set shiftwidth=4 &amp;quot;set nofoldenable set incsearch set nohlsearch &amp;quot;set ignorecase set showcmd set showmatch set matchtime=1 &amp;quot;0.</description>
+set nocompatible set fencs=utf-8,chinese,latin-1 &amp;#34;save file without permission&amp;#34; cmap w!! w !sudo tee % &amp;gt; /dev/null &amp;lt;CR&amp;gt; iab #i #include iab #d #define iab #p #pragma inoremap jj &amp;lt;Esc&amp;gt; inoremap &amp;lt;F1&amp;gt; &amp;lt;Esc&amp;gt; nnoremap &amp;lt;F1&amp;gt; &amp;lt;Esc&amp;gt; nnoremap ; : nnoremap H ^ nnoremap L $ &amp;#34;share clips with windows&amp;#34; set clipboard+=unnamed &amp;#34;backspace and cursor keys wrap to previous/next line&amp;#34; set backspace=indent,eol,start whichwrap+=&amp;lt;,&amp;gt;,[,] set history=128 set nobackup setlocal noswapfile set bufhidden=hide set confirm set number set smartindent set tabstop=4 set shiftwidth=4 &amp;#34;set nofoldenable set incsearch set nohlsearch &amp;#34;set ignorecase set showcmd set showmatch set matchtime=1 &amp;#34;0.</description>
     </item>
     
     <item>
@@ -83,8 +97,8 @@ set nocompatible set fencs=utf-8,chinese,latin-1 &amp;quot;save file without per
 C++ 为了兼容 C，没有禁止隐式转换，但对于不安全的类型转换，C++ 编译器会给出警告信息。如从 short 到 int 的隐式转换，不会丢失数据，C++ 编译器不会说什么。但从 int 到 short 的转换，可能丢失数据，C++ 编译器会无条件的发出警告，除非你显示的将 int 转换为 short。
 对 C++ 编译器给出的警告信息，必须足够重视，通常能够避免一大堆不必要的错误。
 内联(inline)函数 在 C/C++ 中，函数的调用有一定的开销，这通常会在频繁调用一些短函数时造成性能损失。C 语言中可以用宏定义避免函数调用，如像下面这样：
-# define min(x, y) ((x) &amp;lt; (y) ? (x) : (y))  但用宏写的代码，存在一些安全隐患。考虑下面的代码：
-int x = min(func(), v);  按宏定义展开后，func() 函数可能被调用两次，这通常不是我们想要的行为。
+# define min(x, y) ((x) &amp;lt; (y) ? (x) : (y)) 但用宏写的代码，存在一些安全隐患。考虑下面的代码：
+int x = min(func(), v); 按宏定义展开后，func() 函数可能被调用两次，这通常不是我们想要的行为。
 C++ 则引入内联函数，兼顾性能的同时，又避免了宏的各种危害。可以显示的将函数声明为 inline，像下面这样：
 inline int min(int x, int y) { return x &amp;lt; y ?</description>
     </item>
@@ -97,10 +111,10 @@ inline int min(int x, int y) { return x &amp;lt; y ?</description>
       <guid>https://idealvin.github.io/coding/2018/08/hugo/</guid>
       <description>简介 Hugo 是用 go 语言实现的一款静态网站生成器，速度比 Hexo 快得多。Hugo 只有一个二进制可执行文件，不用安装 go 就可以运行，与 Hexo 相比省事多了，Hexo 需要安装 nodejs 以及一大堆的 nodejs 包。
 快速入门 1. 安装 Hugo 的安装很简单，去 github 上下载已经编译好的二进制文件，Linux/Mac 等系统可以放到 /usr/local/bin 下面，windows 可能需要修改系统环境变量中的 PATH。总之，能在终端执行 hugo 命令就可以了。
-2. 生成站点目录 hugo new site xx.com  执行上面的命令后，会生成站点目录 xx.com，目录中包含如下内容：
-archetypes/ config.toml content/ resources/ static/ themes/  其中 config.toml 是站点配置文件，其余都是目录。
+2. 生成站点目录 hugo new site xx.com 执行上面的命令后，会生成站点目录 xx.com，目录中包含如下内容：
+archetypes/ config.toml content/ resources/ static/ themes/ 其中 config.toml 是站点配置文件，其余都是目录。
 3. 添加主题 Hugo 不自带默认主题，可以去这里挑选一个主题，官方示例用的 ananke，下载后将 ananke 目录放到 themes 目录下，然后修改 config.toml 设置主题:
-theme = &amp;quot;ananke&amp;quot;  4. 新建 markdown 文件 cd xx.</description>
+theme = &amp;#34;ananke&amp;#34; 4. 新建 markdown 文件 cd xx.com &amp;amp;&amp;amp; hugo new notes/hugo.</description>
     </item>
     
     <item>
@@ -111,12 +125,12 @@ theme = &amp;quot;ananke&amp;quot;  4. 新建 markdown 文件 cd xx.</descriptio
       <guid>https://idealvin.github.io/coding/2018/08/autohotkey/</guid>
       <description>AutoHotKey 在 linux 系统上，右键点击窗口的标题栏，选择 Always on top，就可以将窗口保持在最前，非常方便。windows 系统不带这个功能，可以用 AutoHotkey 实现。
 AutoHotkey 是款非常小巧的软件，安装后，在系统右键新建菜单中会出现 AutoHotkey Script 项，点击这个菜单，新建一个名为 always_on_top.ahk 的脚本文件，加上下面一行：
-^1:: Winset, Alwaysontop, , A  其中 ^1:: 表示绑定 ctrl+1 快捷键，可以换其他快捷键，官方文档中有详细说明。
+^1:: Winset, Alwaysontop, , A 其中 ^1:: 表示绑定 ctrl+1 快捷键，可以换其他快捷键，官方文档中有详细说明。
 双击运行上面的脚本文件，系统右下角会出现一个绿色背景的 H 图标。现在可以按 ctrl+1 将当前窗口保持在最前了，再按一次取消，还算方便。
 开机启动 如果不想每次手动执行上面的脚本，可以将它加到开机启动项里面。在注册表中找到下面的位置：
-[HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run]  新建一项就可以了。
+[HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run] 新建一项就可以了。
 如果实在是懒，可以新建一个 xx.reg 文件，内容如下：
-Windows Registry Editor Version 5.00 [HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run] &amp;quot;AlwaysOnTop&amp;quot;=&amp;quot;D:\\path\\to\\always_on_top.ahk&amp;quot;  注意脚本的路径要填正确，然后双击 xx.reg 写到注册表里就 ok 了。</description>
+Windows Registry Editor Version 5.00 [HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run] &amp;#34;AlwaysOnTop&amp;#34;=&amp;#34;D:\\path\\to\\always_on_top.ahk&amp;#34; 注意脚本的路径要填正确，然后双击 xx.reg 写到注册表里就 ok 了。</description>
     </item>
     
     <item>
@@ -125,7 +139,7 @@ Windows Registry Editor Version 5.00 [HKEY_CURRENT_USER\Software\Microsoft\Windo
       <pubDate>Fri, 17 Aug 2018 22:54:44 +0800</pubDate>
       
       <guid>https://idealvin.github.io/coding/2018/08/git/</guid>
-      <description>git 配置  基本  git config --global user.name &amp;quot;your name&amp;quot; git config --global user.email &amp;quot;your mail&amp;quot; git config --global push.default simple git config --global core.editor vim git config --global core.autocrlf false git config --global alias.ci commit git config --global alias.st status git config --global alias.co checkout git config --global alias.ls &amp;quot;log --oneline&amp;quot; git config --global alias.br branch git config --global merge.tool vimdiff   global ignore  git config --global core.</description>
+      <description>git 配置  基本  git config --global user.name &amp;#34;your name&amp;#34; git config --global user.email &amp;#34;your mail&amp;#34; git config --global push.default simple git config --global core.editor vim git config --global core.autocrlf false git config --global alias.ci commit git config --global alias.st status git config --global alias.co checkout git config --global alias.ls &amp;#34;log --oneline&amp;#34; git config --global alias.br branch git config --global merge.tool vimdiff  global ignore  git config --global core.</description>
     </item>
     
     <item>
@@ -134,7 +148,7 @@ Windows Registry Editor Version 5.00 [HKEY_CURRENT_USER\Software\Microsoft\Windo
       <pubDate>Mon, 13 Aug 2018 11:29:55 +0800</pubDate>
       
       <guid>https://idealvin.github.io/coding/2018/08/docker/</guid>
-      <description>docker 常用命令  基本命令  docker images # 列出镜像 docker ps -a # 列出容器 docker rm container_id # 删除容器 docker rmi image_id # 删除镜像 docker tag image_id rep:tag # 修改tag docker commit container_id rep:tag # 保存容器变更 docker save -o xx.img image_id # 保存镜像 docker save image_id &amp;gt; xx.img # 保存镜像 docker load &amp;lt; xx.img # 加载镜像   创建并运行容器  # 在容器中运行bash docker run -i -t rep:tag /bin/bash # -v 将本机目录映射到docker容器中 docker run -i -t -v /host_path/:/docker_path rep:tag /bin/bash   启动已存在的容器  docker start container_id &amp;amp;&amp;amp; docker exec -it container_id /bin/bash  镜像加速 国内上 docker hub 较慢，可以用阿里云镜像加速。</description>
+      <description>docker 常用命令  基本命令  docker images # 列出镜像 docker ps -a # 列出容器 docker rm container_id # 删除容器 docker rmi image_id # 删除镜像 docker tag image_id rep:tag # 修改tag docker commit container_id rep:tag # 保存容器变更 docker save -o xx.img image_id # 保存镜像 docker save image_id &amp;gt; xx.img # 保存镜像 docker load &amp;lt; xx.img # 加载镜像  创建并运行容器  # 在容器中运行bash docker run -i -t rep:tag /bin/bash # -v 将本机目录映射到docker容器中 docker run -i -t -v /host_path/:/docker_path rep:tag /bin/bash  启动已存在的容器  docker start container_id &amp;amp;&amp;amp; docker exec -it container_id /bin/bash 镜像加速 国内上 docker hub 较慢，可以用阿里云镜像加速。</description>
     </item>
     
     <item>
@@ -145,7 +159,11 @@ Windows Registry Editor Version 5.00 [HKEY_CURRENT_USER\Software\Microsoft\Windo
       <guid>https://idealvin.github.io/coding/2018/08/random/</guid>
       <description>这篇文章将介绍一种快速、高效的随机数生成算法，它从一个给定的整数开始，无重复的生成 $1$ 到 $2^{31}-2$ 之间的整数，这些数全部遍历完后，才会进入周期性循环。google 的 leveldb 中有这个算法，有兴趣可以去看看 leveldb 的源码。
 基本思想 下面将介绍这种算法的数学原理。首先记： $$m = 2^{31} - 1 = 2147483647$$ 容易验证 $m$ 是一个素数。接下来找一个小于 $m$ 的正整数 $a$，显然 $a$ 与 $m$ 互素，至于怎么选取 $a$ 后面再详述。现在从一个给定的正整数 $s_0 &amp;lt; m$ 开始，按照下面的方式生成后续的数：
- $$ s_1 \equiv s_0 \cdot a \pmod{m} \\\\ s_2 \equiv s_1 \cdot a \pmod{m} \\\\ \vdots \\\\ s_{m-1} \equiv s_{m-2} \cdot a \pmod{m} $$  符号 $\equiv$ 表示同余，$s_1$ 是 $s_0 \cdot a$ 除以 $m$ 的余数，其它类推。其中 $s_0$ 不能是 $0$ 或 $m$，否则后面的数全是 $0$。现在来证明</description>
+符号 $\equiv$ 表示同余，$s_1$ 是 $s_0 \cdot a$ 除以 $m$ 的余数，其它类推。其中 $s_0$ 不能是 $0$ 或 $m$，否则后面的数全是 $0$。现在来证明
+$$s_{m-1} = s_0$$
+这里需要用到同余的性质以及费马小定理，可以参考《费马小定理及其欧拉推广》。由同余的性质，可以得到：
+又由于 $m$ 是素数，$m$ 与小于它的 $s_1, s_2 \cdots s_{m-2}$ 均互素，因此可以得到：
+$$ s_{m-1} \equiv s_0 \cdot a^{m-1} \pmod{m} $$</description>
     </item>
     
     <item>

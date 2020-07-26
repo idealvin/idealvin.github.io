@@ -17,10 +17,10 @@
       
       <meta property="description" content="C&#43;&#43; 中，在全局范围内定义 namespace log 时，编译器报错，排查后发现原因是与 math 库中的 log() 函数有冲突。将 log 换成其他的名字，可以解决冲突，但仅仅为了一个几乎用不到的函数，就做出如此巨大的让步，多少有点不甘心。
 经过研究，最终找到一个比较完美的解决方案：
-namespace ___ { namespace log { void init() { &amp;hellip;">
+[&amp;hellip;] namespace ___ { namespace log { void &amp;hellip;">
       <meta property="og:description" content="C&#43;&#43; 中，在全局范围内定义 namespace log 时，编译器报错，排查后发现原因是与 math 库中的 log() 函数有冲突。将 log 换成其他的名字，可以解决冲突，但仅仅为了一个几乎用不到的函数，就做出如此巨大的让步，多少有点不甘心。
 经过研究，最终找到一个比较完美的解决方案：
-namespace ___ { namespace log { void init() { &amp;hellip;">
+[&amp;hellip;] namespace ___ { namespace log { void &amp;hellip;">
       
     
 
@@ -60,25 +60,15 @@ namespace ___ { namespace log { void init() { &amp;hellip;">
   <ul>
   
   
-  <li>
-    <a href="/">主页</a>
-  </li>
+  <li><a href="/">主页</a></li>
   
-  <li>
-    <a href="/about/">关于</a>
-  </li>
+  <li><a href="/about/">关于</a></li>
   
-  <li class="active">
-    <a href="/coding/">编程</a>
-  </li>
+  <li><a href="/coding/">编程</a></li>
   
-  <li>
-    <a href="/essay/">随笔</a>
-  </li>
+  <li><a href="/essay/">随笔</a></li>
   
-  <li>
-    <a href="/donate/">捐赠</a>
-  </li>
+  <li><a href="/donate/">捐赠</a></li>
   
   
   </ul>
@@ -98,55 +88,44 @@ namespace ___ { namespace log { void init() { &amp;hellip;">
 
 
 <p>C++ 中，在全局范围内定义 namespace log 时，编译器报错，排查后发现原因是与 math 库中的 log() 函数有冲突。将 log 换成其他的名字，可以解决冲突，但仅仅为了一个几乎用不到的函数，就做出如此巨大的让步，多少有点不甘心。</p>
-
 <p>经过研究，最终找到一个比较完美的解决方案：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#66d9ef">namespace</span> ___ {
+<span style="color:#66d9ef">namespace</span> log {
 
-<pre><code class="language-cpp">namespace ___ {
-namespace log {
-
-void init() {
-    std::cout &lt;&lt; &quot;log::init()&quot; &lt;&lt; std::endl;
+<span style="color:#66d9ef">void</span> <span style="color:#a6e22e">init</span>() {
+    std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;log::init()&#34;</span> <span style="color:#f92672">&lt;&lt;</span> std<span style="color:#f92672">::</span>endl;
 }
 
-} // namespace log
-} // namespace ___
-
-using namespace ___;
-</code></pre>
-
-<p>上面的代码耍了一个小技巧，将 <code>namespace log</code> 嵌套定义在 <code>namespace ___</code> 内，然后用 <code>using namespace ___;</code> 将 log 引入全局范围内。</p>
-
+} <span style="color:#75715e">// namespace log
+</span><span style="color:#75715e"></span>} <span style="color:#75715e">// namespace ___
+</span><span style="color:#75715e"></span>
+<span style="color:#66d9ef">using</span> <span style="color:#66d9ef">namespace</span> ___;
+</code></pre></div><p>上面的代码耍了一个小技巧，将 <code>namespace log</code> 嵌套定义在 <code>namespace ___</code> 内，然后用 <code>using namespace ___;</code> 将 log 引入全局范围内。</p>
 <p>下面是一段测试代码：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;iostream&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;math.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e"></span>
+<span style="color:#66d9ef">namespace</span> ___ {
+<span style="color:#66d9ef">namespace</span> log {
 
-<pre><code class="language-cpp">#include &lt;iostream&gt;
-#include &lt;math.h&gt;
-
-namespace ___ {
-namespace log {
-
-void init() {
-    std::cout &lt;&lt; &quot;log::init()&quot; &lt;&lt; std::endl;
+<span style="color:#66d9ef">void</span> <span style="color:#a6e22e">init</span>() {
+    std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;log::init()&#34;</span> <span style="color:#f92672">&lt;&lt;</span> std<span style="color:#f92672">::</span>endl;
 }
 
-} // namespace log
-} // namespace ___
+} <span style="color:#75715e">// namespace log
+</span><span style="color:#75715e"></span>} <span style="color:#75715e">// namespace ___
+</span><span style="color:#75715e"></span>
+<span style="color:#66d9ef">using</span> <span style="color:#66d9ef">namespace</span> ___;
 
-using namespace ___;
-
-int main() {
-    log::init();
-    std::cout &lt;&lt; ::log(3.2) &lt;&lt; std::endl;
-    return 0;
+<span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>() {
+    log<span style="color:#f92672">::</span>init();
+    std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> <span style="color:#f92672">::</span>log(<span style="color:#ae81ff">3.2</span>) <span style="color:#f92672">&lt;&lt;</span> std<span style="color:#f92672">::</span>endl;
+    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
 }
-</code></pre>
-
-<p>编译执行结果如下：</p>
-
-<pre><code class="language-cpp">log::init()
-1.16315
-</code></pre>
-
-<p>可以看到，前面不加 <code>::</code> 时，<code>log</code> 表示 <code>namespace ___::log</code>，而加 <code>::</code> 时，<code>::log</code> 则表示全局的 log() 函数。解决了冲突，还不影响标准库函数的使用，算是完美。</p>
+</code></pre></div><p>编译执行结果如下：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">log<span style="color:#f92672">::</span>init()
+<span style="color:#ae81ff">1.16315</span>
+</code></pre></div><p>可以看到，前面不加 <code>::</code> 时，<code>log</code> 表示 <code>namespace ___::log</code>，而加 <code>::</code> 时，<code>::log</code> 则表示全局的 log() 函数。解决了冲突，还不影响标准库函数的使用，算是完美。</p>
 
 
   <footer>
@@ -210,7 +189,7 @@ int main() {
 
   
   <hr>
-  <div class="copyright">&copy;2018-2020 <a href="/">Alvin Yih</a> | <a href="https://github.com/idealvin">Github</a></div>
+  <div class="copyright">©2018-2020 <a href="/">Alvin Yih</a> | <a href="https://github.com/idealvin">Github</a></div>
   
   </footer>
   </article>
