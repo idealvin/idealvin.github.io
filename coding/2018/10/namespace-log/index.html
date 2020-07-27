@@ -87,6 +87,7 @@
 
 
 
+
 <p>C++ 中，在全局范围内定义 namespace log 时，编译器报错，排查后发现原因是与 math 库中的 log() 函数有冲突。将 log 换成其他的名字，可以解决冲突，但仅仅为了一个几乎用不到的函数，就做出如此巨大的让步，多少有点不甘心。</p>
 <p>经过研究，最终找到一个比较完美的解决方案：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#66d9ef">namespace</span> ___ {
