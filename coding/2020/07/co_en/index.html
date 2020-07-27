@@ -370,7 +370,7 @@ atomic_compare_swap(<span style="color:#f92672">&amp;</span>p, <span style="colo
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">u32toh  u64toh  u32toa  u64toa  i32toa  i64toa  dtoa
 </code></pre></div><p><code>xtoh</code>-family converts an integer into a hexadecimal string. It caches the results corresponding to the first 256 numbers (2 bytes) in a table. Testing across platforms suggested it is 10-25 times faster than <code>snprintf</code>.</p>
 <p><code>xtoa</code>-family converts an integer into an ASCII decimal string. It caches the results corresponding to the first 10000 numbers (4-bytes). Testing across platforms suggested it is 10-25 times faster than <code>snprintf</code>.</p>
-<p><code>dtoa</code> uses the implementation by [Milo Yip] (<a href="https://github.com/miloyip),">https://github.com/miloyip),</a> see [miloyip/dtoa-benchmark] (<a href="https://github.com/miloyip/dtoa-benchmark">https://github.com/miloyip/dtoa-benchmark</a>) for details. The early implementation based on <code>LruMap</code> was deprecated.</p>
+<p><code>dtoa</code> uses the implementation by [Milo Yip] (<a href="https://github.com/miloyip),">https://github.com/miloyip),</a> see <a href="https://github.com/miloyip/dtoa-benchmark">miloyip/dtoa-benchmark</a> for details. The early implementation based on <code>LruMap</code> was deprecated.</p>
 <ul>
 <li>Examples</li>
 </ul>
