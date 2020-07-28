@@ -7,17 +7,18 @@
     <title>高效获取当前线程的 id - Alvin&#39;s blog</title>
     <meta property="og:title" content="高效获取当前线程的 id - Alvin&#39;s blog">
     
+
+    
+    <meta property="keywords" content ="thread,thread, id,syscall,GetCurrentThreadId">
+    
+
     <meta name="twitter:card" content="summary">
-
     
       
     
 
     
       
-      <meta property="description" content="可以利用微软提供的 api，轻松获取当前线程的 id：
-[&amp;hellip;] int id = GetCurrentThreadId();  Linux  Linux 平台一般用的是 pthread 线程库，但它并不提供获取线程内部 id 的方法。可以通过系统调用得到当前线程的 id：
-[&amp;hellip;] #include &amp;lt;unistd.h&amp;gt; // for &amp;hellip;">
       <meta property="og:description" content="可以利用微软提供的 api，轻松获取当前线程的 id：
 [&amp;hellip;] int id = GetCurrentThreadId();  Linux  Linux 平台一般用的是 pthread 线程库，但它并不提供获取线程内部 id 的方法。可以通过系统调用得到当前线程的 id：
 [&amp;hellip;] #include &amp;lt;unistd.h&amp;gt; // for &amp;hellip;">
@@ -25,10 +26,6 @@
     
 
     
-    
-
-    
-    <meta property="keywords" content ="thread,thread, id,syscall,GetCurrentThreadId">
     
 
     
@@ -166,26 +163,24 @@ ftls use 2675us  id: <span style="color:#ae81ff">71</span>
   <ul>
      
     <li>
-      <span class="date">&rtrif; 2018/10/09&emsp;</span>
+      <span class="post-nav-prev">&rtrif; 上一篇 &emsp;</span>
       <a href="/coding/2018/10/namespace-log/">解决 namespace log 与 math 库 log() 函数的冲突</a>
     </li>
     
-    <li class="active">
-      <span class="date">&rtrif; 2018/09/28&emsp;</span>
-      <a href="/coding/2018/09/get-current-thread-id/">高效获取当前线程的 id</a>     
-    </li>
     
     <li>
-      <span class="date">&rtrif; 2018/09/09&emsp;</span>
+      <span class="post-nav-next">&rtrif; 下一篇 &emsp;</span>
       <a href="/coding/2018/09/vim/">无处不在的 vim</a>
     </li>
     
   </ul>
 </nav>
 
+
+
 <link rel="stylesheet" href="//cdn.bootcss.com/gitalk/1.6.2/gitalk.min.css">
 <script src="//cdn.bootcss.com/gitalk/1.6.2/gitalk.min.js"></script>
-<div id="gitalk-container"></div>     
+<div id="gitalk-container"></div>
 <script type="text/javascript">
   var gitalk = new Gitalk({
     clientID: '78371628e00f43aff18e',
@@ -202,16 +197,17 @@ ftls use 2675us  id: <span style="color:#ae81ff">71</span>
 </script>
 
 
+
   
 
 
 
-<script src="//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/10.1.2/highlight.min.js"></script>
 
 
 
-<script src="//cdn.bootcss.com/highlight.js/9.12.0/languages/cpp.min.js"></script>
-<script src="//cdn.bootcss.com/highlight.js/9.12.0/languages/bash.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/10.1.2/languages/cpp.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/10.1.2/languages/bash.min.js"></script>
 <script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
 
 
