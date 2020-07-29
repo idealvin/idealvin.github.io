@@ -39,6 +39,9 @@
   </head>
 
   
+  
+  
+  
   <body class="coding">
     <header class="masthead">
       <h1><a href="/" style="border: none;"><img src="/images/logo.jpg" alt="Alvin Yih"></a></h1>
@@ -114,12 +117,15 @@ git config --global merge.tool vimdiff
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">git config --global core.excludesfile ~/.gitignore_global
 </code></pre></div><p>文件 ~/.gitignore_global 内容像下面这样：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">build
-.*
-*.o
+*.opendb
 *.exe
+*.o
 *.dblite
+*.db
 *.pyc
-*.idea
+.vscode
+.xmake
+.idea
 </code></pre></div><ul>
 <li>ssh key</li>
 </ul>
@@ -256,6 +262,7 @@ git push origin :refs/tags/v1.0  <span style="color:#75715e"># 删除远程 tag<
 
 <script src="//cdn.bootcss.com/highlight.js/10.1.2/languages/cpp.min.js"></script>
 <script src="//cdn.bootcss.com/highlight.js/10.1.2/languages/bash.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/10.1.2/languages/yaml.min.js"></script>
 <script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
 
 
@@ -272,6 +279,7 @@ git push origin :refs/tags/v1.0  <span style="color:#75715e"># 删除远程 tag<
 </script>
 </div> 
   </article>
+  
   
   </body>
 </html>

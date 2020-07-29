@@ -40,6 +40,9 @@
   </head>
 
   
+  
+  
+  
   <body class="coding">
     <header class="masthead">
       <h1><a href="/" style="border: none;"><img src="/images/logo.jpg" alt="Alvin Yih"></a></h1>
@@ -99,24 +102,50 @@
 <p>下面将介绍这种算法的数学原理。首先记：
 $$m = 2^{31} - 1 = 2147483647$$
 容易验证 $m$ 是一个<a href="https://en.wikipedia.org/wiki/Prime_number">素数</a>。接下来找一个小于 $m$ 的正整数 $a$，显然 $a$ 与 $m$ 互素，至于怎么选取 $a$ 后面再详述。现在从一个给定的正整数 $s_0 &lt; m$ 开始，按照下面的方式生成后续的数：</p>
-<!-- raw HTML omitted -->
+<div>
+$$
+s_1 \equiv s_0 \cdot a \pmod{m} \\\\ 
+s_2 \equiv s_1 \cdot a \pmod{m} \\\\ 
+\vdots \\\\ 
+s_{m-1} \equiv s_{m-2} \cdot a \pmod{m}
+$$
+</div>
 <p>符号 $\equiv$ 表示同余，$s_1$ 是 $s_0 \cdot a$ 除以 $m$ 的余数，其它类推。其中 $s_0$ 不能是 $0$ 或 $m$，否则后面的数全是 $0$。现在来证明</p>
 <p>$$s_{m-1} = s_0$$</p>
 <p>这里需要用到同余的性质以及<strong>费马小定理</strong>，可以参考《<a href="../fermat-theorem/">费马小定理及其欧拉推广</a>》。由同余的性质，可以得到：</p>
-<!-- raw HTML omitted -->
+<div>
+$$
+s_1 \cdot s_2\ \cdots\ s_{m-1} \equiv s_0 \cdot s_1\ \cdots\ s_{m-2}\ \cdot a^{m-1} \pmod{m}
+$$
+</div>
 <p>又由于 $m$ 是素数，$m$ 与小于它的 $s_1, s_2 \cdots s_{m-2}$ 均互素，因此可以得到：</p>
 <p>$$
 s_{m-1} \equiv s_0 \cdot a^{m-1} \pmod{m}
 $$</p>
 <p>即 $m$ 必定整除 <code>$s_0 \cdot a^{m-1} - s_{m-1}$</code>。另外注意到：</p>
-<!-- raw HTML omitted -->
+<div>
+$$
+s_0 \cdot a^{m-1} - s_{m-1} = s_0 \cdot (a^{m-1} - 1) + (s_0 -s_{m-1})
+$$
+</div>
 <p>由于 $m$ 与 $a$ 互素，由费马定理知 $m$ 整除 $a^{m-1} - 1$，从而推出 $m$ 整除 <code>$s_0 -s_{m-1}$</code>，这样就证明了 <code>$s_{m-1} = s_0$</code>。</p>
 <p>上面的结果表明，这种模运算，最多进行 $m-1$ 次，就会进入周期性循环。$s_0$ 作为种子数，<code>$s_1,\ s_2,\ s_3\ \cdots\ s_{m-1}$</code> 就是后续生成的随机数。如果我们能找到合适的 $a$，使得这 $m-1$ 个数都不相同(相当于不存在比 $m-1$ 更小的周期)，那么这种伪随机的效果就达到了最佳。</p>
 <h2 id="寻找合适的-a-值">寻找合适的 a 值</h2>
 <p>上面已经看到，从 $s_0$ 开始，经过 $m-1$ 次模运算后，必定有 <code>$s_{m-1} = s_0$</code>，即 $m-1$ 是它的一个周期。容易看出存在一个最小周期 $n$，$n$ 必定整除 $m-1$，否则，在 $m-1$ 次模运算后，不可能有 <code>$s_{m-1} = s_0$</code>。另外由</p>
-<!-- raw HTML omitted -->
+<div>
+$$
+s_1 \equiv s_0 \cdot a \pmod{m} \\\\ 
+s_2 \equiv s_1 \cdot a \pmod{m} \\\\ 
+\vdots \\\\ 
+s_{n} \equiv s_{n-1} \cdot a \pmod{m}
+$$
+</div>
 <p>可以得到：</p>
-<!-- raw HTML omitted -->
+<div>
+$$
+s_1 \cdot s_2\ \cdots\ s_{n} \equiv s_0 \cdot s_1\ \cdots\ s_{n-1}\ \cdot a^{n} \pmod{m}
+$$
+</div>
 <p>加上 $s_n = s_0$，得到 $a^{n} \equiv 1 \pmod{m}$，由此可知最小周期 $n$ 必定满足如下两式：</p>
 <p>$$
 m \equiv 1 \pmod{n} \\ 
@@ -224,6 +253,7 @@ $$</p>
 
 <script src="//cdn.bootcss.com/highlight.js/10.1.2/languages/cpp.min.js"></script>
 <script src="//cdn.bootcss.com/highlight.js/10.1.2/languages/bash.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/10.1.2/languages/yaml.min.js"></script>
 <script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
 
 
@@ -265,6 +295,7 @@ $$</p>
     });
 </script>
  
+  
   </body>
 </html>
 

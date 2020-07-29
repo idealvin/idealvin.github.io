@@ -6,10 +6,27 @@
     <description>Recent content on Alvin&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 27 Jul 2020 04:12:55 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 29 Jul 2020 21:05:09 +0800</lastBuildDate>
     
 	<atom:link href="https://idealvin.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>本站的一份不太详细的介绍</title>
+      <link>https://idealvin.github.io/coding/2020/07/site_upgrade/</link>
+      <pubDate>Wed, 29 Jul 2020 21:05:09 +0800</pubDate>
+      
+      <guid>https://idealvin.github.io/coding/2020/07/site_upgrade/</guid>
+      <description>近期对本站进行了更新，增加了不少新特性，同时微调了页面布局，使得网站页面看起来更加和谐、优雅。下面奉上一份不太详细的介绍 👋。
+简介 本站用 markdown 进行写作，然后用 Hugo 生成静态页面，同时部署到 github.io 与 gitee.io 上。在作者的 github 上可以找到 markdown 源文件、主题文件 与 静态页面文件。
+支持的特性 侧边栏 (sidebar) 侧边栏能提升阅读效率，带来极致的阅读体验。只需在 markdown 开头加上 toc: true，就会自动根据 markdown 中的标题生成 sidebar:
+--- title: &amp;#34;xxx&amp;#34; toc: true --- 时序图 (plantuml) plantuml 是一个极佳的画图工具，特别地，能让你飞快的画完时序图。在 markdown 中输入下面的代码看效果：
+ ```plantuml
+Alvin -&amp;gt; Bob : hello plantuml
+```
+ Alvin -&amp;gt; Bob : hello plantuml评论系统 (gitalk) gitalk 是基于 github issues 实现的评论系统，用户需要修改 comments.html 模板文件，填上自己的 gitalk 信息。
+可以在网站全局配置 config.toml: Params 中加上 comments = false，禁用评论系统。也可以针对单个页面禁用评论，只需在 markdown 开头加上 no_comment: true 或 nocom: true:</description>
+    </item>
     
     <item>
       <title>关于更新 CO 参考文档的说明</title>
@@ -180,11 +197,7 @@ Windows Registry Editor Version 5.00 [HKEY_CURRENT_USER\Software\Microsoft\Windo
       <guid>https://idealvin.github.io/coding/2018/08/random/</guid>
       <description>这篇文章将介绍一种快速、高效的随机数生成算法，它从一个给定的整数开始，无重复的生成 $1$ 到 $2^{31}-2$ 之间的整数，这些数全部遍历完后，才会进入周期性循环。google 的 leveldb 中有这个算法，有兴趣可以去看看 leveldb 的源码。
 基本思想 下面将介绍这种算法的数学原理。首先记： $$m = 2^{31} - 1 = 2147483647$$ 容易验证 $m$ 是一个素数。接下来找一个小于 $m$ 的正整数 $a$，显然 $a$ 与 $m$ 互素，至于怎么选取 $a$ 后面再详述。现在从一个给定的正整数 $s_0 &amp;lt; m$ 开始，按照下面的方式生成后续的数：
-符号 $\equiv$ 表示同余，$s_1$ 是 $s_0 \cdot a$ 除以 $m$ 的余数，其它类推。其中 $s_0$ 不能是 $0$ 或 $m$，否则后面的数全是 $0$。现在来证明
-$$s_{m-1} = s_0$$
-这里需要用到同余的性质以及费马小定理，可以参考《费马小定理及其欧拉推广》。由同余的性质，可以得到：
-又由于 $m$ 是素数，$m$ 与小于它的 $s_1, s_2 \cdots s_{m-2}$ 均互素，因此可以得到：
-$$ s_{m-1} \equiv s_0 \cdot a^{m-1} \pmod{m} $$</description>
+$$s_1 \equiv s_0 \cdot a \pmod{m} \\\\ s_2 \equiv s_1 \cdot a \pmod{m} \\\\ \vdots \\\\ s_{m-1} \equiv s_{m-2} \cdot a \pmod{m}$$符号 $\equiv$ 表示同余，$s_1$ 是 $s_0 \cdot a$ 除以 $m$ 的余数，其它类推。其中 $s_0$ 不能是 $0$ 或 $m$，否则后面的数全是 $0$。现在来证明</description>
     </item>
     
     <item>

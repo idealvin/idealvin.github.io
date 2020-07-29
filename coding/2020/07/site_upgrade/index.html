@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>本站的一份不太详细的介绍 - Alvin&#39;s Blog</title>
+    <meta property="og:title" content="本站的一份不太详细的介绍 - Alvin&#39;s Blog">
+    
+
+    
+    <meta property="keywords" content ="idealvin,Alvin,blog,about,hugo,hugo-ivy,latex,gitalk,plantuml,sidebar">
+    
+
+    <meta name="twitter:card" content="summary">
+    
+      
+    
+
+    
+      
+      <meta property="og:description" content="近期对本站进行了更新，增加了不少新特性，同时微调了页面布局，使得网站页面看起来更加和谐、优雅。下面奉上一份不太详细的介绍 👋。
+[&amp;hellip;] 本站用 markdown 进行写作，然后用 Hugo 生成静态页面，同时部署到 github.io 与 gitee.io 上。在作者的 github 上可以找到 markdown 源文件、主题文件 与 静态页面文件。
+[&amp;hellip;] 侧边栏能提 &amp;hellip;">
+      
+    
+
+    
+    
+
+    
+    <link rel="icon" href="/favicon.ico">
+    
+<link href='/css/code.css' rel='stylesheet' type='text/css' />
+
+
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    <link rel="stylesheet" href="/css/custom.css" />    
+    
+  </head>
+
+  
+  
+  
+  
+  <body class="coding">
+    <header class="masthead">
+      <h1><a href="/" style="border: none;"><img src="/images/logo.jpg" alt="Alvin Yih"></a></h1>
+
+
+
+      <nav class="menu">
+  <input id="menu-check" type="checkbox" />
+  <label id="menu-label" for="menu-check" class="unselectable">
+    <span class="icon close-icon">✕</span>
+    <span class="icon open-icon">☰</span>
+    <span class="text">Menu</span>
+  </label>
+  <ul>
+  
+  
+  <li>
+    <a href="/">主页</a>
+  </li>
+  
+  <li>
+    <a href="/about/">关于</a>
+  </li>
+  
+  <li class="active">
+    <a href="/coding/">编程</a>
+  </li>
+  
+  <li>
+    <a href="/essay/">随笔</a>
+  </li>
+  
+  <li>
+    <a href="/donate/">捐赠</a>
+  </li>
+  
+  
+  </ul>
+</nav>
+
+    </header>
+
+    <article class="main">
+      <header class="title">
+      <h1>本站的一份不太详细的介绍</h1>
+
+<h3>Alvin
+  /  2020-07-29</h3>
+<hr>
+      </header>
+
+
+
+<div class="toc">
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#简介">简介</a></li>
+    <li><a href="#支持的特性">支持的特性</a>
+      <ul>
+        <li><a href="#侧边栏-sidebar">侧边栏 (sidebar)</a></li>
+        <li><a href="#时序图-plantuml">时序图 (plantuml)</a></li>
+        <li><a href="#评论系统-gitalk">评论系统 (gitalk)</a></li>
+        <li><a href="#数学公式-latex">数学公式 (LaTex)</a></li>
+      </ul>
+    </li>
+    <li><a href="#其他细节优化">其他细节优化</a>
+      <ul>
+        <li><a href="#next-按钮">Next 按钮</a></li>
+        <li><a href="#隐藏-scroll-bar">隐藏 scroll bar</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav> 
+</div>
+
+
+<p>近期对本站进行了更新，增加了不少新特性，同时微调了页面布局，使得网站页面看起来更加和谐、优雅。下面奉上一份不太详细的介绍 👋。</p>
+<h2 id="简介">简介</h2>
+<p>本站用 markdown 进行写作，然后用 <a href="https://gohugo.io">Hugo</a> 生成静态页面，同时部署到 <a href="https://idealvin.github.io/">github.io</a> 与 <a href="https://idealvin.gitee.io/">gitee.io</a> 上。在作者的 github 上可以找到 <a href="https://github.com/idealvin/blog">markdown 源文件</a>、<a href="https://github.com/idealvin/hugo-ivy">主题文件</a> 与 <a href="https://github.com/idealvin/idealvin.github.io">静态页面文件</a>。</p>
+<h2 id="支持的特性">支持的特性</h2>
+<h3 id="侧边栏-sidebar">侧边栏 (sidebar)</h3>
+<p>侧边栏能提升阅读效率，带来极致的阅读体验。只需在 markdown 开头加上 <code>toc: true</code>，就会自动根据 markdown 中的标题生成 sidebar:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">---
+<span style="color:#66d9ef">title</span>: <span style="color:#e6db74">&#34;xxx&#34;</span>
+<span style="color:#66d9ef">toc</span>: <span style="color:#66d9ef">true</span>
+---
+</code></pre></div><h3 id="时序图-plantuml">时序图 (plantuml)</h3>
+<p><a href="https://plantuml.com/">plantuml</a> 是一个极佳的画图工具，特别地，能让你飞快的画完时序图。在 markdown 中输入下面的代码看效果：</p>
+<blockquote>
+<p>```plantuml<br>
+Alvin -&gt; Bob : hello plantuml<br>
+```</p>
+</blockquote>
+<pre><code class="language-plantuml" data-lang="plantuml">Alvin -&gt; Bob : hello plantuml
+</code></pre><h3 id="评论系统-gitalk">评论系统 (gitalk)</h3>
+<p><a href="https://github.com/gitalk/gitalk">gitalk</a> 是基于 github issues 实现的评论系统，用户需要修改 <a href="https://github.com/idealvin/blog/blob/master/themes/hugo-ivy/layouts/partials/comments.html">comments.html</a> 模板文件，填上自己的 gitalk 信息。</p>
+<p>可以在网站全局配置 <a href="https://github.com/idealvin/blog/blob/master/config.toml#L52">config.toml: Params</a> 中加上 <code>comments = false</code>，禁用评论系统。也可以针对单个页面禁用评论，只需在 markdown 开头加上 <code>no_comment: true</code> 或 <code>nocom: true</code>:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">---
+<span style="color:#66d9ef">title</span>: <span style="color:#e6db74">&#34;xxx&#34;</span>
+<span style="color:#66d9ef">nocom</span>: <span style="color:#66d9ef">true</span>
+---
+</code></pre></div><h3 id="数学公式-latex">数学公式 (LaTex)</h3>
+<p>Markdown 中支持 <a href="https://www.latex-project.org/">LaTex</a> 数学公式，此功能依赖于 <a href="https://docs.mathjax.org/en/latest/configuration.html">Mathjax</a>。</p>
+<p>Markdown 与 LaTeX 有一个冲突：<code>_</code> 在 markdown 中表示强调，在 LaTeX 中表示下标，可能导致 mathjax 渲染公式出错，<a href="/coding/2018/08/hugo/">Hugo 简记</a> 一文提供了详细的解决方法。</p>
+<p>由于并非所有页面都需要包含 LaTex 公式，mathjax 默认是不开启的，用户需要在 markdown 开头加上 <code>mathjax: true</code> 启用此功能：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">---
+<span style="color:#66d9ef">title</span>: <span style="color:#e6db74">&#34;xxx&#34;</span>
+<span style="color:#66d9ef">mathjax</span>: <span style="color:#66d9ef">true</span>
+---
+</code></pre></div><h2 id="其他细节优化">其他细节优化</h2>
+<h3 id="next-按钮">Next 按钮</h3>
+<p>文章右侧边缘黄金分隔点处，有一个不起眼的 <code>&gt;&gt;</code> 符号，点击可以跳转到下一篇文章，主要是为了方便用户一路 <code>Next</code> 点到底。</p>
+<h3 id="隐藏-scroll-bar">隐藏 scroll bar</h3>
+<p>本站支持根据页面长度自动隐藏滚动条，用户可以自行设定全局配置 <a href="https://github.com/idealvin/blog/blob/master/config.toml#L52">config.toml: Params</a> 中的值：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-toml" data-lang="toml"><span style="color:#a6e22e">hidsbn</span> = <span style="color:#ae81ff">49</span>    <span style="color:#75715e"># 页面文章数小于 49，  隐藏滚动条</span>
+<span style="color:#a6e22e">hidsbc</span> = <span style="color:#ae81ff">4000</span>  <span style="color:#75715e"># 页面字符数小于 4000，隐藏滚动条</span>
+</code></pre></div><p>另外，也可以在 markdown 开头加上 <code>hide_scroll_bar: true</code> 或 <code>hidsb: true</code>，隐藏此页面中的滚动条：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#66d9ef">title</span>: <span style="color:#e6db74">&#34;xxx&#34;</span>
+<span style="color:#66d9ef">hidsb</span>: <span style="color:#66d9ef">true</span>
+</code></pre></div>
+
+  <footer>
+  
+
+
+
+<nav class="fixed-nav">
+  <span class="next">
+    <a href=" /coding/2020/07/move_co_docs/ ">&raquo;</a>
+  </span>
+</nav>
+<nav class="post-nav">
+  <ul>
+    
+    
+    <li>
+      <span class="next">&rtrif; 下一篇 &emsp;</span>
+      <a href="/coding/2020/07/move_co_docs/">关于更新 CO 参考文档的说明</a>
+    </li>
+    
+  </ul>
+</nav>
+
+
+
+
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/gitalk/1.6.2/gitalk.min.css">
+<script src="//cdn.bootcss.com/gitalk/1.6.2/gitalk.min.js"></script>
+<div id="gitalk-container"></div>
+<script type="text/javascript">
+  var gitalk = new Gitalk({
+    clientID: '78371628e00f43aff18e',
+    clientSecret: '6905d0b807b7008ea04b420bb9fd9a7f390ec400',
+    repo: 'gitalk',
+    owner: 'idealvin',
+    admin: ['idealvin'],
+    id: location.pathname,
+    language: 'zh-CN',
+    distractionFreeMode: false
+  })
+  
+  gitalk.render('gitalk-container');
+</script>
+
+
+
+  
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/10.1.2/highlight.min.js"></script>
+
+
+
+<script src="//cdn.bootcss.com/highlight.js/10.1.2/languages/cpp.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/10.1.2/languages/bash.min.js"></script>
+<script src="//cdn.bootcss.com/highlight.js/10.1.2/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+  
+  <hr>
+  <div class="copyright">©2018-2020 <a href="/">Alvin Yih</a> | <a href="https://github.com/idealvin">Github</a></div>
+  
+  </footer>
+  
+   <div class="cnzz">
+<script type="text/javascript">
+  document.write(unescape("%3Cspan id='cnzz_stat_icon_1279117347'%3E%3C/span%3E%3Cscript src='https://v1.cnzz.com/z_stat.php%3Fid%3D1279117347%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));
+</script>
+</div> 
+  </article>
+  
+   
+
+<script src="//cdn.bootcss.com/jquery/3.5.1/jquery.min.js"></script>
+<script src="/js/rawdeflate.js"></script>
+<script src="/js/jquery_plantuml.js"></script>
+<script type="text/javascript">
+$(function() {
+  var i = 0;
+  $('pre>code').each(function() {
+    if($(this).hasClass('language-plantuml')) {
+      var id = 'plantuml-' + i++;
+      var e = $(this).addClass('nohighlight').parent();
+      e.hide();
+      var s = unescape(encodeURIComponent($(this).text()));
+      var imgURL = "http://www.plantuml.com/plantuml/svg/" + encode64(deflate(s, 9));
+      var n = $('<div id="' + id + '"><img src="' + imgURL + '" /></div>').insertAfter(e);
+    }
+  });
+});
+</script> 
+  </body>
+</html>
+
