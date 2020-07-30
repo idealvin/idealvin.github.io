@@ -1685,7 +1685,7 @@ go(f);
 <p><code>so</code> is a network library based on coroutines, including three modules <code>tcp</code>, <code>http</code>, and <code>rpc</code>.</p>
 <h3 id="171-tcp-programming">17.1 TCP programming</h3>
 <p><a href="https://github.com/idealvin/co/blob/master/include/co/so/tcp.h">so/tcp</a> module provides two classes <code>tcp::Server</code> and <code>tcp::Client</code>, which support both <code>ipv4</code> and <code>ipv6</code>, and can be used for general TCP programming.</p>
-<h4 id="1711-tcpserverhttpsgithubcomidealvincoblobmasterincludecosotcph">17.1.1 <a href="https://github.com/idealvin/co/blob/master/include/co/so/tcp.h">tcp::Server</a></h4>
+<h4 id="1711-tcpserver">17.1.1 tcp::Server</h4>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#66d9ef">namespace</span> tcp {
 <span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">Connection</span> {
     sock_t fd;   <span style="color:#75715e">// conn fd
@@ -1719,7 +1719,7 @@ go(f);
 </span></code></pre></div><p><code>tcp::Server</code> creates one coroutine for each connection. Calling the <code>start()</code> method enters the event loop. When a new connection is accepted, a coroutine is created, in which the <code>on_connection()</code> method is called to send or recv data on the connection.</p>
 <p>This class can only be used as a base class. User must inherit this class and implement the <code>on_connection()</code> method. Note that the parameter <code>conn</code> is dynamically allocated, remember to delete it after using it.</p>
 <p>There is a demo in <code>co/test</code> which implements a simple pingpong server based on <code>tcp::Server</code>. The source code can be found in [pingpong.cc](<a href="https://github.com/idealvin/co/blob/master/test/so">https://github.com/idealvin/co/blob/master/test/so</a> /pingpong.cc).</p>
-<h4 id="1712-tcpclienthttpsgithubcomidealvincoblobmasterincludecosotcph">17.1.2 <a href="https://github.com/idealvin/co/blob/master/include/co/so/tcp.h">tcp::Client</a></h4>
+<h4 id="1712-tcpclient">17.1.2 tcp::Client</h4>
 <p><code>tcp::Client</code> must be used in coroutine environment. User needs to manually call the <code>connect()</code> method to establish a connection. It is recommended to determine whether the connection is established before calling <code>recv</code>, <code>send</code>. If not, call connect() to establish the connection. It is easy to achieve automatic reconnection in this way.</p>
 <p>A <code>tcp::Client</code> corresponds to one connection, do not use the same tcp::Client object in multiple coroutines at the same time. The <code>co</code> coroutine library theoretically supports two coroutines using one connection at the same time, one recv, and one send, but it is not recommended to do so. The standard approach is that both recv and send are done in the same coroutine.</p>
 <p>There is no need to create a connection for each coroutine. The recommended method is to put <code>tcp::Client</code> in <code>co::Pool</code>, and multiple coroutines share the connections in the pool. For each coroutine, a connection is taken from the pool when needed, and then put it back after use. This method can reduce the number of connections.</p>

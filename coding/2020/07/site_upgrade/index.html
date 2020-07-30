@@ -141,7 +141,7 @@ Alvin -&gt; Bob : hello plantuml<br>
 </code></pre><p>有了 sidebar 与 plantuml，就可以方便的完成详细设计文档之类的长篇大论了❤️</p>
 <h3 id="评论系统-gitalk">评论系统 (gitalk)</h3>
 <p><a href="https://github.com/gitalk/gitalk">gitalk</a> 是基于 github issues 实现的评论系统，用户需要修改 <a href="https://github.com/idealvin/blog/blob/master/themes/hugo-ivy/layouts/partials/comments.html">comments.html</a> 模板文件，填上自己的 gitalk 信息。</p>
-<p>本站支持在全局配置 <a href="https://github.com/idealvin/blog/blob/master/config.toml#L52">config.toml: Params</a> 中加上 <code>comments = false</code>，禁用评论系统。也可以针对单个页面禁用评论，只需在 markdown 开头加上 <code>no_comment: true</code> 或 <code>nocom: true</code>:</p>
+<p>本站支持在全局配置 <a href="https://github.com/idealvin/blog/blob/master/config.toml">config.toml: Params</a> 中加上 <code>comments = false</code>，禁用评论系统。也可以针对单个页面禁用评论，只需在 markdown 开头加上 <code>no_comment: true</code> 或 <code>nocom: true</code>:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">---
 <span style="color:#66d9ef">title</span>: <span style="color:#e6db74">&#34;xxx&#34;</span>
 <span style="color:#66d9ef">nocom</span>: <span style="color:#66d9ef">true</span>
@@ -158,7 +158,7 @@ Alvin -&gt; Bob : hello plantuml<br>
 <h3 id="隐藏的-next-按钮">隐藏的 Next 按钮</h3>
 <p>鼠标放到文章右侧边缘黄金分隔点处，会出现一个不太起眼的 <code>&gt;&gt;</code> 符号，点击它可以跳转到下一篇文章，主要是为了方便用户一路 <code>Next</code> 点到底。</p>
 <h3 id="隐藏-scroll-bar">隐藏 scroll bar</h3>
-<p>文章不是很长时，没必要显示滚动条(影响美观😒)。本站支持根据页面长度自动隐藏滚动条，用户可以修改全局配置 <a href="https://github.com/idealvin/blog/blob/master/config.toml#L52">config.toml: Params</a> 中的参数：</p>
+<p>文章不是很长时，没必要显示滚动条(影响美观😒)。本站支持根据页面长度自动隐藏滚动条，用户可以修改全局配置 <a href="https://github.com/idealvin/blog/blob/master/config.toml">config.toml: Params</a> 中的参数：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-toml" data-lang="toml"><span style="color:#a6e22e">hidsbn</span> = <span style="color:#ae81ff">49</span>    <span style="color:#75715e"># list   页面文章数小于 49，  隐藏滚动条  (len(.Pages) &lt; hidsbn)</span>
 <span style="color:#a6e22e">hidsbc</span> = <span style="color:#ae81ff">4000</span>  <span style="color:#75715e"># single 页面字符数小于 4000，隐藏滚动条  (len(.Content) &lt; hidsbc)</span>
 </code></pre></div><p>另外，也可以在 markdown 开头加上 <code>hide_scroll_bar: true</code> 或 <code>hidsb: true</code>，显示隐藏页面中的滚动条：</p>

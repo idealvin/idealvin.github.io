@@ -1670,7 +1670,7 @@ go(f);
 <p><code>so</code> 是基于协程的网络库，包含 <code>tcp</code>, <code>http</code>, <code>rpc</code> 三个模块。</p>
 <h3 id="171-tcp-编程">17.1 TCP 编程</h3>
 <p><a href="https://github.com/idealvin/co/blob/master/include/co/so/tcp.h">so/tcp</a> 模块实现了 <code>tcp::Server</code> 与 <code>tcp::Client</code> 类，它们同时支持 <code>ipv4</code> 与 <code>ipv6</code>，可用于一般性的 TCP 编程。</p>
-<h4 id="1711-tcpserverhttpsgithubcomidealvincoblobmasterincludecosotcph">17.1.1 <a href="https://github.com/idealvin/co/blob/master/include/co/so/tcp.h">tcp::Server</a></h4>
+<h4 id="1711-tcpserver">17.1.1 tcp::Server</h4>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#66d9ef">namespace</span> tcp {
 <span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">Connection</span> {
     sock_t fd;   <span style="color:#75715e">// conn fd
@@ -1704,7 +1704,7 @@ go(f);
 </span></code></pre></div><p>tcp::Server 采用一个连接一个协程的模型，调用 <code>start()</code> 方法即进入事件循环，接收到新连接时，就创建一个协程，在协程中调用 <code>on_connection()</code> 方法，处理连接上的数据。</p>
 <p>此类只能做为基类使用，用户需要继承此类，并实现 on_connection() 方法，注意参数 <code>conn</code> 是动态分配的，用户使用完后需要 delete 掉。</p>
 <p><code>co/test</code> 中有一个 demo，基于 tcp::Server 实现了一个简单的 pingpong server，源码见 <a href="https://github.com/idealvin/co/blob/master/test/so/pingpong.cc">pingpong.cc</a>。</p>
-<h4 id="1712-tcpclienthttpsgithubcomidealvincoblobmasterincludecosotcph">17.1.2 <a href="https://github.com/idealvin/co/blob/master/include/co/so/tcp.h">tcp::Client</a></h4>
+<h4 id="1712-tcpclient">17.1.2 tcp::Client</h4>
 <p>tcp::Client 必须在协程环境中使用，用户需要手动调用 <code>connect()</code> 方法建立连接。建议在调用 <code>recv</code>, <code>send</code> 之前，判断连接是否建立，没有的话，就调用 connect() 建立连接，这种方式容易实现自动重连。</p>
 <p>一个 tcp::Client 对应一个连接，不要同时在多个协程中使用同一个 tcp::Client 对象。co 协程库理论上支持两个协程同时使用一个连接，一个协程 recv，一个协程 send，但不推荐这种用法。标准的做法是，recv 与 send 都在同一个协程中完成，以实现同步的编码方式。</p>
 <p>一般建议将 tcp::Client 放到 <code>co::Pool</code> 中，多个协程共用 pool 中的连接。对每个协程而言，需要时即从 pool 中取出一个空闲连接，用完后再放回 pool 中，这种方式可以减少所需的连接数。</p>
